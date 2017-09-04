@@ -29,7 +29,7 @@ mesowestDecoder: Current version (8/4/17) of MATLAB function to decode present w
 
 newtip: Current version (9/1/17) of MATLAB function to create a custom Data Cursor tooltip using variables from within a parent function. Must be nested within another function. This version of newtip is specifically designed to work with wnAllPlot and wnYearPlot, but the method could easily be adapted for any similar circumstance. Tags: warm nose toolbox, utilities
 
-nosedetect: Current version (8/24/17) of MATLAB function to separate a soundings data structure into warm nose and non warm nose structures, with the warm nose structure containing a nested structure with details about said noses. Tags: sounding, IGRA toolbox Requires: findsnd, prestogeo, simple_prestogeo
+nosedetect: Current version (9/4/17) of MATLAB function to separate a soundings data structure into warm nose and non warm nose structures, with the warm nose structure containing a nested structure with details about said noses. Updated 9/4/17 to fix negative depth in pressure coordinates for case when x was equal to 2. Tags: sounding, IGRA toolbox Requires: findsnd, prestogeo, simple_prestogeo
 
 precipfilter: Current version (8/19/17) of MATLAB function to filter warm nose soundings data by the presence of precipitation at the surface, as shown in Mesowest data adjacent in time to the soundings in the input structure. Tags: surface observations, sounding, IGRA toolbox
 
@@ -57,7 +57,7 @@ TvZprint: Current version (8/19/17) of MATLAB function to plot a temperature-hei
 
 wnAllPlot: Current version (8/24/17) of MATLAB function to display various kinds of warm nose plots based off a soundings structure containing warm nose data. Uses the stacked method for ranged bar graphs, which causes problems in representing some kinds of warm noses. Renamed from “wnaltplot” in 9/3/17 push. Tags: sounding, warm nose toolbox, renamed Requires: newtip, datetickzoom
 
-wnplot: Current version (8/24/17) of MATLAB function to create warm nose plots for individual soundings given an input time and soundings data. Uses the patch method for ranged bar graphs; accurately displays all warm noses that nosedetect properly represents. Renamed from “wnaltind” in 9/3/17 push. Tags: sounding, warm nose toolbox Requires: findsnd
+wnplot: Current version (9/4/17) of MATLAB function to create warm nose plots for individual soundings given an input time and soundings data. Uses the patch method for ranged bar graphs; accurately displays all warm noses that nosedetect properly represents. Renamed from “wnaltind” in 9/3/17 push. Updated 9/4/17 to fix the y-axis limits between 0 and 5km. Tags: sounding, warm nose toolbox Requires: findsnd
 
 wnplot_poster: Current version (8/24/17) of MATLAB function to create warm nose plots for individual soundings given an input time and soundings data. Uses the patch method for ranged bar graphs; accurately displays all warm noses that nosedetect properly represents. An improved version requiring MATLAB 2014b or later will be released soon. Renamed from “wnaltindposter” in 9/3/17 push. Tags: sounding, warm nose toolbox, poster Requires: findsnd
 
