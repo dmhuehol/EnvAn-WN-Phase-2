@@ -48,7 +48,7 @@ function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfi
     %The flawed cases represent a high priority and will be the first bug
     %to be fixed after the next push. (8/24/17)
     %
-    %Version Date: 8/24/17
+    %Version Date: 9/4/17
     %Last major edit: 8/24/17
     %Written by: Daniel Hueholt
     %North Carolina State University
@@ -165,9 +165,9 @@ for k = first:last
             soundStruct(k).warmnose.x = x; %PRESSURE x value from polyxpoly
             soundStruct(k).warmnose.gx = gx; %HEIGHT x value from polyxpoly
             soundStruct(k).warmnose.numwarmnose = 1; %number of warm nose is one; since the T profile crosses the freezing line twice, it can be inferred that it is aloft
-            soundStruct(k).warmnose.lowerbound1 = x(2); %PRESSURE lower bound
+            soundStruct(k).warmnose.lowerbound1 = x(1); %PRESSURE lower bound
             soundStruct(k).warmnose.lowerboundg1 = gx(1); %HEIGHT lower bound; note that the indices are reversed because pressure decreases with height and height increases with height
-            soundStruct(k).warmnose.upperbound1 = x(1); %PRESSURE upper bound
+            soundStruct(k).warmnose.upperbound1 = x(2); %PRESSURE upper bound
             soundStruct(k).warmnose.upperboundg1 = gx(2); %HEIGHT upper bound
             soundStruct(k).warmnose.lower(1) = x(2);
             soundStruct(k).warmnose.lowerg(1) = gx(1);
@@ -368,9 +368,8 @@ nowarmnosesfinal = soundStruct(nowarmnoses);
 disp(errorCount); %Final error count is important!
 lineInTheSand = 0.07; %Future me don't you even think about changing this
 if errorCount>lineInTheSand*length(soundStruct)
-    msg = 'Significant errors occurred on more than 5% of the data!';
+    msg = 'Significant errors occurred on more than 7% of the data!';
     warning(msg);
 end
     
-%yayyyyy
 end

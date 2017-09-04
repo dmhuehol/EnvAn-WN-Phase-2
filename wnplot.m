@@ -17,7 +17,7 @@ function [] = wnplot(y,m,d,h,sounding)
     %Generates a single altitude plot for all warmnoses
     %
     %
-    %Version Date: 8/24/17
+    %Version Date: 9/4/17
     %Last Major Revision: 7/5/17
     %Written by : Daniel Hueholt
     %North Carolina State University
@@ -133,4 +133,5 @@ title(titleMsg);
 set(gca,'xTickLabel','')
 set(gca,'xTick',[])
 xlabel(datestr(dateNumber))
+ylim([0 5])
 end
