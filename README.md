@@ -9,7 +9,7 @@ Tags: ASOS, clouds, external, filter, IGRA tooolbox, import, in progress, Mesowe
 
 File descriptions:
 
-ASOSimport: Latest version (8/29/17) of function to create a structure of one-minute Automated Surface Observation System data given an input file. Tags: surface observations, ASOS, import
+ASOSimpOneMin: Latest version (9/6/17) of function to create a structure of one-minute Automated Surface Observation System data given an input file. Renamed from ASOSimport 9/6/17.  Tags: surface observations, ASOS, import, renamed
 
 cloudbaseplot: Current version (8/29/17) of function to plot cloud base as estimated from sounding relative humidity observations. Tags: sounding, plotting toolbox, clouds Requires: dewrelh
 
@@ -31,7 +31,7 @@ newtip: Current version (9/1/17) of MATLAB function to create a custom Data Curs
 
 nosedetect: Current version (8/24/17) of MATLAB function to separate a soundings data structure into warm nose and non warm nose structures, with the warm nose structure containing a nested structure with details about said noses. Tags: sounding, IGRA toolbox Requires: findsnd, prestogeo, simple_prestogeo
 
-precipfilter: Current version (8/19/17) of MATLAB function to filter warm nose soundings data by the presence of precipitation at the surface, as shown in Mesowest data adjacent in time to the soundings in the input structure. Tags: surface observations, sounding, IGRA toolbox
+precipfilter: Current version (9/6/17) of MATLAB function to filter warm nose soundings data by the presence of precipitation at the surface, as shown in Mesowest data adjacent in time to the soundings in the input structure. Comment added to aid future development 9/6/17. Tags: surface observations, sounding, IGRA toolbox
 
 prestogeo: Current version (9/1/17) of MATLAB function to calculate geopotential height given pressure and temperature. Includes a variety of bonus options which make it easier to use with other functions; for a bare-bones geopotential height calculator, see simple_prestogeo. Equation comes from Durre and Yin (2008) http://journals.ametsoc.org/doi/pdf/10.1175/2008BAMS2603.1 Tags: sounding, IGRA toolbox
 
