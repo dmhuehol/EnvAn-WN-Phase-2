@@ -1,9 +1,9 @@
-function [ASOSstruct] = ASOSimport(input_file)
-%%ASOSimport
+function [ASOSstruct] = ASOSimpOneMin(input_file)
+%%ASOSimpOneMin
     %Function to import ASOS one-minute surface data, remove useless
     %elements, and place the useful data into a structure.
     %
-    %General form: [ASOSstruct] = ASOSimport(input_file)
+    %General form: [ASOSstruct] = ASOSimpOneMin(input_file)
     %
     %Output: 
     %ASOSstruct: a length(data)x1 structure, which contains date, time
@@ -22,7 +22,7 @@ function [ASOSstruct] = ASOSimport(input_file)
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version date: 8/29/2017
+    %Version date: 9/6/2017
     %Last major revision: 7/6/17
     %
 

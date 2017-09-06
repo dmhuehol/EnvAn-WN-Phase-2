@@ -25,7 +25,7 @@
     %priority as Mesowest is no longer preferred for surface precip
     %data.
     %
-    %Version date: 8/19/17
+    %Version date: 9/6/17
     %Last major revision: 8/19/17
     %Written by: Daniel Hueholt
     %North Carolina State University
@@ -42,7 +42,7 @@ tc = length(warmnosesfinal);
 
 while sc<tc %Loop through all warmnose soundings; a while loop is used because the size of the soundings structure will change, and the loop needs to change with it.
     datevector = wnoutput(sc).valid_date_num; %Date from soundings structure
-    [foundit] = find(ismember(dat.valid_date_num,datevector,'rows')==1); %Finds index of entry in Mesowest table that corresponds to sounding
+    [foundit] = find(ismember(dat.valid_date_num,datevector,'rows')==1); %Finds index of entry in Mesowest table that corresponds to sounding %THIS IS THE SLOW LINE: makes up 91% of precipfilter runtime and 86% of fullIGRAimp runtime. A better way to do this is essential.
     closerlook = dat((foundit-spread):(foundit+spread),:); %Extracts the section of the Mesowest table to entries +/- spread from the foundit index
     %spread = 10 works well, usually grabbing slightly under 24 hours of data
     [cx,~] = size(nonzeros(closerlook.HrPrecip)); %Find size of the precip data
