@@ -67,6 +67,8 @@ wnYearPlot: Current version (9/3/17) of MATLAB function to create warm nose plot
 
 In Progress:
 
+ASOSdownloadFiveMin: Current version (9/13/17) of MATLAB function to download ASOS five-minute data from the NCDC database. Tags: ASOS, import, in progress, surface observations
+
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
 
 noseplotfind: Current version (8/17/17) of MATLAB function to detect and display warm noses. Current displays TvP, TvZ, and skew-T charts. See “to be added” section near end of function help for features in development. Tags: in progress, sounding Requires: prestogeo
