@@ -1,0 +1,46 @@
+%%ASOSdownloadFiveMin
+    %Function to download five minute ASOS data from NCDC servers. Requires
+    %an Internet connection.
+    %Written by: Daniel Hueholt
+    %North Carolina State University
+    %Undergraduate Research Assistant at Environment Analytics
+    %Version Date: 9/13/17
+    
+function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,varargin)
+% Check for month presence
+if exist('month','var')==0 %This way, the spendy exist function only needs to be called once
+    monthPresence = 0;
+else
+    monthPresence = 1;
+end
+
+% For making path strings
+slash = '/';
+dash = '-';
+obsType = '6401';
+zeroChar = '0';
+
+% Ensure two-digit month
+if monthPresence == 1 %If there is an input month
+    monthString = num2str(month);
+    if numel(monthString)==1 %Check the number of digits in month
+        monthString = strcat(zeroChar,monthString); %Add a leading zero if month is one-digit
+    end
+end
+
+% Set up file paths
+fiveMinPath = '/pub/data/asos-fivemin/'; %Path to five minute data on FTP server
+yearPrefix = strcat(obsType,dash); %ASOS data is stored by year in folders with the prefix 6401-. For example, 2015 data is stored in the folder 6401-2015.
+yearString = num2str(year); yearDirString = strcat(yearPrefix,yearString); %Creates the year directory string by concatenating the prefix and the input year
+yearPath = strcat(fiveMinPath,yearDirString); %This is the path for the input year
+
+obsFilename = [obsType zeroChar station yearString];
+
+%ftpNCDC = ftp('ftp.ncdc.noaa.gov','anonymous',emailAddress); %Opens an FTP connection to the NCDC server
+%cd(ftpNCDC,fiveMinPath); %Changes folder to the ASOS five minute data
+%cd(ftpNCDC,yearPath)
+
+%close(ftpNCDC)
+completeMessage = 'Completed!'
+end
+    
