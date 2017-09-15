@@ -1,4 +1,4 @@
-function [ASOSstruct] = ASOSimport(input_file)
+function [ASOSstruct] = ASOSimportOneMin(input_file)
 %%ASOSimport
     %Function to import ASOS one-minute surface data, remove useless
     %elements, and place the useful data into a structure.

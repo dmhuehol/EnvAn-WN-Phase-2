@@ -1,17 +1,37 @@
 %%ASOSdownloadFiveMin
     %Function to download five minute ASOS data from NCDC servers. Requires
     %an Internet connection.
+    %
+    %General form: ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath)
+    %Inputs:
+    %emailAddress: The user's complete email address--functions as a
+    %password, as required by the NCDC FTP server.
+    %station: Four character station ID, such as KHWV for Brookhaven Airport,
+    %or KISP for Islip.
+    %year: four-digit year
+    %month: OPTIONAL two-digit month (if omitted, function will download an
+    %entire year of data).
+    %
+    %Outputs:
+    %None
+    %
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version Date: 9/13/17
+    %Version Date: 9/15/17
+    %Last major revision: 9/15/17
+    %
     
-function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,varargin)
+function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath,varargin)
 % Check for month presence
 if exist('month','var')==0 %This way, the spendy exist function only needs to be called once
     monthPresence = 0;
 else
     monthPresence = 1;
+end
+% Check for file path to place data files in
+if exist('downloadedFilePath','var')==0
+    downloadedFilePath = pwd; %Set the default file directory to the working directory
 end
 
 % For making paths, strings, and path strings
@@ -22,6 +42,7 @@ zeroChar = '0';
 space = ' ';
 Y = 'Y'; %#ok
 N = 'N'; %#ok
+fileExtension = '.dat';
 
 % If month isn't entered, check with user to be sure that they want to download a year
 if monthPresence == 0
@@ -54,16 +75,18 @@ yearPrefix = strcat(obsType,dash); %ASOS data is stored by year in folders with 
 yearString = num2str(year); yearDirString = strcat(yearPrefix,yearString); %Creates the year directory string by concatenating the prefix and the input year
 yearPath = strcat(fiveMinPath,yearDirString); %This is the path for the input year
 if monthPresence==1
-    obsFilename = [obsType zeroChar station yearString monthString];
+    obsFilename = [obsType zeroChar station yearString monthString fileExtension]; %If month is present, download the specific month file.
 else
-    obsFilename = [obsType zeroChar station yearString '*'];
+    obsFilename = [obsType zeroChar station yearString '*' fileExtension]; %If month is omitted, download the entire year.
 end
 
-%ftpNCDC = ftp('ftp.ncdc.noaa.gov','anonymous',emailAddress); %Opens an FTP connection to the NCDC server
-%cd(ftpNCDC,fiveMinPath); %Changes folder to the ASOS five minute data
-%cd(ftpNCDC,yearPath)
+ftpNCDC = ftp('ftp.ncdc.noaa.gov','anonymous',emailAddress); %Opens an FTP connection to the NCDC server
+cd(ftpNCDC,fiveMinPath); %Changes folder to the ASOS five minute data
+cd(ftpNCDC,yearPath); %Changes folder to the year path
+mget(ftpNCDC,obsFilename,downloadedFilePath); %Downloads target file(s) to the specified file path
+close(ftpNCDC) %Closes FTP connection
 
-%close(ftpNCDC)
-completeMessage = 'Completed!'
+completeMessage = 'Download complete!';
+disp(completeMessage);
 end
     
