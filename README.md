@@ -9,7 +9,9 @@ Tags: ASOS, clouds, external, filter, IGRA tooolbox, import, in progress, Mesowe
 
 File descriptions:
 
-ASOSimpOneMin: Latest version (9/6/17) of function to create a structure of one-minute Automated Surface Observation System data given an input file. Renamed from ASOSimport 9/6/17.  Tags: surface observations, ASOS, import, renamed
+ASOSdownloadFiveMin: Current version (9/15/17) of MATLAB function to download ASOS five-minute data from the NCDC database. Tags: ASOS, import, surface observations
+
+ASOSimportOneMin: Latest version (9/6/17) of function to create a structure of one-minute Automated Surface Observation System data given an input file. Renamed from ASOSimport 9/15/17.  Tags: surface observations, ASOS, import, renamed
 
 cloudbaseplot: Current version (8/29/17) of function to plot cloud base as estimated from sounding relative humidity observations. Tags: sounding, plotting toolbox, clouds Requires: dewrelh
 
@@ -67,7 +69,7 @@ wnYearPlot: Current version (9/3/17) of MATLAB function to create warm nose plot
 
 In Progress:
 
-ASOSdownloadFiveMin: Current version (9/13/17) of MATLAB function to download ASOS five-minute data from the NCDC database. Tags: ASOS, import, in progress, surface observations
+ASOSimportFiveMin: Current (9/15/17) version of MATLAB function to import ASOS five-minute data from a .dat file.
 
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
 
