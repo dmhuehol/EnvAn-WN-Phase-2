@@ -69,7 +69,7 @@ wnYearPlot: Current version (9/3/17) of MATLAB function to create warm nose plot
 
 In Progress:
 
-ASOSimportFiveMin: Current (9/15/17) version of MATLAB function to import ASOS five-minute data from a .dat file.
+ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS five-minute data from a .dat file. Updated 9/21/17 with continuing development.
 
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
 
