@@ -63,15 +63,10 @@ end
 otherObsRaw(1) = [];
 otherObsRaw = cell2mat(otherObsRaw);
 
-windDirSpeedCharUnitExp = '((VRB){0,1}\d{0,6}\w{0,4}(KT){1}){1}\s?(\d{3}V{1}\d{3}){0,1}'; %28004KT 28004G34KT 28004G123KT
-[fifthGroup,otherObsRaw] = regexp(otherObsRaw,windDirSpeedCharUnitExp,'match','split');
-fifthGroup(1) = [];
-
-otherObsRaw(1) = [];
-otherObsRaw = cell2mat(otherObsRaw);
+windDirSpeedCharUnitExp = '[VRB]{0,1}\d{0,5}[GQ1234567890]{0,4}[KT]{0,2}'; %28004KT 28004G34KT 28004G123KT
+visibilityExp = '[01234579/ SM<+]{4,7}'; %10SM 2 3/4SM 1/4SM <1/4SM
 
 
-% visibilityExp = '[01234579/ SM<+]{4,7}'; %10SM 2 3/4SM 1/4SM <1/4SM
 % presentWeather = '[-+]?\w{2,6}'; %OPTIONAL ZR- RA+ RA SN PL ZRPL etc
 % skyCondition = '[CLR]{3}|[A-Z]{3}\d{3}'; %BKN034
 % tempAndDewpoint = 'M{0,1}\d{2}\/{1}M{0,1}\d{2}'; %M04/M12
