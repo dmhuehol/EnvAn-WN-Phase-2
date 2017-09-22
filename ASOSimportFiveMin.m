@@ -64,12 +64,17 @@ otherObsRaw(1) = [];
 otherObsRaw = cell2mat(otherObsRaw);
 
 windDirSpeedCharUnitExp = '((VRB){0,1}\d{0,6}\w{0,4}(KT){1}){1}\s?(\d{3}V{1}\d{3}){0,1}'; %28004KT 28004G34KT 28004G123KT
-[fifthGroup,otherObsRaw] = regexp(otherObsRaw,windDirSpeedCharUnitExp,'match','split');
-fifthGroup(1) = [];
+aaaAHH = '((VRB){0,1}\d{0,6}\w{0,4}(KT){1}){1}\s?(\d{3}V{1}\d{3}){0,1}\s\w{3,4}|(\d{1,2}(SM))|\d{5}(KT)\s(\d{1} \d{1}\/\d{1}SM)';
 
-otherObsRaw(1) = [];
-otherObsRaw = cell2mat(otherObsRaw);
+[dataLines] = regexp(otherObsRaw,'\n','split');
+dataLines(end) = [];
 
+windFieldExp = '(VRB){0,1}\d{0,5}[GQ]{0,1}\d{2,3}KT'; %Wind direction, wind speed, wind character, wind character speed
+windField = cell(1,length(dataLines));
+
+for lineByLine = 1:length(dataLines)
+    [windField{lineByLine}] = regexp(dataLines{lineByLine},windFieldExp,'match');
+end
 
 % visibilityExp = '[01234579/ SM<+]{4,7}'; %10SM 2 3/4SM 1/4SM <1/4SM
 % presentWeather = '[-+]?\w{2,6}'; %OPTIONAL ZR- RA+ RA SN PL ZRPL etc
