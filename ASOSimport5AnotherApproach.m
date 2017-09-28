@@ -16,5 +16,8 @@ fieldnamesTrue = {'NCDCnum' 'CallSign' 'StationCallSign' 'Year' 'Month' 'Day' 'H
 fieldnamesSave = {'DateTime' 'WindDirection' 'WindSpeed' 'WindCharacter' 'WindCharacterSpeed' 'Visibility' 'PresentWeather' 'SkyCondition' 'Temperature' 'Dewpoint' 'Altimeter' 'UnknownOne' 'RelativeHumidity' 'UnknownTwo' 'Remarks'}; 
 ASOSstruct = cell2struct(ASOSraw,fieldnamesBasic,2);
 
+
+%% Build the final data structure
 numberOfRows = length(ASOSstruct.a);
-ASOS.Identifier = cell(1,numberOfRows);
+ASOS.Identifier = ASOSstruct.a; %Identifier (NCDC number and call sign) is properly dealt with by textscan
+
