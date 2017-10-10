@@ -1,4 +1,4 @@
-function [sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnoutput] = fullIGRAimp(input_file,input_file_meso)
+function [sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnoutput, varargout] = fullIGRAimp(input_file,input_file_meso,varargin)
 %%IGRAimpfil
     %Function which, given a file of raw IGRA v1 soundings data, will read
     %the data into MATLAB, filter it according to year, filter it according
@@ -9,22 +9,20 @@ function [sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnout
     %like soundplots.
     %
     %General form:
-    %[sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnoutput] = IGRAimpfil(input_file,input_file_meso)
+    %[sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnoutput] = fullIGRAimp(input_file,input_file_meso)
     %
     %Outputs:
-    %sndng - raw soundings data read into MATLAB and separated into different
-    %readings, unfiltered.
-    %filtered - soundings data filtered by year
-    %soundsh - soundings data filtered by level type (usually to remove extra wind levels)
-    %goodfinal - soundings data filtered by surface temperature
-    %warmnosesfinal - soundings structure containing data only from
-    %soundings with warmnoses
-    %nowarmnosesfinal - soundings structure containing data only from
-    %soundings without warmnoses
-    %wnoutput - soundings structure which has been filtered to contain only
-    %data from days with precipitation
-    %
-    %For unclear reasons, all outputs must be called.
+    %sndng: raw soundings data read into MATLAB and separated into different
+    %   readings, unfiltered.
+    %filtered: soundings data filtered by year
+    %soundsh: soundings data filtered by level type (usually to remove extra wind levels)
+    %goodfinal: soundings data filtered by surface temperature
+    %warmnosesfinal: soundings structure containing data only from
+    %   soundings with warmnoses
+    %nowarmnosesfinal: soundings structure containing data only from
+    %   soundings without warmnoses
+    %wnoutput: soundings structure which has been filtered to contain only
+    %   data from days with precipitation
     %
     %Input:
     %input_file: file path of a *.dat IGRA v1 data file
@@ -34,13 +32,13 @@ function [sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnout
     %inputs, but for now it is necessary to change such settings within the
     %function.
     %
-    %KNOWN ISSUES: breaks when outputs are omitted, more accurate progress bar is needed,
-    % runtime is relatively slow. These will be improved shortly.
+    %KNOWN ISSUES: more accurate progress bar is needed, runtime is relatively slow. 
+    %   These will be improved shortly.
     %
     %Written by Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version Date: 8/19/17
+    %Version Date: 10/10/17
     %Last major revision: 6/30/17
     %
     %See also IGRAimpf, timefilter, levfilter, dewrelh, surfconfilter,

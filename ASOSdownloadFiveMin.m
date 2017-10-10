@@ -15,11 +15,11 @@
     %Outputs:
     %None
     %
+    %Version Date: 9/15/2017
+    %Last major revision: 9/15/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version Date: 9/15/17
-    %Last major revision: 9/15/17
     %
     
 function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath,varargin)
