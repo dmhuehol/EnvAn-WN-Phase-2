@@ -9,7 +9,7 @@ Tags: 2014b, ASOS, clouds, external, filter, IGRA toolbox, import, in progress, 
 
 File descriptions:
 
-ASOSdownloadFiveMin: Current version (9/15/17) of MATLAB function to download Automated Surface Observation System (ASOS) five-minute data from the NCDC database. Tags: ASOS, import, surface observations
+ASOSdownloadFiveMin: Current version (10/13/17) of MATLAB function to download Automated Surface Observation System (ASOS) five-minute data from the NCDC database. Updated 10/13/17 to squash a bug that prevented the download of a year of data to a file path other than the active dirrectory. Tags: ASOS, import, surface observations
 
 ASOSgrabber: Current version (10/10/17) of MATLAB function to make browsing of ASOS structures easier by grabbing a section of data from a structure around a given input time. Tags: ASOS, surface observations
 
@@ -88,6 +88,8 @@ noseplotfind: Current version (8/17/17) of MATLAB function to detect and display
 numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings data by the number and type of warm noses present. Tags: sounding, in progress, warm nose toolbox
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
+
+surfacePlotter: Current version (10/13/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Tags: in progress, ASOS, surface observations
 
 Other files:
 
