@@ -15,7 +15,7 @@
     %Outputs:
     %None
     %
-    %Version Date: 9/15/2017
+    %Version Date: 10/13/2017
     %Last major revision: 9/15/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
