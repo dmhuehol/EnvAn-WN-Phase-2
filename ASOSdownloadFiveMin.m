@@ -22,7 +22,7 @@
     %Undergraduate Research Assistant at Environment Analytics
     %
     
-function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath,varargin)
+function [] = ASOSdownloadFiveMin(downloadedFilePath,emailAddress,station,year,month,varargin)
 % Check for month presence
 if exist('month','var')==0 %This way, the spendy exist function only needs to be called once
     monthPresence = 0;
