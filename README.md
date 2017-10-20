@@ -89,7 +89,7 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (10/17/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/18/17 with further development; now capable of finding and extracting data from a given time span. Tags: in progress, ASOS, surface observations
+surfacePlotter: Current version (10/20/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/20/17 with further development; extracts subset structures and plots surface RH, P, T, and Td data for given ranges of day/hours (wind plot and weather code plots are added, but in early stages of implementation). Tags: in progress, ASOS, surface observations
 
 Other files:
 
