@@ -77,6 +77,8 @@ wnYearPlot: Current version (9/3/17) of MATLAB function to create warm nose plot
 
 In Progress:
 
+abacusDemo: Current (10/23/17) version of MATLAB script demonstrating the abacus plot for visualizing weather codes over time. Needs better formatting and toy data to be completed.
+
 ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS five-minute data from a .dat file. Updated 9/21/17 with continuing development.
 
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
@@ -89,7 +91,7 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (10/20/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/20/17 with further development; extracts subset structures and plots surface RH, P, T, and Td data for given ranges of day/hours (wind plot and weather code plots are added, but in early stages of implementation). Tags: in progress, ASOS, surface observations
+surfacePlotter: Current version (10/24/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/24/17 with further development; extracts subset structures, plots surface RH, P, T, and Td data for given ranges of day/hours, plots weather codes as an abacus plot, plots winds using rose plot. This is likely to be the final update with rose winds. Tags: in progress, ASOS, surface observations
 
 Other files:
 
