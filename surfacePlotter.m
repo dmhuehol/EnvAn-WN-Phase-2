@@ -42,12 +42,12 @@ tTd = [dewpoint;temperature]; %Concatenate dewpoint and temperature to make plot
 times = [surfaceSubset.Year; surfaceSubset.Month; surfaceSubset.Day; surfaceSubset.Hour; surfaceSubset.Minute; zeros(1,length(surfaceSubset))];
 serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),times(6,:));
 
-% presentWeather = {surfaceSubset.PresentWeather}; %Weather codes
-% weatherPresence = logical(~cellfun('isempty',presentWeather)); %Logically index the present weather codes; no weather code (0)/weather code (1)
-% precipTimes = [time(2) time(3) time(4)]; %Times where precip occurred
-% precipType = {'SN','RA','SNRA'}; %Snow at first, rain at second, then both
-% 
-% % Place precipitation type markers at top of plot
+presentWeather = {surfaceSubset.PresentWeather}; %Weather codes
+%weatherPresence = logical(~cellfun('isempty',presentWeather)); %Logically index the present weather codes; no weather code (0)/weather code (1)
+%precipTimes = [time(2) time(3) time(4)]; %Times where precip occurred
+%precipType = {'SN','RA','SNRA'}; %Snow at first, rain at second, then both
+
+% Place precipitation type markers at top of plot
 % for count = 1:length(precipType) %Loop to look for all precipitation type markers
 %     precipPoint = plot(precipTimes(count),100,'Marker','o','MarkerSize',5,'MarkerFaceColor','w'); %Invisible at first
 %     if strcmp(precipType{count},'SNRA') == 1 %If snow and rain
@@ -62,6 +62,53 @@ serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),tim
 %     end
 %     hold on
 % end
+figure;
+presentAxis = gca;
+for count = 1:length(presentWeather)
+    if isempty(regexp(presentWeather{count},'(FG){1}','once'))~=1
+        plot(serialTimes(count),1,'b');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(BR){1}','once'))~=1
+        plot(serialTimes(count),2,'b');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(DZ){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))==1
+        plot(serialTimes(count),3,'k');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
+        plot(serialTimes(count),4,'k');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
+        plot(serialTimes(count),5,'Marker','.','MarkerFaceColor','b');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(FZRA){1}','once'))~=1
+        plot(serialTimes(count),6,'Marker','.','MarkerFaceColor','b');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 %|| isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
+        plot(serialTimes(count),7,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255);
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(SG){1}','once'))~=1
+        plot(serialTimes(count),8,'Marker','*','MarkerEdgeColor','g');
+        hold on
+    end
+    if isempty(regexp(presentWeather{count},'(SN){1}','once'))~=1
+        plot(serialTimes(count),9,'Marker','*','MarkerEdgeColor','c');
+    end
+    hold on
+end
+ylim([0 10]);
+set(presentAxis,'YTick',[1 2 3 4 5 6 7 8 9]);
+set(presentAxis,'YTickLabel',{'Fog','Mist','Drizzle','Frz Drizzle','Rain','Frz Rain','Sleet','Graupel','Snow'});
+datetick('x')
+hold off
+
+figure;
 [ax,hlines] = plotyyy(serialTimes,humidity,serialTimes,pressure,serialTimes,tTd); %Requires secondary function plotyyy
 datetick(ax(1)) %Date tick on x axis
 datetick(ax(2))
@@ -99,6 +146,7 @@ else
     titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
 end
 title(titleMsg);
+hold off
 
 %% Plot wind data
 windDirection = [surfaceSubset.WindDirection]; %Imaginary direction
@@ -108,22 +156,21 @@ windV = windSpeed.*sin(windDirection); %Calculate v
 numWind = length(windDirection); %Number of wind entries
 colors = parula(numWind); %Use parula color map for high contrast and easy distinguishability, makes evenly spaced entires
 maxWind = max(windSpeed); %Maximum entry is maximum radius of compass
-f2 = figure(2); %New figure
+figure; %New figure
 hiddenArrow = compass(maxWind); %Need to set maximum compass size at beginning, otherwise large arrows will size off the screen
 set(hiddenArrow,'Visible','off');
-dateStrings = cell(1,length(serialTimes));
-for datescount = 1:length(serialTimes)
-    dateStrings{datescount} = datestr(serialTimes(datescount)); %Need date strings to label the color bar
-end
-colormap parula %Specify color map
-caxis([1 numWind]); %otherwise color axis and colorbar will use default regardless of what the plot uses
-cb = colorbar%('YTick',1:numWind,'YTickLabels',dateStrings);
+% dateStrings = cell(1,length(serialTimes));
+% for datescount = 1:length(serialTimes)
+%     dateStrings{datescount} = datestr(serialTimes(datescount)); %Need date strings to label the color bar
+% end
 hold on
-for windC = 1:numWind %Plot vector iteratively
+for windC = 1:15:numWind %Plot vector iteratively
     h = compass(windU(windC),windV(windC)); %Time is visible as color
     set(h,'Color',colors(windC,:))
     hold on
 end
+colormap parula %Specify color map
+cb = colorbar('YTick',[1 numWind],'YTickLabel',{'Early','Late'}); %('YTick',1:numWind,'YTickLabels',dateStrings);
 
 disp('Completed!')
 end
