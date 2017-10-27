@@ -5,7 +5,7 @@ Repository contains functions and scripts which are designed to be used in the a
 
 For suggested bundles to download, see Toolboxes.txt. (Does not cover changes since beginning of September 2017.)
 
-Tags: 2014b, ASOS, clouds, external, filter, IGRA toolbox, import, in progress, Mesowest toolbox, original, poster, plotting toolbox, removed phase 2, renamed, sounding, surface observations, unused, utilities, warm nose toolbox
+Tags: 2014b, ASOS, clouds, external, filter, IGRA toolbox, import, in progress, Mesowest toolbox, original, poster, plotting toolbox, removed phase 2, renamed, sounding, surface observations, unused, utilities, warm nose toolbox, winds
 
 File descriptions:
 
@@ -16,6 +16,8 @@ ASOSgrabber: Current version (10/10/17) of MATLAB function to make browsing of A
 ASOSimportFiveMin: Current version (10/10/17) of MATLAB function to import five-minute ASOS data into MATLAB given an input file. Tags: ASOS, import, surface observations
 
 ASOSimportOneMin: Latest version (9/6/17) of function to create a structure of one-minute ASOS data given an input file. Renamed from ASOSimport 9/15/17.  Tags: surface observations, ASOS, import, renamed
+
+CCOWindProfile: Function to plot wind profiles in the atmosphere. Written by Laura Tomkins in May 2017. Tags: external, winds
 
 cloudbaseplot: Current version (8/29/17) of function to plot cloud base as estimated from sounding relative humidity observations. Tags: sounding, plotting toolbox, clouds Requires: dewrelh
 
@@ -65,6 +67,8 @@ TvZ: Current version (8/19/17) of MATLAB function to plot a temperature-height f
 
 TvZprint: Current version (8/19/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time, with figure settings tuned to be most useful for posters. Tags: soundings, poster
 
+windbarb: MATLAB function to plot wind barbs. Written by Laura Tomkins in May 2017.
+
 wnAllPlot: Current version (8/24/17) of MATLAB function to display various kinds of warm nose plots based off a soundings structure containing warm nose data. Uses the stacked method for ranged bar graphs, which causes problems in representing some kinds of warm noses. Renamed from “wnaltplot” in 9/3/17 push. Tags: sounding, warm nose toolbox, renamed Requires: newtip, datetickzoom
 
 wnplot: Current version (9/28/17) of MATLAB function to create warm nose plots for individual soundings given an input time and soundings data. Uses the patch method for ranged bar graphs; accurately displays all warm noses that nosedetect properly represents. Renamed from “wnaltind” in 9/3/17 push. Updated 9/28/17 to fix the y-limit between 0 and 5 km. Tags: sounding, warm nose toolbox Requires: findsnd
@@ -91,7 +95,7 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (10/24/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/24/17 with further development; extracts subset structures, plots surface RH, P, T, and Td data for given ranges of day/hours, plots weather codes as an abacus plot, plots winds using rose plot. This is likely to be the final update with rose winds. Tags: in progress, ASOS, surface observations
+surfacePlotter: Current version (10/24/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/25/17 with further development; weather code plots improved. Tags: in progress, ASOS, surface observations
 
 Other files:
 
