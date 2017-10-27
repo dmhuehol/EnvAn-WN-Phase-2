@@ -64,33 +64,40 @@ presentWeather = {surfaceSubset.PresentWeather}; %Weather codes
 % end
 figure;
 presentAxis = gca;
-for count = 121:length(presentWeather)
+for count = 1:length(presentWeather)
     if isempty(regexp(presentWeather{count},'(FG){1}','once'))~=1
         plot(serialTimes(count),1,'b');
         hold on
     end
-    elseif isempty(regexp(presentWeather{count},'(BR){1}','once'))~=1
+    if isempty(regexp(presentWeather{count},'(BR){1}','once'))~=1
         plot(serialTimes(count),2,'b');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(DZ){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))==1
+    end
+    if isempty(regexp(presentWeather{count},'(DZ){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))==1
         plot(serialTimes(count),3,'k');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
+    end
+%     if isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
         plot(serialTimes(count),4,'k');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
+    end
+    if isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
         plot(serialTimes(count),5,'Marker','.','MarkerFaceColor','b');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(FZRA){1}','once'))~=1
+    end
+    if isempty(regexp(presentWeather{count},'(FZRA){1}','once'))~=1
         plot(serialTimes(count),6,'Marker','.','MarkerFaceColor','b');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 %|| isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
+    end
+    if isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 %|| isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
         plot(serialTimes(count),7,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255);
         hold on
-    elseif isempty(regexp(presentWeather{count},'(SG){1}','once'))~=1
+    end
+    if isempty(regexp(presentWeather{count},'(SG){1}','once'))~=1
         plot(serialTimes(count),8,'Marker','*','MarkerEdgeColor','g');
         hold on
-    elseif isempty(regexp(presentWeather{count},'(SN){1}','once'))~=1
+    end
+    if isempty(regexp(presentWeather{count},'(SN){1}','once'))~=1
         plot(serialTimes(count),9,'Marker','*','MarkerEdgeColor','c');
     end
     hold on

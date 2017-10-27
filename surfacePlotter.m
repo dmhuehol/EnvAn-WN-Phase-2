@@ -77,7 +77,7 @@ for count = 1:length(presentWeather)
         plot(serialTimes(count),3,'k');
         hold on
     end
-    if isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
+%     if isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
         plot(serialTimes(count),4,'k');
         hold on
     end
