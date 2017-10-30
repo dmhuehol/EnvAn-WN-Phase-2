@@ -1,34 +1,64 @@
-%Requires external functions datetickzoom and addaxis
-%
-%See also datetickzoom, addaxis, addaxislabel
-%
+%%surfacePlotter
+    %Visualizes ASOS 5-minute data on two figures. One is a surface conditions
+    %plot which plots temperature, dewpoint, pressure, and relative
+    %humidity data on a standard xy plot and shows wind data using wind
+    %barbs, and the other is a so-called abacus plot which visualizes
+    %precipitation type. Additionally, outputs the subset of the input
+    %ASOS structure corresponding to the requested times.
+    %
+    %General form: [surfaceSubset] = surfacePlotter(dStart,hStart,dEnd,hEnd,ASOS)
+    %
+    %Output:
+    %surfaceSubset: a subset of ASOS data corresponding to the input times.
+    %
+    %Inputs:
+    %dStart: 1 or 2 digit starting day
+    %hStart: 1 or 2 digit starting hour
+    %dEnd: 1 or 2 digit ending day
+    %hEnd: 1 or 2 digit ending hour
+    %ASOS: structure of ASOS data
+    %
+    %Requires external functions datetickzoom and addaxis
+    %
+    %THIS FUNCTION IS CURRENTLY UNDER DEVELOPMENT AND HAS MULTIPLE MAJOR ISSUES
+    %USE AT OWN RISK
+    %UPDATED FREQUENTLY; SEE @dmhuehol GITHUB README FOR CURRENT DETAILS
+    %
+    %Written by: Daniel Hueholt
+    %North Carolina State University
+    %Undergraduate Research Assistant at Environment Analytics
+    %Version date: 10/30/2017
+    %Last major revision: 10/30/2017
+    %
+    %See also datetickzoom, addaxis, addaxislabel, ASOSimportFiveMin
+    %
 function [surfaceSubset] = surfacePlotter(dStart,hStart,dEnd,hEnd,ASOS)
 %% Locate the data in question
 extractDays = [ASOS.Day]; %Array of all days within the given structure, bracket is required to form an array instead of list
 logicalDays = logical(extractDays==dStart | extractDays==dEnd); %Logically index the days; 1 represents start/end day entries, 0 represents all others
-try
-    dayIndices = find(logicalDays~=0); %These are the indices of the input day(s)
-catch ME; %If day is not found
-    msg('No data from input day(s) present in structure!');
+dayIndices = find(logicalDays~=0); %These are the indices of the input day(s)
+if isempty(dayIndices)==1; %If day is not found
+    msg = 'No data from input day(s) present in structure!';
     error(msg); %Give a useful error message
 end
 
 extractHours = [ASOS(dayIndices).Hour]; %Array of all hours from the given days
 logicalHours = logical(extractHours==hStart); %Since it's possible for end to be a number smaller than start and hence deceive the function, start by finding only the start hour
-try
-    hStartIndices = find(logicalHours~=0);
-catch isempty(hStartIndices)==1;
-    msg('Failed to find start hour in structure!');
+hStartIndices = find(logicalHours~=0);
+if isempty(hStartIndices)==1;
+    msg = 'Failed to find start hour in structure!';
     error(msg);
 end
 hStartFirstInd = hStartIndices(1); %This is the first index
 hStartFinalInd = hStartIndices(end); %which marks where in the structure to look for the end hour
 logicalHours = logical(extractHours==hEnd); %Remake the logical matrix (INCLUDES data from the hEnd hour)
-logicalHours(1:hStartFinalInd) = 0; %The end hour will definitely not come before the start hour
-try
-    hEndIndices = find(logicalHours~=0);
-catch isempty(hEndIndices)==1;
-    msg('Could not find end hour in structure!');
+if hStart==hEnd
+    logicalHours(1:hStartFinalInd) = 0; %The end hour will definitely not come before the start hour
+end
+hEndIndices = find(logicalHours~=0);
+if isempty(hEndIndices)==1;
+    msg = 'Could not find end hour in structure!';
+    error(msg);
 end
 hEndFinalInd = hEndIndices(end); %This is the last data index
 
@@ -37,18 +67,70 @@ dataSpan = [dayIndices(dataHourSpan(1)) dayIndices(dataHourSpan(2))]; %This is t
 
 surfaceSubset = ASOS(dataSpan(1):dataSpan(2)); %Extract the requested data from the structure
 
-%% Plot Td, T, RH, P data
+%% Plot Td, T, RH, P, wind data
 dewpoint = [surfaceSubset.Dewpoint]; %Dewpoint data
 temperature = [surfaceSubset.Temperature]; %Temperature data
 humidity = [surfaceSubset.RelativeHumidity]; %Humidity
 pressure = [surfaceSubset.Altimeter]; %Pressure
-tTd = [dewpoint;temperature]; %Concatenate dewpoint and temperature to make plotting possible
-times = [surfaceSubset.Year; surfaceSubset.Month; surfaceSubset.Day; surfaceSubset.Hour; surfaceSubset.Minute; zeros(1,length(surfaceSubset))];
-serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),times(6,:));
+TdT = [dewpoint;temperature]; %Concatenate dewpoint and temperature for plotting on same axis
+times = [surfaceSubset.Year; surfaceSubset.Month; surfaceSubset.Day; surfaceSubset.Hour; surfaceSubset.Minute; zeros(1,length(surfaceSubset))]; %YMDHM are real from data, S are generated at 0
+serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),times(6,:)); %Make times into datenumbers
+%Note: use actual datetimes once we update to 2016+
 
+minDegC = nanmin(dewpoint); %Minimum Td will be min for both T and Td, since Td is always less than T
+maxDegC = nanmax(temperature); %Maximum T will be max for both T and Td, since T is always greater than Td
+minHum = nanmin(humidity);
+maxHum = 100;
+minPre = nanmin(pressure);
+maxPre = nanmax(pressure);
+
+figure; %Make new figure
+plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
+ylim([minDegC-3 maxDegC+1])
+ylabel('deg C')
+degCaxis = gca;
+set(degCaxis,'YColor',[0 112 115]./255);
+addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
+addaxislabel(2,'hPa')
+addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
+addaxislabel(3,'%')
+legend('Dewpoint','Temperature','Pressure','Humidity');
+
+%%Plot wind data
+%Note this is on the same plot as above data
+windSpd = [surfaceSubset.WindSpeed];
+windDir = [surfaceSubset.WindDirection];
+windCharSpd = [surfaceSubset.WindCharacterSpeed];
+barbScale = 0.021;
+spacer = -5; %Displaying all wind barbs takes forever and makes the figure confusing; this sets the skip interval for the following loop
+for windCount = length(serialTimes):spacer:1
+    windbarb(serialTimes(windCount),minDegC-1,windSpd(windCount),windDir(windCount),barbScale,0.08,'r',1);
+    if isnan(windCharSpd(windCount))~=1
+        windbarb(serialTimes(windCount),minDegC-2,windCharSpd(windCount),windDir(windCount),barbScale,0.08,'g',1);
+    end
+    hold on
+end
+datetickzoom('x','HH:MM','keepticks')
+xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]);
+
+titleString = 'Surface observations data for ';
+toString = 'to';
+spaceString = {' '}; %Yes those curly brackets are needed
+if dStart==dEnd
+    obsDate = datestr(serialTimes(1),'mm/dd/yy');
+    titleMsg = [titleString datestr(obsDate)];
+else
+    obsDate1 = datestr(serialTimes(1),'mm/dd/yy HH:MM');
+    obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
+    titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
+end
+title(titleMsg);
+hold off
+
+%% Plot weather codes
 presentWeather = {surfaceSubset.PresentWeather}; %Weather codes
-if cellfun(@isempty,presentWeather)==1 %Skip making a precipitation type plot if no precipitation occurs
-    emptyMsg = 'No precipitation during requested period!';
+if isempty(nonzeros(~cellfun('isempty',presentWeather)))==1 %Skip making a precipitation type plot if no precipitation occurs
+    emptyMsg = 'No precipitation during requested period! Skipped precipitation type plot.';
     disp(emptyMsg);
 else
     fogchk = 0; frzfogchk = 0; mistchk = 0; rainchk = 0; frzdrizchk = 0; drizchk = 0; frzrainchk = 0;
@@ -56,12 +138,15 @@ else
     yplacer = 0;
     figure;
     presentAxis = gca;
-    for count = 1:length(presentWeather) %Sometimes you just have to get loopy
+    for count = length(presentWeather):-1:1 %Sometimes you just have to get loopy
+        %Note that the reverse loop is very slightly slower than a forward
+        %loop would be, but is used to make MATLAB less worried about how
+        %the adaptive labels are created.
         if isempty(regexp(presentWeather{count},'(FG){1}','once'))~=1
             if fogchk==0
                 fogplace = yplacer+1;
                 yplacer = yplacer+1;
-                presentLabels{yplacer} = 'Fog'; %#ok
+                presentLabels{yplacer} = 'Fog';
                 fogchk=1;
             end
             plot(serialTimes(count),fogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',5);
@@ -71,7 +156,7 @@ else
             if frzfogchk==0
                 frzfogplace = yplacer+1;
                 yplacer = yplacer+1;
-                presentLabels{yplacer} = 'Frz Fog'; %#ok
+                presentLabels{yplacer} = 'Frz Fog';
                 frzfogchk=1;
             end
             plot(serialTimes(count),frzfogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',5);
@@ -202,57 +287,23 @@ else
     ylim([0 yplacer+1]);
     set(presentAxis,'YTick',1:yplacer);
     set(presentAxis,'YTickLabel',presentLabels);
-    title('Precip Type')
-    datetickzoom('x')
+  
+    %Make adaptive title including start and end times
+    weatherCodeTitleString = 'Precip type data for ';
+    if dStart==dEnd
+        obsDate = datestr(serialTimes(1),'mm/dd/yy');
+        titleMsg = [weatherCodeTitleString datestr(obsDate)];
+    else
+        obsDate1 = datestr(serialTimes(1),'mm/dd/yy HH:MM');
+        obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
+        titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
+    end
+    title(titleMsg);
+    datetickzoom('x','keepticks')
     hold off
 end
 
-figure;
-tempdew = plot(serialTimes,tTd);
-ylabel('deg C')
-addaxis(serialTimes,pressure,'r');
-addaxislabel(2,'hPa')
-addaxis(serialTimes,humidity,'m');
-addaxislabel(3,'%')
-legend('Temperature','Dewpoint','Pressure','Humidity');
-datetickzoom
-
-titleString = 'Surface observations data for ';
-toString = 'to';
-spaceString = {' '}; %Yes those curly brackets are needed
-if dStart==dEnd
-    obsDateNum = datenum(surfaceSubset(1).Year,surfaceSubset(1).Month,surfaceSubset(1).Day);
-    obsDate = datestr(obsDateNum);
-    titleMsg = [titleString datestr(obsDate)];
-else
-    obsDateNum1 = datenum(surfaceSubset(1).Year,surfaceSubset(1).Month,surfaceSubset(1).Day);
-    obsDate1 = datestr(obsDateNum1);
-    obsDateNum2 = datenum(surfaceSubset(end).Year,surfaceSubset(end).Month,surfaceSubset(end).Day);
-    obsDate2 = datestr(obsDateNum2);
-    titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
-end
-title(titleMsg);
-hold off
-
-%% Plot wind data
-windDirection = [surfaceSubset.WindDirection]; %Imaginary direction
-windSpeed = [surfaceSubset.WindSpeed]; %Imaginary speed
-windU = windSpeed.*cos(windDirection); %Calculate u
-windV = windSpeed.*sin(windDirection); %Calculate v
-numWind = length(windDirection); %Number of wind entries
-colors = parula(numWind); %Use parula color map for high contrast and easy distinguishability, makes evenly spaced entires
-maxWind = max(windSpeed); %Maximum entry is maximum radius of compass
-figure; %New figure
-hiddenArrow = compass(maxWind); %Need to set maximum compass size at beginning, otherwise large arrows will size off the screen
-set(hiddenArrow,'Visible','off');
-hold on
-for windC = 1:15:numWind %Plot vector iteratively
-    h = compass(windU(windC),windV(windC)); %Time is visible as color
-    set(h,'Color',colors(windC,:))
-    hold on
-end
-colormap parula %Specify color map
-cb = colorbar('YTick',[1 numWind],'YTickLabel',{'Early','Late'}); %('YTick',1:numWind,'YTickLabels',dateStrings);
-
+%% Finalizing
 disp('Completed!')
+
 end
