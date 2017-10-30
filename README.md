@@ -98,7 +98,9 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (10/29/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/29/17 with further development; now has better error detection, will plot even when precipitation does not occur, fixes failure on hEnd<hStart inputs, and improves y-axes on 3-axis plot. Requires addaxis and datetickzoom. Tags: in progress, ASOS, surface observations
+surfacePlotter: Current version (10/30/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/30/17 with further development; now uses wind barbs for wind data visualization, improved titles to all plots, improved datetick on all plots, improved limits on all plots, optimized sections for efficiency, and added some documentation. Requires external functions addaxis, datetickzoom, and windbarb. addaxis was originally written by Harry Lee, datetickzoom by Christophe Lauwerys, and windbarb by Laura Tomkins. Tags: in progress, ASOS, surface observations
+
+windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
 Other files:
 
