@@ -66,6 +66,9 @@ surfconfind: Current version (9/3/17) of MATLAB function to find row index of Me
 
 timefilter: Current version (8/19/17) of MATLAB function to filter out years and months from a sounding structure. Tags: sounding, IGRA toolbox
 
+tlabel: External function to improve on datetick and datetickzoom. Written by Carlos Adrian Vargas Aguilera, found on the MATLAB file exchange. Original link: https://www.mathworks.com/matlabcentral/fileexchange/19314-tlabel-m-v2-6-1--sep-2009-
+Tags: external, utilities
+
 TvZ: Current version (8/19/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time. Tags: sounding, plotting toolbox
 
 TvZprint: Current version (8/19/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time, with figure settings tuned to be most useful for posters. Tags: soundings, poster
@@ -98,7 +101,7 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (10/30/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 10/30/17 with further development; now uses wind barbs for wind data visualization, improved titles to all plots, improved datetick on all plots, improved limits on all plots, optimized sections for efficiency, and added some documentation. Requires external functions addaxis, datetickzoom, and windbarb. addaxis was originally written by Harry Lee, datetickzoom by Christophe Lauwerys, and windbarb by Laura Tomkins. Tags: in progress, ASOS, surface observations
+surfacePlotter: Current version (11/1/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 11/1/17 with further development; improved ticks on all plots, now uses tlabel for dateticks, improved title on surface condition plots, added more documentation. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: in progress, ASOS, surface observations
 
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
