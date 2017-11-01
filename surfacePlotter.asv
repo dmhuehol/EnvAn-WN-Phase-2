@@ -18,7 +18,7 @@
     %hEnd: 1 or 2 digit ending hour
     %ASOS: structure of ASOS data
     %
-    %Requires external functions datetickzoom and addaxis
+    %Requires external functions tlabel, addaxis, and windbarb
     %
     %THIS FUNCTION IS CURRENTLY UNDER DEVELOPMENT AND HAS MULTIPLE MAJOR ISSUES
     %USE AT OWN RISK
@@ -30,7 +30,15 @@
     %Version date: 10/30/2017
     %Last major revision: 10/30/2017
     %
-    %See also datetickzoom, addaxis, addaxislabel, ASOSimportFiveMin
+    %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
+        %found on the MATLAB File Exchange
+    %addaxis written by Harry Lee, last updated 7/7/2016, found on the
+        %MATLAB File Exchange
+    %windbarb written by Laura Tomkins, last updated 5/2017, found on
+        %Github at user profile @lauratomkins
+    %
+    %
+    %See also tlabel, addaxis, addaxislabel, ASOSimportFiveMin
     %
 function [surfaceSubset] = surfacePlotter(dStart,hStart,dEnd,hEnd,ASOS)
 %% Locate the data in question
@@ -110,7 +118,7 @@ for windCount = length(serialTimes):spacer:1
     end
     hold on
 end
-datetickzoom('x','HH:MM','keepticks')
+tlabel('x','HH:MM','FixLow',10,'FixHigh',12)
 xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]);
 
 titleString = 'Surface observations data for ';
@@ -124,7 +132,9 @@ else
     obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
     titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
 end
-title(titleMsg);
+windString = 'Red barbs denote winds and green barbs denote wind character';
+titleAndSubtitle = {cell2mat(titleMsg),windString}; %Yes! This is crazy!
+title(titleAndSubtitle);
 hold off
 
 %% Plot weather codes
@@ -299,7 +309,8 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
     end
     title(titleMsg);
-    datetickzoom('x','keepticks')
+    tlabel('x','HH:MM','FixLow',10,'FixHigh',12)
+    xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]);
     hold off
 end
 

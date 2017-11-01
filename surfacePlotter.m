@@ -3,7 +3,7 @@
     %plot which plots temperature, dewpoint, pressure, and relative
     %humidity data on a standard xy plot and shows wind data using wind
     %barbs, and the other is a so-called abacus plot which visualizes
-    %precipitation type. Additionally, outputs the subset of the input
+    %precipitation type. Additionally, returns the subset of the input
     %ASOS structure corresponding to the requested times.
     %
     %General form: [surfaceSubset] = surfacePlotter(dStart,hStart,dEnd,hEnd,ASOS)
@@ -18,7 +18,7 @@
     %hEnd: 1 or 2 digit ending hour
     %ASOS: structure of ASOS data
     %
-    %Requires external functions datetickzoom and addaxis
+    %Requires external functions tlabel, addaxis, and windbarb
     %
     %THIS FUNCTION IS CURRENTLY UNDER DEVELOPMENT AND HAS MULTIPLE MAJOR ISSUES
     %USE AT OWN RISK
@@ -27,13 +27,21 @@
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version date: 10/30/2017
-    %Last major revision: 10/30/2017
+    %Version date: 11/1/2017
+    %Last major revision: 11/1/2017
     %
-    %See also datetickzoom, addaxis, addaxislabel, ASOSimportFiveMin
+    %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
+        %found on the MATLAB File Exchange
+    %addaxis written by Harry Lee, last updated 7/7/2016, found on the
+        %MATLAB File Exchange
+    %windbarb written by Laura Tomkins, last updated 5/2017, found on
+        %Github at user profile @lauratomkins
+    %
+    %
+    %See also tlabel, addaxis, addaxislabel, ASOSimportFiveMin
     %
 function [surfaceSubset] = surfacePlotter(dStart,hStart,dEnd,hEnd,ASOS)
-%% Locate the data in question
+%% Locate the requested data
 extractDays = [ASOS.Day]; %Array of all days within the given structure, bracket is required to form an array instead of list
 logicalDays = logical(extractDays==dStart | extractDays==dEnd); %Logically index the days; 1 represents start/end day entries, 0 represents all others
 dayIndices = find(logicalDays~=0); %These are the indices of the input day(s)
@@ -44,16 +52,18 @@ end
 
 extractHours = [ASOS(dayIndices).Hour]; %Array of all hours from the given days
 logicalHours = logical(extractHours==hStart); %Since it's possible for end to be a number smaller than start and hence deceive the function, start by finding only the start hour
-hStartIndices = find(logicalHours~=0);
-if isempty(hStartIndices)==1;
+hStartIndices = find(logicalHours~=0); %These are the indices of the input starting hour
+if isempty(hStartIndices)==1; %if start hour is not found
     msg = 'Failed to find start hour in structure!';
     error(msg);
 end
 hStartFirstInd = hStartIndices(1); %This is the first index
 hStartFinalInd = hStartIndices(end); %which marks where in the structure to look for the end hour
-logicalHours = logical(extractHours==hEnd); %Remake the logical matrix (INCLUDES data from the hEnd hour)
-if hStart==hEnd
-    logicalHours(1:hStartFinalInd) = 0; %The end hour will definitely not come before the start hour
+%KNOWN BUG: does not work for end hours which are smaller in magnitude than
+%start hours. High priority to fix.
+logicalHours = logical(extractHours==hEnd); %Remake the logical matrix, this time logically indexing on the input ending hour (INCLUDES data from the hEnd hour)
+if hStart==hEnd %For cases where the end hour and start hour are the same number
+    logicalHours(1:hStartFinalInd) = 0; %Zero all the indices that corresponded to the start hour
 end
 hEndIndices = find(logicalHours~=0);
 if isempty(hEndIndices)==1;
@@ -110,7 +120,7 @@ for windCount = length(serialTimes):spacer:1
     end
     hold on
 end
-datetickzoom('x','HH:MM','keepticks')
+tlabel('x','HH:MM','FixLow',10,'FixHigh',12)
 xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]);
 
 titleString = 'Surface observations data for ';
@@ -124,7 +134,9 @@ else
     obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
     titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
 end
-title(titleMsg);
+windString = 'Red barbs denote winds and green barbs denote wind character';
+titleAndSubtitle = {cell2mat(titleMsg),windString}; %Yes! This is crazy!
+title(titleAndSubtitle);
 hold off
 
 %% Plot weather codes
@@ -299,7 +311,8 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2));
     end
     title(titleMsg);
-    datetickzoom('x','keepticks')
+    tlabel('x','HH:MM','FixLow',10,'FixHigh',12)
+    xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]);
     hold off
 end
 
