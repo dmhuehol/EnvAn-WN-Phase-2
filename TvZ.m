@@ -17,7 +17,7 @@
     %Note that this is essentially the same as soundplots, with the code
     %for plots other than TvZ removed.
     %
-    %Version Date: 8/19/17
+    %Version Date: 11/06/17
     %Last major revision: 8/19/17
     %Written by: Daniel Hueholt
     %North Carolina State University
@@ -116,6 +116,13 @@ title(['Sounding for ' dateString])
 xlabel('Temperature in C')
 ylabel('Height in km')
 ylim([0 13]);
+ax = gca;
+set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
+rightAx = axes('ylim',[0 13],'color','none','YAxisLocation','right');
+set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+set(rightAx,'XTickLabel',[])
+set(rightAx,'XTick',[])
 hold off
 
 end

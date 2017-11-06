@@ -114,7 +114,11 @@ windDir = [surfaceSubset.WindDirection]; %Wind direction data
 windCharSpd = [surfaceSubset.WindCharacterSpeed]; %Wind character speed data - currently wind character is not displayed,
     %which is sort of acceptable in the short term because essentially all wind characters at Upton are gusts
 barbScale = 0.021; %Modifies the size of the wind barbs for both wind character and regular wind barbs
-spacer = -5; %Displaying all wind barbs takes very long and makes the figure confusing; this sets the skip interval for the following loop
+if length(serialTimes)>100 %When plotting over a long period of time, displaying all wind barbs takes very long and makes the figure confusing
+    spacer = -5; %This sets the skip interval for the following loop when there are many entries
+else
+    spacer = -1; %When plotting over an interval of a few hours, display all winds
+end
 for windCount = length(serialTimes):spacer:1 %Loop backwards through winds
     windbarb(serialTimes(windCount),minDegC-1,windSpd(windCount),windDir(windCount),barbScale,0.08,'r',1); %#justiceforbarb
     if isnan(windCharSpd(windCount))~=1 %If there is a wind character entry
@@ -128,17 +132,19 @@ xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]); %For the #aesthetic
 titleString = 'Surface observations data for ';
 toString = 'to';
 spaceString = {' '}; %Yes those curly brackets are needed
+windString = 'Red barbs denote winds and green barbs denote wind character';
 if dStart==dEnd
     obsDate = datestr(serialTimes(1),'mm/dd/yy');
     titleMsg = [titleString datestr(obsDate)]; %Builds title message "Surface observations data for mm/dd/yy"
+    titleAndSubtitle = {titleMsg,windString};
 else
     obsDate1 = datestr(serialTimes(1),'mm/dd/yy HH:MM');
     obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
     titleMsg = strcat(titleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Surface observations data for mm/dd/yy"
-end
-windString = 'Red barbs denote winds and green barbs denote wind character';
-titleAndSubtitle = {cell2mat(titleMsg),windString}; %Adds the above subtitle
+    titleAndSubtitle = {cell2mat(titleMsg),windString}; %Adds the above subtitle
     %I agree that the above syntax is unwieldy but oh well
+end
+
 title(titleAndSubtitle);
 hold off
 
@@ -263,7 +269,7 @@ else
                 presentLabels{yplacer} = 'Snow';
                 snowchk=1;
             end
-            plot(serialTimes(count),snowplace,'Marker','*','MarkerEdgeColor','c'); %Cyan
+            plot(serialTimes(count),snowplace,'Marker','*','MarkerEdgeColor',[51,153,255]./255); %Light deep blue
             hold on
         end
         if isempty(regexp(presentWeather{count},'(IC){1}','once'))~=1
