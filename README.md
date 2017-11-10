@@ -95,6 +95,8 @@ convection: Current (5/31/17) version of MATLAB function to find relevant meteor
 
 embemo_2014bOrNewer: Current (10/10/17) version of MATLAB script to demonstrate visualization of ASOS data, using techniques only available in MATLAB 2014b or newer. Requires plotyyy. Tags: 2014b, ASOS, surface observations, utilities, in progress
 
+newNoseDetect: Current (11/11/17) version of MATLAB function to detect warm noses, writtent to be quicker, more flexible, and more powerful than nosedetect is currently. This version uses a half-finished loop technique and is pushed now to save current work in case the next method I try doesn't work out. Tags: sounding, in progress
+
 noseplotfind: Current version (8/17/17) of MATLAB function to detect and display warm noses. Current displays TvP, TvZ, and skew-T charts. See “to be added” section near end of function help for features in development. Tags: in progress, sounding Requires: prestogeo
 
 numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings data by the number and type of warm noses present. Tags: sounding, in progress, warm nose toolbox
