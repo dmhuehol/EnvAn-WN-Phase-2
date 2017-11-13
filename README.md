@@ -60,6 +60,8 @@ skewT: Current version (8/4/17) of MATLAB function to generate a skew-T chart gi
 
 soundplots: Current version (9/3/17) of MATLAB function to generate a variety of figures based on soundings data for a specific time and date. Tags: sounding, plotting toolbox Requires: dewrelh, skewT, sounding
 
+surfacePlotter: Current version (11/13/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Made operational 11/13/17. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: ASOS, surface observations
+
 surfconfilter: Current version (9/3/17) of MATLAB function to filter soundings data structure based on surface conditions. Tags: surface observations, IGRA toolbox, filter, sounding
 
 surfconfind: Current version (9/3/17) of MATLAB function to find row index of Mesowest data table corresponding to an input time. Can also return the section of said table which contains the index and its surrounding entries, with the number of surrounding entries controllable by the user. Tags: surface observations, Mesowest toolbox
@@ -87,7 +89,7 @@ wnYearPlot: Current version (9/3/17) of MATLAB function to create warm nose plot
 
 In Progress:
 
-abacusDemo: Current (10/23/17) version of MATLAB script demonstrating the abacus plot for visualizing weather codes over time. Needs better formatting and toy data to be completed.
+abacusDemo: Current (11/13/17) version of MATLAB script demonstrating the abacus plot for visualizing weather codes over time. Needs better formatting and documentation to be completed.
 
 ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS five-minute data from a .dat file. Updated 9/21/17 with continuing development.
 
@@ -95,7 +97,7 @@ convection: Current (5/31/17) version of MATLAB function to find relevant meteor
 
 embemo_2014bOrNewer: Current (10/10/17) version of MATLAB script to demonstrate visualization of ASOS data, using techniques only available in MATLAB 2014b or newer. Requires plotyyy. Tags: 2014b, ASOS, surface observations, utilities, in progress
 
-newNoseDetect: Current (11/12/17) version of MATLAB function to detect warm noses, writtent to be quicker, more flexible, and more powerful than nosedetect is currently. Updated with beginnings of new method utilizing diff function.  Tags: sounding, in progress
+newNoseDetect: Current (11/12/17) version of MATLAB function to detect warm noses, writtent to be quicker, more flexible, and more powerful than nosedetect is currently. Updated with further development pursuing the diff function method; now properly treats all potential types of noses.  Tags: sounding, in progress
 
 noseplotfind: Current version (8/17/17) of MATLAB function to detect and display warm noses. Current displays TvP, TvZ, and skew-T charts. See “to be added” section near end of function help for features in development. Tags: in progress, sounding Requires: prestogeo
 
@@ -103,12 +105,8 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
-surfacePlotter: Current version (11/11/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Currently in very early stages of development. Updated 11/11/17 with further development; surface condition figures where humidity is 100% can now be saved correctly, wind barbs are moved to make it less likely for pressure line to overlap with them, and x limits are changed to prevent confusion over how much data is present. Will likely become operational this week. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: in progress, ASOS, surface observations
-
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
 Other files:
 
-Station list: Annotated list of ASOS stations near Stony Brook University
-
-Storm List 1: List of storms to analyze first once analysis and plotting software is complete
+Station list: Annotated list of ASOS stations and sounding launches near Stony Brook University
