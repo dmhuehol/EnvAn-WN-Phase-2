@@ -27,7 +27,7 @@
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version date: 11/3/2017
+    %Version date: 11/12/2017
     %Last major revision: 11/3/2017
     %
     %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
@@ -91,13 +91,13 @@ serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),tim
 minDegC = nanmin(dewpoint); %Minimum Td will be min for both T and Td, since Td is always less than T
 maxDegC = nanmax(temperature); %Maximum T will be max for both T and Td, since T is always greater than Td
 minHum = nanmin(humidity);
-maxHum = 100; %Maximum humidity will always be at least close to 100, so set to 100 to make figures more consistent
+maxHum = 100.02; %Maximum humidity will always be at least close to 100, so set to just above 100 to make figures consistent while not cutting off 100 values when saving
 minPre = nanmin(pressure);
 maxPre = nanmax(pressure);
 
 figure; %Make new figure
 plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
-ylim([minDegC-3 maxDegC+1]) %set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
+ylim([minDegC-4 maxDegC+1]) %set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
 ylabel('deg C')
 degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
@@ -120,14 +120,14 @@ else
     spacer = -1; %When plotting over an interval of a few hours, display all winds
 end
 for windCount = length(serialTimes):spacer:1 %Loop backwards through winds
-    windbarb(serialTimes(windCount),minDegC-1,windSpd(windCount),windDir(windCount),barbScale,0.08,'r',1); %#justiceforbarb
+    windbarb(serialTimes(windCount),minDegC-2.5,windSpd(windCount),windDir(windCount),barbScale,0.08,'r',1); %#justiceforbarb
     if isnan(windCharSpd(windCount))~=1 %If there is a wind character entry
-        windbarb(serialTimes(windCount),minDegC-2,windCharSpd(windCount),windDir(windCount),barbScale,0.08,'g',1); %Make wind barb for the character as well
+        windbarb(serialTimes(windCount),minDegC-3.5,windCharSpd(windCount),windDir(windCount),barbScale,0.08,'g',1); %Make wind barb for the character as well
     end
     hold on %Otherwise only one barb will be plotted
 end
 tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %x-axis is date axis; FixLow and FixHigh arguments control the number of ticks that are displayed
-xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]); %For the #aesthetic
+xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %For the #aesthetic
 
 titleString = 'Surface observations data for ';
 toString = 'to';
@@ -330,7 +330,7 @@ else
     end
     title(titleMsg);
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
-    xlim([serialTimes(1)-0.05 serialTimes(end)+0.05]); %Set bounds to be the same as surface conditions plot
+    xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     hold off
 end
 

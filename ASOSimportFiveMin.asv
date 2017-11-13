@@ -27,7 +27,7 @@
     %ASOSgrabber. To download an ASOS data file from the NCDC FTP server
     %using MATLAB, see ASOSdownloadFiveMin.
     %
-    %Version Date: 11/12/2017
+    %Version Date: 10/10/2017
     %Last Major Revision: 10/10/2017
     %Written by: Daniel Hueholt
     %Undergraduate Research Assistant at Environment Analytics
@@ -91,15 +91,9 @@ end
 for count = length(ASOSstruct):-1:1
     usefulStruct(count).Year = sscanf(ASOSstruct(count).Year,'%4f'); %sscanf is fastest way to convert from string to number
     usefulStruct(count).Month = sscanf(ASOSstruct(count).Month,'%f');
-    usefulStruct(count).Day = sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f');
-    if sscanf(ASOSstruct(count).Day,'%2f')==31 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for 31-day months
-        usefulStruct(count).Month = usefulStruct(count).Month+1;
-        if sscanf(ASOSstruct(count).Month,'%2f')==12
-            usefulStruct(count).Year = usefulStruct(count).Year+1;
-        end
-    end
-    usefulStruct(count).Hour = str2num(ASOSstruct(count).ZuluTime(3:4)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
-    usefulStruct(count).Minute = str2num(ASOSstruct(count).ZuluTime(5:6)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
+    usefulStruct(count).Day = sscanf(ASOSstruct(count).ZuluTime(1:2));
+    usefulStruct(count).Hour = str2num(ASOSstruct(count).Time(1:2)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
+    usefulStruct(count).Minute = str2num(ASOSstruct(count).Time(3:4)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
     usefulStruct(count).VariableWind = wind(count).Variable;
     usefulStruct(count).WindDirection = sscanf(wind(count).WindDirection,'%2f').*10;
     usefulStruct(count).WindSpeed = str2double(wind(count).WindSpeed); %sscanf fails here, str2double is used instead
