@@ -7,3 +7,12 @@ KFRG - Farmingdale
 KFOK - Westhampton
 KFJK - JFK airport
 KLGA - La Guardia - in line to SBU east-west
+
+List of nearby soundings
+
+IAD - Washington DC - SW
+WAL - Wallops Island - SSW
+Upton - Obviously
+ALB - Albany - NW
+CHH - Boston - NE
+GYX - Gray - N

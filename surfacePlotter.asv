@@ -329,14 +329,11 @@ else
             plot(serialTimes(count),upplace,'Marker','p','MarkerEdgeColor','m','MarkerFaceColor','m','MarkerSize',6); %Magenta
             hold on
         end
-        if isempty(presentWeather{count})==1 %If there is no weather code for a time
-            plot(serialTimes(count),1,'Marker','.','MarkerEdgeColor','w','MarkerFaceColor','w'); %Plot invisible marker, otherwise the apparent end time will be the time of last precipitation code instead of the true last end time
-        end
         hold on
     end
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
-    set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
-    set(presentAxis,'YTickLabel',presentLabels); %Label the wires
+    set(presentAxis,'YTick',1:yplacer); %Number of wires is set by yplacer
+    set(presentAxis,'YTickLabel',presentLabels); %Only label wires with precipitation types that actually occurred
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
