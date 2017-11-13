@@ -1,6 +1,6 @@
 %%abacusDemo
     %demonstrates abacus plot creation for present weather codes
-    %10/23/17
+    %11/13/17
     %Daniel Hueholt
 figure;
 plot(1,1,'*'); 

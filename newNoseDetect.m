@@ -1,4 +1,4 @@
-%Last updated 11/12/17
+%Last updated 11/13/17
 %Daniel Hueholt
 
 numSound = length(goodfinal);

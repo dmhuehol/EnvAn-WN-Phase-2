@@ -34,7 +34,7 @@
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %Version date: 11/13/2017
-    %Last major revision: 11/3/2017
+    %Last major revision: 11/13/2017
     %
     %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
         %found on the MATLAB File Exchange
