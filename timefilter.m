@@ -8,7 +8,7 @@ function [sounding] = timefilter(sding,filter_settings)
     %timefilter returns as output a structure identical to the original
     %structure, except that the requested data has been removed.
     %
-    %General form: [sounding] = yearfilterf(sding,filter_settings)
+    %General form: [sounding] = timefilter(sding,filter_settings)
     %
     %Outputs:
     %sounding: a soundings data structure filtered by years and months
@@ -23,7 +23,7 @@ function [sounding] = timefilter(sding,filter_settings)
     %filter_settings.year = [2002 2016] removes all data outside of 2002-2016 (inclusive)
     %filter_settings.month = [5,6,7,8,9] removes all data from May, June, July, August, and September
     %
-    % Version Date: 8/19/17
+    % Version Date: 11/22/17
     % Last major revision: 6/29/17
     % Written by: Daniel Hueholt
     % North Carolina State University
