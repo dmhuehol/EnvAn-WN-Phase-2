@@ -5,7 +5,7 @@ Repository contains functions and scripts which are designed to be used in the a
 
 For suggested bundles to download, see Toolboxes.txt. (Does not cover changes since beginning of September 2017.)
 
-Tags: 2014b, ASOS, clouds, external, filter, IGRA toolbox, import, in progress, Mesowest toolbox, original, poster, plotting toolbox, removed phase 2, renamed, sounding, surface observations, unused, utilities, warm nose toolbox, winds
+Tags: 2014b, ASOS, clouds, external, filter, IGRA toolbox, import, in progress, Mesowest toolbox, original, poster, plotting toolbox, removed phase 2, renamed, sounding, surface observations, unused, utilities, warm nose toolbox, wetbulb, winds
 
 File descriptions:
 
@@ -66,7 +66,7 @@ surfconfilter: Current version (9/3/17) of MATLAB function to filter soundings d
 
 surfconfind: Current version (9/3/17) of MATLAB function to find row index of Mesowest data table corresponding to an input time. Can also return the section of said table which contains the index and its surrounding entries, with the number of surrounding entries controllable by the user. Tags: surface observations, Mesowest toolbox
 
-timefilter: Current version (8/19/17) of MATLAB function to filter out years and months from a sounding structure. Tags: sounding, IGRA toolbox
+timefilter: Current version (11/22/17) of MATLAB function to filter out years and months from a sounding structure. Updated 11/22/17 to update function name in the help. Tags: sounding, IGRA toolbox
 
 tlabel: External function to improve on datetick and datetickzoom. Written by Carlos Adrian Vargas Aguilera, found on the MATLAB file exchange. Original link: https://www.mathworks.com/matlabcentral/fileexchange/19314-tlabel-m-v2-6-1--sep-2009-
 Tags: external, utilities
@@ -91,6 +91,8 @@ In Progress:
 
 abacusDemo: Current (11/13/17) version of MATLAB script demonstrating the abacus plot for visualizing weather codes over time. Needs better formatting and documentation to be completed.
 
+addWetbulb: Current (11/22/17) version of MATLAB function to add a wetbulb temperature field to a soundings structure. Currently runs properly, but is incredibly time consuming due to inefficient construction. Tags: in progress, soundings, wetbulb
+
 ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS five-minute data from a .dat file. Updated 9/21/17 with continuing development.
 
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
@@ -104,6 +106,8 @@ noseplotfind: Current version (8/17/17) of MATLAB function to detect and display
 numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings data by the number and type of warm noses present. Tags: sounding, in progress, warm nose toolbox
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
+
+wetbulb: Current version (11/22/17) of MATLAB function to calculate wetbulb temperature given pressure, dewpoint, and temperature. Uses vpasolve function to numerically evaluate the wetbulb, since the wetbulb has no closed algebraic form. Tags: in progress, wetbulb
 
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
