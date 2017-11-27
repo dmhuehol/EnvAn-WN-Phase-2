@@ -45,6 +45,9 @@ function [sndng,filtered,soundsh,goodfinal,warmnosesfinal,nowarmnosesfinal,wnout
     %nosedetect, precipfilter, wnumport
     %
 
+% Give a useful message, since the first step takes longer than the others
+disp('Import started!')
+    
 % Read soundings data into MATLAB
 [sndng] = IGRAimpf(input_file); %This produces a structure of soundings data with minimal quality control.
 disp('Successfully created raw soundings structure! 1/5')
