@@ -107,6 +107,8 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
+TTwvZ: Current version (11/22/17) of MATLAB function to generate a plot of temperature and wetbulb temperature vs height. Tagged as in progress because it was written in a crazy hurry and probably full of issues. Tags: in progress, sounding, wetbulb
+
 wetbulb: Current version (11/22/17) of MATLAB function to calculate wetbulb temperature given pressure, dewpoint, and temperature. Uses vpasolve function to numerically evaluate the wetbulb, since the wetbulb has no closed algebraic form. Tags: in progress, wetbulb
 
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
@@ -114,3 +116,5 @@ windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb pl
 Other files:
 
 Station list: Annotated list of ASOS stations and sounding launches near Stony Brook University
+
+wetSound12315: Soundings structure with wetbulb temperatures added for January, February, and March 2015. This way addWetbulb and its 45 minute runtime can be avoided as much as possible.
