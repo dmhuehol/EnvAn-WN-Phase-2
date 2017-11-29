@@ -117,17 +117,15 @@ set(titleHand,'FontName','Lato Bold'); set(titleHand,'FontSize',14);
 xlabelHand = xlabel('Temperature in C');
 set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',14);
 ylabelHand = ylabel('Height in km');
-set(ylabelHand,'FontName','Lato Bold'); set(ylabelHand,'FontSize',14);
+set(ylabelHand,'FontName','Lato Bold'); set(ylabelHand,'Fonts
 ylim([0 13]);
-axesHand = gca;
-set(axesHand,'FontName','Lato'); set(axesHand,'FontSize',12);
-set(axesHand,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
-set(axesHand,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
-rightAxHand = axes('ylim',[0 13],'color','none','YAxisLocation','right');
-set(rightAxHand,'FontName','Lato'); set(rightAxHand,'FontSize',12);
-set(rightAxHand,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
-set(rightAxHand,'XTickLabel',[])
-set(rightAxHand,'XTick',[])
+ax = gca;
+set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
+rightAx = axes('ylim',[0 13],'color','none','YAxisLocation','right');
+set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+set(rightAx,'XTickLabel',[])
+set(rightAx,'XTick',[])
 hold off
 
 end

@@ -31,10 +31,6 @@ function addaxis(varargin)
 %  Also requires AA_SPLOT.m, a modified plot function that automatically
 %  changes colors everytime you plot.  
 %
-% Written by Harry Lee, found on MATLAB File Exchange
-% Edited by Daniel Hueholt
-% Version date: 11/27/2017
-%
 %  See also
 %  ADDAXISPLOT, ADDAXISLABEL, AA_SPLOT 
 
@@ -68,7 +64,7 @@ function addaxis(varargin)
   %  in the main axis
 %  axh = get(cah,'userdata');
   axh = getaddaxisdata(cah,'axisdata');
-  
+
   ledge = cpos(1);
   if length(axh)>=1
     if length(axh)/2 == round(length(axh)/2)

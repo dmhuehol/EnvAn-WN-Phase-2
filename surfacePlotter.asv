@@ -34,7 +34,7 @@
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %Version date: 11/13/2017
-    %Last major revision: 11/3/2017
+    %Last major revision: 11/13/2017
     %
     %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
         %found on the MATLAB File Exchange
@@ -104,14 +104,22 @@ maxPre = nanmax(pressure);
 figure; %Make new figure
 plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
 ylim([minDegC-4 maxDegC+1]) %Set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
-ylabel('deg C')
+celsiusLabelHand = ylabel('deg C');
+set(celsiusLabelHand,'FontName','Lato Bold'); set(celsiusLabelHand,'FontSize',14);
 degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
+set(degCaxis,'FontName','Lato'); set(degCaxis,'FontSize',12);
 addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
-addaxislabel(2,'hPa')
+pressureLabelHand = addaxislabel(2,'hPa');
+set(pressureLabelHand,'FontName','Lato Bold'); set(pressureLabelHand,'FontSize',14);
 addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
-addaxislabel(3,'%')
-legend('Dewpoint','Temperature','Pressure','Humidity');
+humidityLabelHand = addaxislabel(3,'%');
+set(humidityLabelHand,'FontName','Lato Bold'); set(humidityLabelHand,'FontSize',14);
+legendHand = legend('Dewpoint','Temperature','Pressure','Humidity');
+set(legendHand,'FontName','Lato'); set(legendHand,'FontSize',8);
+allAxes = findall(0,'type','axes'); %Find all axes
+set(allAxes(3),'FontName','Lato'); set(allAxes(2),'FontSize',12); %Change humidity axis font
+set(allAxes(4),'FontName','Lato'); set(allAxes(3),'FontSize',12); %Change pressure axis font
 
 %%Plot wind data
 %Note this is on the same plot as above data
@@ -152,7 +160,10 @@ else
     titleAndSubtitle = {cell2mat(titleMsg),windString}; %Adds the above subtitle
     %I agree that the above syntax is unwieldy but oh well
 end
-title(titleAndSubtitle);
+surfaceTitleHand = title(titleAndSubtitle);
+set(surfaceTitleHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
+xlabelHand = xlabel('Hour');
+set(xlabelHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
 hold off
 
 %% Plot weather codes
@@ -329,11 +340,15 @@ else
             plot(serialTimes(count),upplace,'Marker','p','MarkerEdgeColor','m','MarkerFaceColor','m','MarkerSize',6); %Magenta
             hold on
         end
+        if isempty(presentWeather{count})==1 %If there is no weather code for a time
+            plot(serialTimes(count),1,'Marker','.','MarkerEdgeColor','w','MarkerFaceColor','w'); %Plot invisible marker, otherwise the apparent end time will be the time of last precipitation code instead of the true last end time
+        end
         hold on
     end
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
-    set(presentAxis,'YTick',1:yplacer); %Number of wires is set by yplacer
-    set(presentAxis,'YTickLabel',presentLabels); %Only label wires with precipitation types that actually occurred
+    set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
+    set(presentAxis,'YTickLabel',presentLabels); %Label the wires
+    set(presentAxis,'FontName','Lato'); set(presentAxis,'FontSize',12)
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
@@ -345,7 +360,8 @@ else
         obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
-    title(titleMsg);
+    precipTitleHand = title(titleMsg);
+    set(precipTitleHand,'
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     hold off

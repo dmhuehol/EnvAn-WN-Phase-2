@@ -104,14 +104,22 @@ maxPre = nanmax(pressure);
 figure; %Make new figure
 plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
 ylim([minDegC-4 maxDegC+1]) %Set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
-ylabel('deg C')
+celsiusLabelHand = ylabel('deg C');
+set(celsiusLabelHand,'FontName','Lato Bold'); set(celsiusLabelHand,'FontSize',14);
 degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
+set(degCaxis,'FontName','Lato'); set(degCaxis,'FontSize',12);
 addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
-addaxislabel(2,'hPa')
+pressureLabelHand = addaxislabel(2,'hPa');
+set(pressureLabelHand,'FontName','Lato Bold'); set(pressureLabelHand,'FontSize',14);
 addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
-addaxislabel(3,'%')
-legend('Dewpoint','Temperature','Pressure','Humidity');
+humidityLabelHand = addaxislabel(3,'%');
+set(humidityLabelHand,'FontName','Lato Bold'); set(humidityLabelHand,'FontSize',14);
+legendHand = legend('Dewpoint','Temperature','Pressure','Humidity');
+set(legendHand,'FontName','Lato'); set(legendHand,'FontSize',8);
+allAxes = findall(0,'type','axes'); %Find all axes
+set(allAxes(3),'FontName','Lato'); set(allAxes(2),'FontSize',12); %Change humidity axis font
+set(allAxes(4),'FontName','Lato'); set(allAxes(3),'FontSize',12); %Change pressure axis font
 
 %%Plot wind data
 %Note this is on the same plot as above data
@@ -152,7 +160,10 @@ else
     titleAndSubtitle = {cell2mat(titleMsg),windString}; %Adds the above subtitle
     %I agree that the above syntax is unwieldy but oh well
 end
-title(titleAndSubtitle);
+surfaceTitleHand = title(titleAndSubtitle);
+set(surfaceTitleHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
+xlabelHand = xlabel('Hour');
+set(xlabelHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
 hold off
 
 %% Plot weather codes
@@ -185,6 +196,7 @@ else
     yplacer = 0;
     figure;
     presentAxis = gca;
+    markerSize = 18; %This needs to be changed based on how long of a time period is requested
     for count = length(presentWeather):-1:1 %Sometimes you just have to get loopy
         %Note that the backwards loop is very slightly slower than a forward
         %loop would be, but is used to make MATLAB less worried about how
@@ -196,7 +208,7 @@ else
                 presentLabels{yplacer} = 'Fog';
                 fogchk=1; %Make sure that the above only happens once, otherwise each new fog entry will receive its own label and wire
             end
-            plot(serialTimes(count),fogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',5); %Gray
+            plot(serialTimes(count),fogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',markerSize); %Gray
             hold on
         end
         if isempty(regexp(presentWeather{count},'(FZFG){1}','once'))~=1
@@ -206,7 +218,7 @@ else
                 presentLabels{yplacer} = 'Frz Fog';
                 frzfogchk=1;
             end
-            plot(serialTimes(count),frzfogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',5);
+            plot(serialTimes(count),frzfogplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',markerSize);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(BR){1}','once'))~=1
@@ -216,7 +228,7 @@ else
                 presentLabels{yplacer} = 'Mist';
                 mistchk=1;
             end
-            plot(serialTimes(count),mistplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',5);
+            plot(serialTimes(count),mistplace,'b','Marker','.','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',markerSize);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(DZ){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))==1
@@ -226,7 +238,7 @@ else
                 presentLabels{yplacer} = 'Drizzle';
                 drizchk=1;
             end
-            plot(serialTimes(count),dzplace,'k','Marker','.','MarkerSize',8); %Black
+            plot(serialTimes(count),dzplace,'k','Marker','.','MarkerSize',markerSize); %Black
             hold on
         end
         if isempty(regexp(presentWeather{count},'(FZDZ){1}','once'))~=1
@@ -236,7 +248,7 @@ else
                 presentLabels{yplacer} = 'Frz Drizzle';
                 frzdrizchk=1;
             end
-            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',8);
+            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',markerSize);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
@@ -246,7 +258,7 @@ else
                 presentLabels{yplacer} = 'Rain';
                 rainchk=1;
             end
-            plot(serialTimes(count),rainplace,'Marker','.','MarkerFaceColor','b','MarkerSize',12); %Blue
+            plot(serialTimes(count),rainplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize); %Blue
             hold on
         end
         if isempty(regexp(presentWeather{count},'(FZRA){1}','once'))~=1
@@ -256,7 +268,7 @@ else
                 presentLabels{yplacer} = 'Frz Rain';
                 frzrainchk=1;
             end
-            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',12);
+            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 || isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
@@ -266,7 +278,7 @@ else
                 presentLabels{yplacer} = 'Sleet';
                 sleetchk=1;
             end
-            plot(serialTimes(count),sleetplace,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255,'MarkerSize',8); %Gray
+            plot(serialTimes(count),sleetplace,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255,'MarkerSize',markerSize); %Gray
             hold on
         end
         if isempty(regexp(presentWeather{count},'(SG){1}','once'))~=1 || isempty(regexp(presentWeather{count},'(GS){1}','once'))~=1
@@ -276,7 +288,7 @@ else
                 presentLabels{yplacer} = 'Graupel';
                 graupchk=1;
             end
-            plot(serialTimes(count),graupplace,'Marker','*','MarkerEdgeColor','g'); %Green
+            plot(serialTimes(count),graupplace,'Marker','*','MarkerEdgeColor','g','MarkerSize',markerSize-6); %Green
             hold on
         end
         if isempty(regexp(presentWeather{count},'(SN){1}','once'))~=1
@@ -286,7 +298,7 @@ else
                 presentLabels{yplacer} = 'Snow';
                 snowchk=1;
             end
-            plot(serialTimes(count),snowplace,'Marker','*','MarkerEdgeColor',[51,153,255]./255); %Light deep blue
+            plot(serialTimes(count),snowplace,'Marker','*','MarkerEdgeColor',[51,153,255]./255,'MarkerSize',markerSize-6); %Light deep blue
             hold on
         end
         if isempty(regexp(presentWeather{count},'(IC){1}','once'))~=1
@@ -296,7 +308,7 @@ else
                 presentLabels{yplacer} = 'Ice Crystals';
                 icchk=1;
             end
-            plot(serialTimes(count),icplace,'Marker','-','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',8); %Gray
+            plot(serialTimes(count),icplace,'Marker','-','MarkerEdgeColor',[128 128 128]./255,'MarkerSize',markerSize); %Gray
             hold on
         end
         if isempty(regexp(presentWeather{count},'(GR){1}','once'))~=1
@@ -306,7 +318,7 @@ else
                 presentLabels{yplacer} = 'Hail';
                 hailchk=1;
             end
-            plot(serialTimes(count),hailplace,'Marker','o','MarkerEdgeColor','r','MarkerFaceColor','r','MarkerSize',8); %Red
+            plot(serialTimes(count),hailplace,'Marker','o','MarkerEdgeColor','r','MarkerFaceColor','r','MarkerSize',markerSize); %Red
             hold on
         end
         if isempty(regexp(presentWeather{count},'(TS){1}','once'))~=1
@@ -316,7 +328,7 @@ else
                 presentLabels{yplacer} = 'Thunderstorm';
                 thunderchk=1;
             end
-            plot(serialTimes(count),thunderplace,'Marker','d','MarkerEdgeColor','y','MarkerFaceColor','y','MarkerSize',6); %Yellow
+            plot(serialTimes(count),thunderplace,'Marker','d','MarkerEdgeColor','y','MarkerFaceColor','y','MarkerSize',markerSize); %Yellow
             hold on
         end
         if isempty(regexp(presentWeather{count},'(UP){1}','once'))~=1
@@ -326,7 +338,7 @@ else
                 presentLabels{yplacer} = 'Uknwn Precip';
                 upchk=1;
             end
-            plot(serialTimes(count),upplace,'Marker','p','MarkerEdgeColor','m','MarkerFaceColor','m','MarkerSize',6); %Magenta
+            plot(serialTimes(count),upplace,'Marker','p','MarkerEdgeColor','m','MarkerFaceColor','m','MarkerSize',markerSize); %Magenta
             hold on
         end
         if isempty(presentWeather{count})==1 %If there is no weather code for a time
@@ -337,6 +349,7 @@ else
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
+    set(presentAxis,'FontName','Lato'); set(presentAxis,'FontSize',12)
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
@@ -348,9 +361,12 @@ else
         obsDate2 = datestr(serialTimes(end),'mm/dd/yy HH:MM');
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
-    title(titleMsg);
+    precipTitleHand = title(titleMsg);
+    set(precipTitleHand,'FontSize',14); set(precipTitleHand,'FontName','Lato Bold')
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
+    xlabelHand = xlabel('Hour');
+    set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',14)
     hold off
 end
 
