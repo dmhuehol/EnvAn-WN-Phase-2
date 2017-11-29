@@ -52,6 +52,8 @@ prestogeo: Current version (9/1/17) of MATLAB function to calculate geopotential
 
 rangebardemo: Demonstration of the “stacked” and “patch" methods to make ranged bar charts. Renamed from “rangebartest” in 9/3/17 push. Tags: external, utilities, renamed
 
+RHvZ: Current version (11/27/17) of MATLAB function to generate a figure with relative humidity vs height. Tags: sounding
+
 rhumplot: Current version (9/1/17) of MATLAB function to generate a figure with charts of relative humidity vs pressure and relative humidity vs height from input sounding number and sounding data structure. Additionally, makes a guess at cloud base height. Tags: plotting toolbox, sounding, clouds
 
 simple_prestogeo: Current version (9/1/17) of MATLAB function to calculate geopotential height given pressure and temperature. This is a no-frills calculator; see prestogeo for a calculator designed to interface with other functions. Tags: utilities, IGRA toolbox
@@ -60,7 +62,7 @@ skewT: Current version (8/4/17) of MATLAB function to generate a skew-T chart gi
 
 soundplots: Current version (9/3/17) of MATLAB function to generate a variety of figures based on soundings data for a specific time and date. Tags: sounding, plotting toolbox Requires: dewrelh, skewT, sounding
 
-surfacePlotter: Current version (11/13/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Made operational 11/13/17. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: ASOS, surface observations
+surfacePlotter: Current version (11/27/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Updated 11/27/17 with aesthetic changes. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: ASOS, surface observations
 
 surfconfilter: Current version (9/3/17) of MATLAB function to filter soundings data structure based on surface conditions. Tags: surface observations, IGRA toolbox, filter, sounding
 
@@ -71,7 +73,7 @@ timefilter: Current version (11/22/17) of MATLAB function to filter out years an
 tlabel: External function to improve on datetick and datetickzoom. Written by Carlos Adrian Vargas Aguilera, found on the MATLAB file exchange. Original link: https://www.mathworks.com/matlabcentral/fileexchange/19314-tlabel-m-v2-6-1--sep-2009-
 Tags: external, utilities
 
-TvZ: Current version (8/19/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time. Tags: sounding, plotting toolbox
+TvZ: Current version (11/27/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time. Updated 11/27/17 with aesthetic changes.. Tags: sounding, plotting toolbox
 
 TvZprint: Current version (8/19/17) of MATLAB function to plot a temperature-height figure from soundings data given an input time, with figure settings tuned to be most useful for posters. Tags: soundings, poster
 
@@ -91,7 +93,7 @@ In Progress:
 
 abacusDemo: Current (11/13/17) version of MATLAB script demonstrating the abacus plot for visualizing weather codes over time. Needs better formatting and documentation to be completed.
 
-addWetbulb: Current (11/22/17) version of MATLAB function to add a wetbulb temperature field to a soundings structure. Currently runs properly, but is incredibly time consuming due to inefficient construction. Tags: in progress, soundings, wetbulb
+addWetbulb: Current (11/27/17) version of MATLAB function to add a wetbulb temperature field to a soundings structure. Currently runs properly, but is incredibly time consuming due to inefficient construction. Tags: in progress, soundings, wetbulb
 
 ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS five-minute data from a .dat file. Updated 9/21/17 with continuing development.
 
@@ -107,9 +109,11 @@ numwarmnose: Current version (8/18/17) of MATLAB script to divide up soundings d
 
 precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a soundings structure by presence of precipitation as detected by ASOS. Currently in very early stages of development. Tags: in progress, ASOS, sounding, filter
 
+surfAnalysisLI: Current version (11/27/17) of MATLAB function to make a local surface analysis over the greater Long Island area using ASOS data. Currently in early stages of development; fed toy data for now. Tags: in progress, ASOS
+
 TTwvZ: Current version (11/22/17) of MATLAB function to generate a plot of temperature and wetbulb temperature vs height. Tagged as in progress because it was written in a crazy hurry and probably full of issues. Tags: in progress, sounding, wetbulb
 
-wetbulb: Current version (11/22/17) of MATLAB function to calculate wetbulb temperature given pressure, dewpoint, and temperature. Uses vpasolve function to numerically evaluate the wetbulb, since the wetbulb has no closed algebraic form. Tags: in progress, wetbulb
+wetbulb: Current version (11/27/17) of MATLAB function to calculate wetbulb temperature given pressure, dewpoint, and temperature. Uses vpasolve function to numerically evaluate the wetbulb, since the wetbulb has no closed algebraic form. Soon to be made operational. Tags: in progress, wetbulb
 
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
