@@ -27,6 +27,6 @@ set(dewpoint,'FontSize',6); set(dewpoint,'FontName','Lato Bold'); set(dewpoint,'
 altimeter = textm(KISPlat+0.04,KISPlon+0.04,'1014.7');
 set(altimeter,'FontSize',6); set(altimeter,'FontName','Lato Bold'); set(altimeter,'Color','r')
 precipCode = textm(KISPlat-0.04,KISPlon+0.04,'FZRA');
-set(precipCode,'FontSize',6); set(precipCode,'FontName','Lato Bold'); set
+set(precipCode,'FontSize',6); set(precipCode,'FontName','Lato Bold'); set(precipCode,'Color','r')
 
 %end

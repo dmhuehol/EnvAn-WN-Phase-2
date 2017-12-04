@@ -1,8 +1,9 @@
-%%TvZ
-    %Function to create a temperature vs height plot for a sounding, given
-    %an input date and a data structure.
+%%TTwvZ
+    %Function to plot temperature and wetbulb temperature against height
+    %given an input date and soundings structure. Additionally, allows for
+    %user control of the maximum height plotted.
     %
-    %General form: [foundit] = TvZ(y,m,d,t,sounding)
+    %General form: [foundit] = TTwvZ(y,m,d,t,sounding,kmTop)
     %
     %Output:
     %foundit: the index of the sounding corresponding to the time
@@ -12,21 +13,33 @@
     %m: two digit month
     %d: one or two digit day
     %t: one or two digit time
-    %sounding: a structure of soundings data, as created by fullIGRAimp, etc
+    %sounding: a structure of soundings data with wetbulb temperature
+    %kmTop: OPTIONAL maximum km to plot. Defaults to 13km (roughly the
+    %boundary of the troposphere); melting layers at Long Island are always
+    %within 5km.
     %
-    %Note that this is essentially the same as soundplots, with the code
-    %for plots other than TvZ removed.
     %
-    %Version Date: 11/06/17
-    %Last major revision: 8/19/17
+    %Version Date: 11/28/17
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
-    %See also fullIGRAimp, soundplots
+    %See also fullIGRAimp, wetbulb, addWetbulb
     %
 
-function [foundit] = TvZ(y,m,d,t,sounding)
+function [foundit] = TTwvZ(y,m,d,t,sounding,kmTop)
+if exist('kmTop','var')==0
+    kmTop = 13;
+end
+if kmTop>13
+    disp('Maximum allowed km is 13!')
+    kmTop = 13;
+end
+if kmTop<0
+    disp('Negative km is not allowed!')
+    kmTop = 13;
+end
+kmTop = round(kmTop);
 
 [r,~] = size(sounding); %Find the number of soundings
 if r==1 %If it's oriented the other way
@@ -81,6 +94,7 @@ geoheightvector = geoheightvector'; %transpose to match shape of others, importa
 %define temp as the temperatures from the surface to 200 mb
 prestemp = sounding(foundit).temp(mb200);
 geotemp = sounding(foundit).temp(mb200);
+geowet = sounding(foundit).wetbulb(mb200);
 
 R = 287.75; %dry air constant J/(kgK)
 grav = 9.81; %gravity m/s^2
@@ -110,22 +124,73 @@ freezingyg = ones(1,length(freezingxg)).*0;
 randomFig = randi(10,100,1); %Generates a random number
 figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(geotemp,geoheightvector,freezingyg,freezingxg,'r') %Tvz
+plot(geotemp,geoheightvector,'--','Color',[255 128 0]./255)
+hold on
+plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
+hold on
+plot(geowet,geoheightvector,'b');
+legend('Temperature','Freezing','Wetbulb')
 dateString = num2str(sounding(foundit).valid_date_num); %For title
 titleHand = title(['Sounding for ' dateString]);
-set(titleHand,'FontName','Lato Bold'); set(titleHand,'FontSize',14);
-xlabelHand = xlabel('Temperature in C');
-set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',14);
-ylabelHand = ylabel('Height in km');
-set(ylabelHand,'FontName','Lato Bold'); set(ylabelHand,'Fonts
-ylim([0 13]);
+set(titleHand,'FontName','Helvetica'); set(titleHand,'FontSize',20)
+xlabHand = xlabel('Temperature in C');
+set(xlabHand,'FontName','Helvetica'); set(xlabHand,'FontSize',20)
+ylabHand = ylabel('Height in km');
+set(ylabHand,'FontName','Helvetica'); set(ylabHand,'FontSize',20)
+limits = [0 kmTop];
+ylim(limits);
 ax = gca;
-set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+rightAx = axes('ylim',limits,'color','none','YAxisLocation','right');
+switch kmTop
+    case 13
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+    case 12
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
+    case 11
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
+    case 10
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
+    case 9
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
+    case 8
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
+    case 7
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
+    case 6
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
+    case 5
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
+    case 4
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4])
+    case 3
+        set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3])
+        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3])
+    case 2
+        set(ax,'YTick',[0 0.25 0.5 0.75 1 1.25 1.5 1.75 2])
+        set(rightAx,'YTick',[0 0.25 0.5 0.75 1 1.25 1.5 1.75 2])
+    case 1
+        set(ax,'YTick',[0 0.25 0.5 0.75 1])
+        set(rightAx,'YTick',[0 0.25 0.5 0.75 1])
+    case 0
+        disp('No data displayed!')
+        clf
+        return
+end
 set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
-rightAx = axes('ylim',[0 13],'color','none','YAxisLocation','right');
-set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
+set(ax,'FontName','Helvetica'); set(ax,'FontSize',18)
 set(rightAx,'XTickLabel',[])
 set(rightAx,'XTick',[])
+set(rightAx,'FontName','Helvetica'); set(rightAx,'FontSize',18)
 hold off
 
 end

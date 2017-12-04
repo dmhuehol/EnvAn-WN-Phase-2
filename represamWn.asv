@@ -1,0 +1,16 @@
+function [] = represamWn(plotStruct)
+numColors = 10;
+%colors = parula(numColors);
+colors = [255,0,0;255,191,0;3,255,3;4,42,255;179,2,255]./255;
+% 48 78 103 104 123
+for count = 1:10;
+    wpl = plot(plotStruct(count).warmTemps,plotStruct(count).warmHeights,'o-');
+    ylim([0 5]); xlim([-0.5 18])
+    set(wpl,'Color',colors(count,:))
+    hold on
+    wcl = plot(plotStruct(count).warmcloudTemps,plotStruct(count).warmcloudHeights,'p-');
+    ylim([0 5]); xlim([-0.5 18])
+    set(wcl,'Color',colors(count,:))
+    set(wcl,'MarkerFaceColor',colors(count,:));
+    hold on
+end

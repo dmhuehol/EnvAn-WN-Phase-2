@@ -17,7 +17,7 @@
     %Note that this is essentially the same as soundplots, with the code
     %for plots other than TvZ removed.
     %
-    %Version Date: 11/06/17
+    %Version Date: 11/27/17
     %Last major revision: 8/19/17
     %Written by: Daniel Hueholt
     %North Carolina State University

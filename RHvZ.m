@@ -1,4 +1,4 @@
-function [] = RHvZ(snum,sounding)
+function [f] = RHvZ(snum,sounding,max)
 %%RHvZ
     %Function to generate plot of relative huidity vs height
     %
@@ -73,7 +73,7 @@ geoheightvector(geoheightvector>100) = NaN;
 sounding(snum).rhum(sounding(snum).rhum<0) = NaN;
 sounding(snum).dewpt(sounding(snum).dewpt<-150) = NaN;
 
-figure; %New figure
+f = figure; %New figure
 plot(rhum,geoheightvector) %RHvz
 dateString = num2str(sounding(snum).valid_date_num); %Used in title
 hold on
@@ -81,15 +81,19 @@ cloudsaf = [80 80];
 cloudspan = [0 13];
 plot(cloudsaf,cloudspan,'r');
 titleHand = title(['Sounding for ' dateString]);
-set(titleHand,'FontName','Helvetica'); set(titleHand,'FontSize',14)
+set(titleHand,'FontName','Helvetica'); set(titleHand,'FontSize',16)
 xlabelHand = xlabel('Relative Humidity in %');
-set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',14)
+set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',16)
 xlim([-2 102])
 ylabelHand = ylabel('Height in km');
-set(ylabelHand,'FontName','Helvetica'); set(ylabelHand,'FontSize',14)
-ylim([0 13]);
+set(ylabelHand,'FontName','Helvetica'); set(ylabelHand,'FontSize',16)
+ylim([0 max]);
 axesHand = gca;
-set(axesHand,'FontName','Helvetica'); set(axesHand,'FontSize',14)
+set(axesHand,'FontName','Helvetica'); set(axesHand,'FontSize',12)
+rightAxHand = axes('ylim',[0 max],'color','none','YAxisLocation','right');
+set(rightAxHand,'FontName','Helvetica'); set(rightAxHand,'FontSize',12);
+set(rightAxHand,'XTickLabel',[])
+set(rightAxHand,'XTick',[])
 hold off
 
 end

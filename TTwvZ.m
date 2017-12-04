@@ -19,7 +19,7 @@
     %within 5km.
     %
     %
-    %Version Date: 11/22/17
+    %Version Date: 11/28/17
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -124,14 +124,19 @@ freezingyg = ones(1,length(freezingxg)).*0;
 randomFig = randi(10,100,1); %Generates a random number
 figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(geotemp,geoheightvector,'k',freezingyg,freezingxg,'r') %Tvz
+plot(geotemp,geoheightvector,'--','Color',[255 128 0]./255)
+hold on
+plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
 hold on
 plot(geowet,geoheightvector,'b');
 legend('Temperature','Freezing','Wetbulb')
 dateString = num2str(sounding(foundit).valid_date_num); %For title
-title(['Sounding for ' dateString])
-xlabel('Temperature in C')
-ylabel('Height in km')
+titleHand = title(['Sounding for ' dateString]);
+set(titleHand,'FontName','Helvetica'); set(titleHand,'FontSize',20)
+xlabHand = xlabel('Temperature in C');
+set(xlabHand,'FontName','Helvetica'); set(xlabHand,'FontSize',20)
+ylabHand = ylabel('Height in km');
+set(ylabHand,'FontName','Helvetica'); set(ylabHand,'FontSize',20)
 limits = [0 kmTop];
 ylim(limits);
 ax = gca;
@@ -182,8 +187,10 @@ switch kmTop
         return
 end
 set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
+set(ax,'FontName','Helvetica'); set(ax,'FontSize',18)
 set(rightAx,'XTickLabel',[])
 set(rightAx,'XTick',[])
+set(rightAx,'FontName','Helvetica'); set(rightAx,'FontSize',18)
 hold off
 
 end

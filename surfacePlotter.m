@@ -105,21 +105,21 @@ figure; %Make new figure
 plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
 ylim([minDegC-4 maxDegC+1]) %Set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
 celsiusLabelHand = ylabel('deg C');
-set(celsiusLabelHand,'FontName','Lato Bold'); set(celsiusLabelHand,'FontSize',14);
+set(celsiusLabelHand,'FontName','Helvetica'); set(celsiusLabelHand,'FontSize',20);
 degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
-set(degCaxis,'FontName','Lato'); set(degCaxis,'FontSize',12);
+set(degCaxis,'FontName','Helvetica'); set(degCaxis,'FontSize',18);
 addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
-pressureLabelHand = addaxislabel(2,'hPa');
-set(pressureLabelHand,'FontName','Lato Bold'); set(pressureLabelHand,'FontSize',14);
+pressureLabelHand = addaxislabel(2,'inHg');
+set(pressureLabelHand,'FontName','Helvetica'); set(pressureLabelHand,'FontSize',20);
 addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
 humidityLabelHand = addaxislabel(3,'%');
-set(humidityLabelHand,'FontName','Lato Bold'); set(humidityLabelHand,'FontSize',14);
+set(humidityLabelHand,'FontName','Helvetica'); set(humidityLabelHand,'FontSize',18);
 legendHand = legend('Dewpoint','Temperature','Pressure','Humidity');
-set(legendHand,'FontName','Lato'); set(legendHand,'FontSize',8);
+set(legendHand,'FontName','Helvetica'); set(legendHand,'FontSize',18);
 allAxes = findall(0,'type','axes'); %Find all axes
-set(allAxes(3),'FontName','Lato'); set(allAxes(2),'FontSize',12); %Change humidity axis font
-set(allAxes(4),'FontName','Lato'); set(allAxes(3),'FontSize',12); %Change pressure axis font
+set(allAxes(3),'FontName','Helvetica'); set(allAxes(3),'FontSize',18); %Change humidity axis font
+set(allAxes(4),'FontName','Helvetica'); set(allAxes(4),'FontSize',18); %Change pressure axis font
 
 %%Plot wind data
 %Note this is on the same plot as above data
@@ -161,9 +161,9 @@ else
     %I agree that the above syntax is unwieldy but oh well
 end
 surfaceTitleHand = title(titleAndSubtitle);
-set(surfaceTitleHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
+set(surfaceTitleHand,'FontName','Helvetica'); set(surfaceTitleHand,'FontSize',20)
 xlabelHand = xlabel('Hour');
-set(xlabelHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',14)
+set(xlabelHand,'FontName','Helvetica'); set(surfaceTitleHand,'FontSize',20)
 hold off
 
 %% Plot weather codes
@@ -278,7 +278,7 @@ else
                 presentLabels{yplacer} = 'Sleet';
                 sleetchk=1;
             end
-            plot(serialTimes(count),sleetplace,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255,'MarkerSize',markerSize); %Gray
+            plot(serialTimes(count),sleetplace,'o','MarkerEdgeColor',[128 128 128]./255,'MarkerFaceColor',[128 128 128]./255,'MarkerSize',markerSize-6); %Gray
             hold on
         end
         if isempty(regexp(presentWeather{count},'(SG){1}','once'))~=1 || isempty(regexp(presentWeather{count},'(GS){1}','once'))~=1
@@ -349,7 +349,7 @@ else
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
-    set(presentAxis,'FontName','Lato'); set(presentAxis,'FontSize',12)
+    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',18)
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
@@ -362,11 +362,11 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
     precipTitleHand = title(titleMsg);
-    set(precipTitleHand,'FontSize',14); set(precipTitleHand,'FontName','Lato Bold')
+    set(precipTitleHand,'FontSize',20); set(precipTitleHand,'FontName','Helvetica')
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     xlabelHand = xlabel('Hour');
-    set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',14)
+    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',20)
     hold off
 end
 
