@@ -133,6 +133,14 @@ wetNosedetect: Current version (12/4/17) of MATLAB function to detect warmnoses 
 
 windplot: Current version (10/30/17) of MATLAB script demonstrating wind barb plotting over time, as used in surfacePlotter. Uses windbarb function to create windbarbs. windbarb was originally written by Laura Tomkins. Full documentation still needs to be added. Tags: in progress, utilities
 
+Quick tools
+
+IrlHope: finds inversions, but badly
+
+sanityCheck: adds some other soundings
+
+viewer: loops and displays TTwvZ for a time period with little flexibility
+
 Other files:
 
 Station list: Annotated list of ASOS stations and sounding launches near Stony Brook University
