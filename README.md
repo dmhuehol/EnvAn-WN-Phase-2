@@ -62,7 +62,7 @@ skewT: Current version (8/4/17) of MATLAB function to generate a skew-T chart gi
 
 soundplots: Current version (9/3/17) of MATLAB function to generate a variety of figures based on soundings data for a specific time and date. Tags: sounding, plotting toolbox Requires: dewrelh, skewT, sounding
 
-surfacePlotter: Current version (11/30/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Updated 11/30/17 with aesthetic changes. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: ASOS, surface observations
+surfacePlotter: Current version (12/14/17) of MATLAB function to visualize ASOS five-minute surface conditions data. Updated 12/14/17 with aesthetic changes. Requires external functions addaxis, tlabel, and windbarb. addaxis was originally written by Harry Lee, tlabel by Carlos Adrian Vargas Aguilera, and windbarb by Laura Tomkins. Tags: ASOS, surface observations
 
 surfconfilter: Current version (9/3/17) of MATLAB function to filter soundings data structure based on surface conditions. Tags: surface observations, IGRA toolbox, filter, sounding
 
@@ -101,13 +101,15 @@ ASOSimportFiveMin: Current (9/21/17) version of MATLAB function to import ASOS f
 
 cloudplot: Current (11/20/18) version of MATLAB function to plot cloud locations, when provided with the time and cloud bounds. Tags: in progress, soundings, clouds
 
+compositePlotter: Current (12/15/17) version of MATLAB script (and eventually function) to make composite plots of TwvZ from soundings. Tags: in progress, soundings
+
 convection: Current (5/31/17) version of MATLAB function to find relevant meteorological variables necessary to calculate basic properties relevant to convection and stability. Currently just a code skeleton from Megan Amanatides’s original script. Tags: unused, original, in progress
 
 embemo_2014bOrNewer: Current (10/10/17) version of MATLAB script to demonstrate visualization of ASOS data, using techniques only available in MATLAB 2014b or newer. Requires plotyyy. Tags: 2014b, ASOS, surface observations, utilities, in progress
 
 findTheCloud: Current (11/30/17) version of MATLAB function to establish cloud boundaries given a sounding data structure. Tags: in progress, soundings, clouds
 
-haha: Current (11/30/17) version of MATLAB script to draw just the nose portion of soundings. Currently hacked together with hardcoded data. Tags: in progress, soundings
+haha: Current (12/15/17) version of MATLAB script to draw just the nose portion of soundings. Currently hacked together with hardcoded data. Superseded by compositePlotter and will be removed shortly. Tags: in progress, soundings
 
 makeWarmCloud: Current (11/30/17) version of MATLAB function to determine what part of a profile is above freezing, in cloud, and/or both. Tags: in progress, soundings, wetbulb
 
@@ -121,11 +123,15 @@ precipfilterASOS: Current version (9/28/17) of MATLAB function to filter a sound
 
 represamWn: Current version (11/30/17) of MATLAB function to properly do what haha does. Tags: in progress, soundings
 
+sanityPlea: temporary file storing a few commands
+
 surfAnalysisLI: Current version (11/27/17) of MATLAB function to make a local surface analysis over the greater Long Island area using ASOS data. Currently in early stages of development; fed toy data for now. Tags: in progress, ASOS
 
-TTwvZ: Current version (11/30/17) of MATLAB function to generate a plot of temperature and wetbulb temperature vs height. Tagged as in progress because it was written in a crazy hurry and probably full of issues. Updated with aesthetic changes. Tags: in progress, sounding, wetbulb
+TTwvZ: Current version (12/15/17) of MATLAB function to generate a plot of temperature and wetbulb temperature vs height. Tagged as in progress because it was written in a crazy hurry and probably full of issues. Updated to use addHeight. Tags: in progress, sounding, wetbulb
 
-viewSound: Current version (12/4/17) of MATLAB script to display a month of soundings. Tags: in progress, soundings
+viewer: Current version (12/15/17) of MATLAB function to show soundings in a loop. Currently only supports Jan-Mar usage. Tags: in progress, sounding, wetbulb
+
+viewSound removed in this push, superseded by viewer
 
 wetbulb: Current version (11/27/17) of MATLAB function to calculate wetbulb temperature given pressure, dewpoint, and temperature. Uses vpasolve function to numerically evaluate the wetbulb, since the wetbulb has no closed algebraic form. Soon to be made operational. Tags: in progress, wetbulb
 
