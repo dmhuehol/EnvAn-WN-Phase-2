@@ -110,7 +110,7 @@ degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
 set(degCaxis,'FontName','Helvetica'); set(degCaxis,'FontSize',18);
 addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
-pressureLabelHand = addaxislabel(2,'hPa');
+pressureLabelHand = addaxislabel(2,'inHg');
 set(pressureLabelHand,'FontName','Helvetica'); set(pressureLabelHand,'FontSize',20);
 addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
 humidityLabelHand = addaxislabel(3,'%');
@@ -118,8 +118,8 @@ set(humidityLabelHand,'FontName','Helvetica'); set(humidityLabelHand,'FontSize',
 legendHand = legend('Dewpoint','Temperature','Pressure','Humidity');
 set(legendHand,'FontName','Helvetica'); set(legendHand,'FontSize',18);
 allAxes = findall(0,'type','axes'); %Find all axes
-set(allAxes(3),'FontName','Helvetica'); set(allAxes(2),'FontSize',18); %Change humidity axis font
-set(allAxes(4),'FontName','Helvetica'); set(allAxes(3),'FontSize',18); %Change pressure axis font
+set(allAxes(3),'FontName','Helvetica'); set(allAxes(3),'FontSize',18); %Change humidity axis font
+set(allAxes(4),'FontName','Helvetica'); set(allAxes(4),'FontSize',18); %Change pressure axis font
 
 %%Plot wind data
 %Note this is on the same plot as above data
@@ -196,7 +196,7 @@ else
     yplacer = 0;
     figure;
     presentAxis = gca;
-    markerSize = 18; %This needs to be changed based on how long of a time period is requested
+    markerSize = 20; %This needs to be changed based on how long of a time period is requested
     for count = length(presentWeather):-1:1 %Sometimes you just have to get loopy
         %Note that the backwards loop is very slightly slower than a forward
         %loop would be, but is used to make MATLAB less worried about how
@@ -248,7 +248,7 @@ else
                 presentLabels{yplacer} = 'Frz Drizzle';
                 frzdrizchk=1;
             end
-            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',markerSize);
+            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',markerSize+5);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
@@ -268,7 +268,7 @@ else
                 presentLabels{yplacer} = 'Frz Rain';
                 frzrainchk=1;
             end
-            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize);
+            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize+5);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 || isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
@@ -346,10 +346,11 @@ else
         end
         hold on
     end
+    plot([datenum(2015,2,9,12,00,00) datenum(2015,2,9,12,00,00)],[0 3],'r','LineWidth',20)
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
-    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',18)
+    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',24)
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
@@ -362,11 +363,11 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
     precipTitleHand = title(titleMsg);
-    set(precipTitleHand,'FontSize',20); set(precipTitleHand,'FontName','Helvetica')
+    set(precipTitleHand,'FontSize',32); set(precipTitleHand,'FontName','Helvetica')
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     xlabelHand = xlabel('Hour');
-    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',14)
+    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',24)
     hold off
 end
 

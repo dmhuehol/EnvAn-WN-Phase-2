@@ -1,3 +1,4 @@
+
 height1 = wetSound(48).height(1:8); %all in cloud
 temp1 = double(wetSound(48).wetbulb(1:8))';
 
@@ -59,8 +60,8 @@ plot(temp7(14:15),height7(14:15),'p-','Color',[0 0 0],'MarkerFaceColor',[0 0 0])
 xlim([-4 8])
 ylim([0 5])
 aa = ylabel('Height (km)');
-set(aa,'FontName','Helvetica'); set(aa,'FontSize',20)
+set(aa,'FontName','Helvetica'); set(aa,'FontSize',25)
 ax = gca;
-set(ax,'FontName','Helvetica'); set(ax,'FontSize',16)
+set(ax,'FontName','Helvetica'); set(ax,'FontSize',21)
 ab = xlabel('Wetbulb Temperature (C)')
-set(ab,'FontNAme','Helvetica'); set(ab,'FontSize',20)
+set(ab,'FontNAme','Helvetica'); set(ab,'FontSize',25)

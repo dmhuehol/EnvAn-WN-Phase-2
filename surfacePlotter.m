@@ -196,7 +196,7 @@ else
     yplacer = 0;
     figure;
     presentAxis = gca;
-    markerSize = 18; %This needs to be changed based on how long of a time period is requested
+    markerSize = 20; %This needs to be changed based on how long of a time period is requested
     for count = length(presentWeather):-1:1 %Sometimes you just have to get loopy
         %Note that the backwards loop is very slightly slower than a forward
         %loop would be, but is used to make MATLAB less worried about how
@@ -248,7 +248,7 @@ else
                 presentLabels{yplacer} = 'Frz Drizzle';
                 frzdrizchk=1;
             end
-            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',markerSize);
+            plot(serialTimes(count),fzdzplace,'k','Marker','.','MarkerSize',markerSize+5);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(RA){1}','once'))~=1 && isempty(regexp(presentWeather{count},'(FZRA){1}','once'))==1
@@ -268,7 +268,7 @@ else
                 presentLabels{yplacer} = 'Frz Rain';
                 frzrainchk=1;
             end
-            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize);
+            plot(serialTimes(count),fzraplace,'Marker','.','MarkerFaceColor','b','MarkerSize',markerSize+5);
             hold on
         end
         if isempty(regexp(presentWeather{count},'(PL){1}','once'))~=1 || isempty(regexp(presentWeather{count},'(PE){1}','once'))~=1
@@ -346,10 +346,11 @@ else
         end
         hold on
     end
+    plot([datenum(2015,2,9,12,00,00) datenum(2015,2,9,12,00,00)],[0 4],'Color','r','LineWidth',2)
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
-    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',18)
+    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',35)
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';
@@ -362,11 +363,11 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
     precipTitleHand = title(titleMsg);
-    set(precipTitleHand,'FontSize',20); set(precipTitleHand,'FontName','Helvetica')
+    set(precipTitleHand,'FontSize',32); set(precipTitleHand,'FontName','Helvetica')
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     xlabelHand = xlabel('Hour');
-    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',20)
+    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',25)
     hold off
 end
 

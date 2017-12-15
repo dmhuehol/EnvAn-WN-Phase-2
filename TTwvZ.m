@@ -19,7 +19,8 @@
     %within 5km.
     %
     %
-    %Version Date: 11/28/17
+    %Version Date: 12/14/17
+    %Last major revision: 12/14/17
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -67,54 +68,10 @@ if ~exist('foundit','var') %If the date doesn't have a corresponding entry in th
     disp('No data available for this date!')
     return %Stop the function from running any more
 end
-
-mb200 = find(sounding(foundit).pressure >= 20000); %Find indices of readings where the pressure is greater than 20000 Pa
-presheight = sounding(foundit).pressure(mb200); %Select readings greater than 20000 Pa
-presheightvector = presheight/100; %Convert Pa to hPa (mb)
-
-% First geopotential height entry should be straight from the data, if possible
-if isnan(sounding(foundit).geopotential(1))==0
-    geoheightvector(1) = sounding(foundit).geopotential(1)/1000;
-    %disp('1 is good')
-elseif isnan(sounding(foundit).geopotential(1))==1 && isnan(sounding(foundit).geopotential(2))==0
-    geoheightvector(1) = sounding(foundit).geopotential(2)/1000;
-    %disp('2 is good')
-    %disp(foundit)
-elseif isnan(sounding(foundit).geopotential(1))==1 && isnan(sounding(foundit).geopotential(2))==1 && isnan(sounding(foundit).geopotential(3))==0
-    geoheightvector(1) = sounding(foundit).geopotential(3)/1000;
-    %disp('all the way to 3')
-    %disp(foundit)
-else
-    %disp('This data is really bad! Wow!')
-    %disp(foundit)
+if ~isfield(sounding,'height')
+    sounding = addHeight(sounding);
 end
 
-geoheightvector = geoheightvector'; %transpose to match shape of others, important for polyxpoly
-
-%define temp as the temperatures from the surface to 200 mb
-prestemp = sounding(foundit).temp(mb200);
-geotemp = sounding(foundit).temp(mb200);
-geowet = sounding(foundit).wetbulb(mb200);
-
-R = 287.75; %dry air constant J/(kgK)
-grav = 9.81; %gravity m/s^2
-
-for z = 2:length(presheightvector')
-    %geoheightvector(z) = 8*log(presheightvector(1)/presheightvector(z)); %calculate height data based on the pressure height; this prevents loss of warmnoses based on the sparse height readings available in the IGRA dataset
-    geoheightvector(z) = (R/grav*(((geotemp(1)+273.15)+(geotemp(z)+273.15))/2)*log(presheightvector(1)/presheightvector(z)))/1000; %Equation comes from Durre and Yin (2008) http://journals.ametsoc.org/doi/pdf/10.1175/2008BAMS2603.1
-end
-
-% Extra quality control to prevent jumps in the graphs
-geoheightvector(geoheightvector<-150) = NaN;
-geoheightvector(geoheightvector>100) = NaN;
-presheightvector(presheightvector<0) = NaN;
-prestemp(prestemp<-150) = NaN;
-prestemp(prestemp>100) = NaN;
-geotemp(geotemp<-150) = NaN;
-geotemp(geotemp>100) = NaN;
-sounding(foundit).rhum(sounding(foundit).rhum<0) = NaN;
-sounding(foundit).dewpt(sounding(foundit).dewpt<-150) = NaN;
-sounding(foundit).temp(sounding(foundit).temp<-150) = NaN;
 
 %Freezing line for Tvz and TvP charts
 freezingxg = [0 16];
@@ -124,11 +81,11 @@ freezingyg = ones(1,length(freezingxg)).*0;
 randomFig = randi(10,100,1); %Generates a random number
 figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(geotemp,geoheightvector,'--','Color',[255 128 0]./255)
+plot(sounding(foundit).temp,sounding(foundit).height,'--','Color',[255 128 0]./255)
 hold on
 plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
 hold on
-plot(geowet,geoheightvector,'b');
+plot(sounding(foundit).wetbulb,sounding(foundit).height,'b');
 legend('Temperature','Freezing','Wetbulb')
 dateString = num2str(sounding(foundit).valid_date_num); %For title
 titleHand = title(['Sounding for ' dateString]);
@@ -141,6 +98,7 @@ limits = [0 kmTop];
 ylim(limits);
 ax = gca;
 rightAx = axes('ylim',limits,'color','none','YAxisLocation','right');
+set(ax,'Box','off')
 switch kmTop
     case 13
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
