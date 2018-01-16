@@ -81,7 +81,7 @@ freezingyg = ones(1,length(freezingxg)).*0;
 randomFig = randi(10,100,1); %Generates a random number
 figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(sounding(foundit).temp,sounding(foundit).height,'--','Color',[255 128 0]./255)
+plot(sounding(foundit).temp,sounding(foundit).height,'--','Color',[255 128 0]./255,'LineWidth',2.4)
 hold on
 plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
 hold on
@@ -150,5 +150,9 @@ set(rightAx,'XTickLabel',[])
 set(rightAx,'XTick',[])
 set(rightAx,'FontName','Helvetica'); set(rightAx,'FontSize',18)
 hold off
+
+set(f9034,'PaperPositionMode','manual')
+set(f9034,'PaperUnits','inches','PaperPosition',[0 0 9 9])
+print(f9034,'-dpng','r400')
 
 end

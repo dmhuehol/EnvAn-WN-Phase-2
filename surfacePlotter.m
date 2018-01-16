@@ -350,7 +350,8 @@ else
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
-    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',35)
+    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',25)
+    xlabel('Time (hour)')
   
     %Make adaptive title including start and end times
     weatherCodeTitleString = 'Precip type data for ';

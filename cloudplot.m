@@ -16,4 +16,5 @@ for cloudLoop = 1:numberOfClouds
     set(cloud,'EdgeColor',[255,128,0]./255)
     set(cloud,'LineWidth',5)
 end
+
 end
