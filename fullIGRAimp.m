@@ -53,8 +53,8 @@ disp('Import started!')
 disp('Successfully created raw soundings structure! 1/5')
 
 % Filter soundings by time
-filter_settings.year = [2002 2016]; %Settings to remove all data that does not lie between 2002 and 2016, inclusive
-filter_settings.month = [5 6 7 8 9]; %Settings to remove all data that occurs in the months of May through September, inclusive
+filter_settings.year = [1980 2016]; %Settings to remove all data that does not lie between 2002 and 2016, inclusive
+filter_settings.month = [4 5 6 7 8 9 10]; %Settings to remove all data that occurs in the months of May through September, inclusive
 [filtered] = timefilter(sndng,filter_settings); %Create a new structure with only the data needed
 disp('Time filtering complete! 2/5')
 

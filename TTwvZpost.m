@@ -13,12 +13,13 @@
     %m: two digit month
     %d: one or two digit day
     %t: one or two digit time
-    %sounding: a structure of soundings data which has had  wetbulb
-    %temperature added to it
-    %kmTop
+    %sounding: a structure of soundings data with wetbulb temperature
+    %kmTop: OPTIONAL maximum km to plot. Defaults to 13km (roughly the
+    %boundary of the troposphere); melting layers at Long Island are always
+    %within 5km.
     %
     %
-    %Version Date: 11/22/17
+    %Version Date: 11/28/17
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -26,7 +27,7 @@
     %See also fullIGRAimp, wetbulb, addWetbulb
     %
 
-function [foundit] = TTwvZ(y,m,d,t,sounding,kmTop)
+function [foundit] = TTwvZpost(y,m,d,t,sounding,kmTop)
 if exist('kmTop','var')==0
     kmTop = 13;
 end
@@ -123,18 +124,25 @@ freezingyg = ones(1,length(freezingxg)).*0;
 randomFig = randi(10,100,1); %Generates a random number
 figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(geotemp,geoheightvector,'k',freezingyg,freezingxg,'r') %Tvz
+plot(geotemp,geoheightvector,'Color',[255 128 0]./255,'LineWidth',3)
 hold on
-plot(geowet,geoheightvector,'b');
-legend('Temperature','Freezing','Wetbulb')
+plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
+hold on
+plot(geowet,geoheightvector,'b','LineWidth',3);
+legend({'Temperature','Freezing','Wetbulb'},'FontName','Oxygen','FontSize',20)
 dateString = num2str(sounding(foundit).valid_date_num); %For title
-title(['Sounding for ' dateString])
-xlabel('Temperature in C')
-ylabel('Height in km')
+titleHand = title(['Sounding for ' dateString]);
+set(titleHand,'FontName','Oxygen'); set(titleHand,'FontSize',37)
+xlabHand = xlabel('Temperature in C');
+set(xlabHand,'FontName','Oxygen'); set(xlabHand,'FontSize',37)
+ylabHand = ylabel('Height in km');
+set(ylabHand,'FontName','Oxygen'); set(ylabHand,'FontSize',37)
 limits = [0 kmTop];
 ylim(limits);
 ax = gca;
 rightAx = axes('ylim',limits,'color','none','YAxisLocation','right');
+set(rightAx,'YTick',[])
+set(ax,'Box','off')
 switch kmTop
     case 13
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
@@ -181,8 +189,11 @@ switch kmTop
         return
 end
 set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
+set(ax,'FontName','Oxygen'); set(ax,'FontSize',30)
 set(rightAx,'XTickLabel',[])
 set(rightAx,'XTick',[])
+set(rightAx,'Box','off')
+set(rightAx,'FontName','Oxygen'); set(rightAx,'FontSize',30)
 hold off
-
+print(f9034,'-dpng','-r300')
 end

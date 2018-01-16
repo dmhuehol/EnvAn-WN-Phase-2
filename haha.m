@@ -56,6 +56,10 @@ plot(temp7(1:10),height7(1:10),'p-','Color',[0 0 0],'MarkerFaceColor',[0 0 0]);
 hold on
 plot(temp7(14:15),height7(14:15),'p-','Color',[0 0 0],'MarkerFaceColor',[0 0 0]);
 
+hold on
+plot(wetSound(48).wetbulb,wetSound(48).height,'-)
+
+
 xlim([-4 8])
 ylim([0 5])
 aa = ylabel('Height (km)');
