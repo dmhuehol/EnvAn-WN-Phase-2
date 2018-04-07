@@ -154,4 +154,5 @@ ASOS data is challenging to work with; these are the websites containing documen
 https://www.weather.gov/media/asos/aum-toc.pdf - official ASOS documentation, but not perfect
 https://courseware.e-education.psu.edu/courses/meteo101/Images/Section12/metar_decoding1203.html - more METAR codes
 http://wx.erau.edu/reference/text/metar_decode_key.pdf - more METAR codes
+https://www.ofcm.gov/publications/fmh/FMH1/FMH1.pdf - more ASOS documentation, includes some useful weather code information
 https://www.faa.gov/air_traffic/weather/asos/ - map of all ASOS stations
