@@ -146,3 +146,12 @@ Other files:
 Station list: Annotated list of ASOS stations and sounding launches near Stony Brook University
 
 wetSound12315: Soundings structure with wetbulb temperatures added for January, February, and March 2015. This way addWetbulb and its 45 minute runtime can be avoided as much as possible.
+
+ASOS documentation:
+
+ASOS data is challenging to work with; these are the websites containing documentation that helped me write ASOSimportFiveMin.
+
+https://www.weather.gov/media/asos/aum-toc.pdf - official ASOS documentation, but not perfect
+https://courseware.e-education.psu.edu/courses/meteo101/Images/Section12/metar_decoding1203.html - more METAR codes
+http://wx.erau.edu/reference/text/metar_decode_key.pdf - more METAR codes
+https://www.faa.gov/air_traffic/weather/asos/ - map of all ASOS stations
