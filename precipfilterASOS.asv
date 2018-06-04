@@ -46,23 +46,21 @@ soundingMatch(notFound) = [];
 
 spreadCount = 1;
 foundCount = 1;
-%Change to use spread instead of 12
-while foundCount <= length(foundIt)
-    if foundIt(foundCount)>12 && foundIt(foundCount)+12<length(asosData)
+while spreadCount <= length(foundIt)
+    if foundIt(spreadCount)>12 && foundIt(foundCount)+12<length(asosData)
         found(spreadCount) = foundIt(foundCount)-12;
-        found(spreadCount:spreadCount+12) = found(spreadCount):found(spreadCount)+12;
-    elseif foundIt(foundCount)<12
+        found(spreadCount+1) = foundIt(sprdCount)+12;
+    elseif foundIt(spreadCount)<12
         found(spreadCount) = 1;
-        found(spreadCount:spreadCount+12) = foundIt(foundCount):foundIt(foundCount)+12;
-    elseif foundIt(foundCount)+12>length(asosData)
+        found(spreadCount+1) = foundIt(spreadCount)+12;
+    elseif foundIt(spreadCount)+12>length(asosData)
         found(spreadCount) = foundIt(end)-12;
-        found(spreadCount:spreadCount+12) = foundIt(end)-12:foundIt(end);        
+        found(spreadCount+1) = foundIt(end);        
     end 
-    spreadCount = spreadCount+13;
-    foundCount = foundCount+1;
+    spreadCount = spreadCount+2;
 end
 
-asosMatch = asosData(found); %Extracts all times corresponding to sounding times +/- spread number of indices
+asosMatch = asosData(foundIt);
 
 
 stop = 3;

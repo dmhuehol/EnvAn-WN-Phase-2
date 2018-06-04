@@ -7,12 +7,12 @@ function datetickzoom(varargin)
 % version 1.0 (2.48 KB) by Christophe Lauwerys
 
 if nargin==2 && isstruct(varargin{2}) && isfield(varargin{2},'Axes') && isscalar(varargin{2}.Axes)
-    datetickdata = getappdata(varargin{2}.Axes,'datetickdata');
+    datetickdata = getappdata(varargin{2}.Axes,'datetickdata'); %getappdata requests variables stored in a GUI
     if isstruct(datetickdata) && isfield(datetickdata,'axh') && datetickdata.axh==varargin{2}.Axes
-        axh = datetickdata.axh;
-        ax = datetickdata.ax;
-        dateform = datetickdata.dateform;
-        keep_ticks = datetickdata.keep_ticks;
+        axh = datetickdata.axh; %axis handle
+        ax = datetickdata.ax; %axis handle
+        dateform = datetickdata.dateform; %datestring style
+        keep_ticks = datetickdata.keep_ticks; %Ticks that will be kept at new zoom level
         if keep_ticks
             set(axh,[ax,'TickMode'],'auto')
             if ~isempty(dateform)

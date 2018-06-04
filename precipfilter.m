@@ -25,8 +25,10 @@
     %priority as Mesowest is no longer preferred for surface precip
     %data.
     %
-    %Version date: 8/19/17
-    %Last major revision: 8/19/17
+    %THIS FUNCTION MARKED FOR REMOVAL 4/21/2018
+    %
+    %Version date: 8/19/2017
+    %Last major revision: 8/19/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics

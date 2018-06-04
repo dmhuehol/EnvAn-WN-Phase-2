@@ -19,8 +19,7 @@
     %within 5km.
     %
     %
-    %Version Date: 12/14/17
-    %Last major revision: 12/14/17
+    %Version Date: 11/28/17
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -28,7 +27,7 @@
     %See also fullIGRAimp, wetbulb, addWetbulb
     %
 
-function [foundit] = TTwvZ(y,m,d,t,sounding,kmTop)
+function [foundit] = TTwvZ(y,m,d,t,sounding,kmTop,figNumber)
 if exist('kmTop','var')==0
     kmTop = 13;
 end
@@ -68,91 +67,119 @@ if ~exist('foundit','var') %If the date doesn't have a corresponding entry in th
     disp('No data available for this date!')
     return %Stop the function from running any more
 end
-if ~isfield(sounding,'height')
-    sounding = addHeight(sounding);
+
+mb200 = find(sounding(foundit).pressure >= 20000); %Find indices of readings where the pressure is greater than 20000 Pa
+presheight = sounding(foundit).pressure(mb200); %Select readings greater than 20000 Pa
+presheightvector = presheight/100; %Convert Pa to hPa (mb)
+geoheightvector = NaN;
+
+% First geopotential height entry should be straight from the data, if possible
+% if isnan(sounding(foundit).geopotential(1))==0
+%     geoheightvector(1) = sounding(foundit).geopotential(1)/1000;
+%     %disp('1 is good')
+% elseif isnan(sounding(foundit).geopotential(1))==1 && isnan(sounding(foundit).geopotential(2))==0
+%     geoheightvector(1) = sounding(foundit).geopotential(2)/1000;
+%     %disp('2 is good')
+%     %disp(foundit)
+% elseif isnan(sounding(foundit).geopotential(1))==1 && isnan(sounding(foundit).geopotential(2))==1 && isnan(sounding(foundit).geopotential(3))==0
+%     geoheightvector(1) = sounding(foundit).geopotential(3)/1000;
+%     %disp('all the way to 3')
+%     %disp(foundit)
+% else
+%     %disp('This data is really bad! Wow!')
+%     %disp(foundit)
+% end
+
+geoheightvector = geoheightvector'; %transpose to match shape of others, important for polyxpoly
+
+%define temp as the temperatures from the surface to 200 mb
+prestemp = sounding(foundit).temp(mb200);
+geotemp = sounding(foundit).temp(mb200);
+geowet = sounding(foundit).wetbulb(mb200);
+
+R = 287.75; %dry air constant J/(kgK)
+grav = 9.81; %gravity m/s^2
+
+for z = 1:length(presheightvector')
+    %geoheightvector(z) = 8*log(presheightvector(1)/presheightvector(z)); %calculate height data based on the pressure height; this prevents loss of warmnoses based on the sparse height readings available in the IGRA dataset
+    geoheightvector(z) = (R/grav*(((geotemp(1)+273.15)+(geotemp(z)+273.15))/2)*log(presheightvector(1)/presheightvector(z)))/1000; %Equation comes from Durre and Yin (2008) http://journals.ametsoc.org/doi/pdf/10.1175/2008BAMS2603.1
 end
 
+% Extra quality control to prevent jumps in the graphs
+geoheightvector(geoheightvector<-150) = NaN;
+geoheightvector(geoheightvector>100) = NaN;
+presheightvector(presheightvector<0) = NaN;
+prestemp(prestemp<-150) = NaN;
+prestemp(prestemp>100) = NaN;
+geotemp(geotemp<-150) = NaN;
+geotemp(geotemp>100) = NaN;
+sounding(foundit).rhum(sounding(foundit).rhum<0) = NaN;
+sounding(foundit).dewpt(sounding(foundit).dewpt<-150) = NaN;
+sounding(foundit).temp(sounding(foundit).temp<-150) = NaN;
 
 %Freezing line for Tvz and TvP charts
 freezingxg = [0 16];
 freezingyg = ones(1,length(freezingxg)).*0;
 
 % Plotting
-randomFig = randi(10,100,1); %Generates a random number
-figNumber = randomFig(1);
+%randomFig = randi(10,100,1); %Generates a random number
+%figNumber = randomFig(1);
 f9034 = figure(figNumber); %New figure, numbered randomly to reduce the risk of overwriting a currently-open figure when opening several TvZ figures at once
-plot(sounding(foundit).temp,sounding(foundit).height,'--','Color',[255 128 0]./255,'LineWidth',2.4)
+plot(geotemp,geoheightvector,'Color',[255 128 0]./255,'LineWidth',2.4)
 hold on
 plot(freezingyg,freezingxg,'Color',[1 0 0]) %Tvz
 hold on
-plot(sounding(foundit).wetbulb,sounding(foundit).height,'b');
+plot(geowet,geoheightvector,'b','LineWidth',2.4);
 legend('Temperature','Freezing','Wetbulb')
 dateString = num2str(sounding(foundit).valid_date_num); %For title
 titleHand = title(['Sounding for ' dateString]);
-set(titleHand,'FontName','Helvetica'); set(titleHand,'FontSize',20)
+set(titleHand,'FontName','Oxygen Bold'); set(titleHand,'FontSize',20)
 xlabHand = xlabel('Temperature in C');
-set(xlabHand,'FontName','Helvetica'); set(xlabHand,'FontSize',20)
+set(xlabHand,'FontName','Oxygen Bold'); set(xlabHand,'FontSize',20)
 ylabHand = ylabel('Height in km');
-set(ylabHand,'FontName','Helvetica'); set(ylabHand,'FontSize',20)
+set(ylabHand,'FontName','Oxygen Bold'); set(ylabHand,'FontSize',20)
 limits = [0 kmTop];
 ylim(limits);
 ax = gca;
-rightAx = axes('ylim',limits,'color','none','YAxisLocation','right');
-set(ax,'Box','off')
+set(ax,'box','off')
 switch kmTop
     case 13
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11 13])
     case 12
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
     case 11
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9 11])
     case 10
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
     case 9
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7 9])
     case 8
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
     case 7
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 7])
     case 6
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
     case 5
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5])
     case 4
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4])
     case 3
         set(ax,'YTick',[0 0.5 1 1.5 2 2.5 3])
-        set(rightAx,'YTick',[0 0.5 1 1.5 2 2.5 3])
     case 2
         set(ax,'YTick',[0 0.25 0.5 0.75 1 1.25 1.5 1.75 2])
-        set(rightAx,'YTick',[0 0.25 0.5 0.75 1 1.25 1.5 1.75 2])
     case 1
         set(ax,'YTick',[0 0.25 0.5 0.75 1])
-        set(rightAx,'YTick',[0 0.25 0.5 0.75 1])
     case 0
         disp('No data displayed!')
         clf
         return
 end
-set(ax,'XTick',[-70 -60 -50 -40 -30 -20 -10 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 10])
-set(ax,'FontName','Helvetica'); set(ax,'FontSize',18)
-set(rightAx,'XTickLabel',[])
-set(rightAx,'XTick',[])
-set(rightAx,'FontName','Helvetica'); set(rightAx,'FontSize',18)
+set(ax,'XTick',[-30 -15 -10 -6 -4 -3 -2 -1 0 1 2 3 4 6 7 10])
+set(ax,'FontName','Oxygen'); set(ax,'FontSize',18)
 hold off
-
-set(f9034,'PaperPositionMode','manual')
-set(f9034,'PaperUnits','inches','PaperPosition',[0 0 9 9])
-print(f9034,'-dpng','r400')
-
+xlim([-15 10])
+%print(f9034,'-dpng','-r300')
+% set(f9034,'PaperPositionMode','manual')
+% set(f9034,'PaperUnits','inches','PaperPosition',[0 0 9 9])
+% print(f9034,'-dpng','-r400')
 end

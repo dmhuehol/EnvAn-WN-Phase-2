@@ -48,12 +48,14 @@ maxWind = max(windSpd);
 f2 = figure(2);
 hiddenArrow = compass(maxWind);
 set(hiddenArrow,'Visible','off');
-cb = colorbar;
+cb = colorbar; %Only available in MATLAB2014b or newer
 for datescount = 1:length(time)
     dateStrings{datescount} = datestr(time(datescount));
 end
+%Operations involving colorbar object
 set(cb,'TickLabels',dateStrings);
 set(cb,'Ticks',linspace(0,1,length(time)));
+
 hold on
 
 for windC = 1:numWind

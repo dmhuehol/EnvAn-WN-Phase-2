@@ -1,7 +1,6 @@
-function [dewpoint,relative_humidity] = dewrelh(temp,dpd)
 %%dewrelh
     %Function to calculate dewpoint and relative humidity, given
-    %inputs of temperature and dewpoint depression, both in deg C.
+    %inputs of temperature and dewpoint depression in deg C.
     %
     %General form: [dewpoint,relative_humidity] = dewrelh(temp,dpd)
     %
@@ -13,27 +12,24 @@ function [dewpoint,relative_humidity] = dewrelh(temp,dpd)
     %temp: value or vector of temperatures. Units must be degrees Celsius!
     %dpd: value or vector of dewpoint depressions. Units must be degrees Celsius!
     %
-    %Version date: 9/1/17
-    %Last major revision: 5/31/17
+    %Version date: 4/20/2018
+    %Last major revision: 5/31/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
 
-
+function [dewpoint,relative_humidity] = dewrelh(temp,dpd)
 % Check for missing inputs, and give appropriate warnings
 if ~exist('temp','var') && ~exist('dpd','var')
-    disp('Please input temperature and dewpoint depression values!')
-    return
-elseif ~exist('dpd','var')
-    disp('Please input dewpoint depression value!')
-    return
-elseif ~exist('temp','var')
-    disp('Please input temperature value!')
-    return
+    msg = 'Please input temperature and dewpoint depression!';
+    error(msg)
+elseif nargin==1
+    msg = 'Please input both temperature and dewpoint depression!';
+    error(msg)
 end
 
-dewpoint = (temp - dpd); %Dewpoint is difference of temperature and dewpoint depression
+dewpoint = temp - dpd; %Dewpoint is difference of temperature and dewpoint depression
 relative_humidity = 100*(exp((17.625*dewpoint)./(243.04+dewpoint))./exp((17.625*temp)./(243.04+temp))); %The August-Roche-Magnus equation, accurate to within 0.4% from -40C to 50C
 
 % Another way to calculate relative humidity, uncomment if you don't want ARM for some reason

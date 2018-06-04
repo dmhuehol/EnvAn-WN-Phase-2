@@ -30,7 +30,7 @@ function [ax,hlines] = plotyyy(x1,y1,x2,y2,x3,y3,ylabels)
 %April 2000; Last revision: 14-Nov-2001
 %
 %Edited by Daniel Hueholt
-%Last revision 9 October 2017
+%Last revision 10/9/2017
 
 if nargin==6
    %Use empty strings for the ylabels

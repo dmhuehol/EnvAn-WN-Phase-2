@@ -19,6 +19,8 @@ function [LCL] = cloudbaseplot(sounding,snum,plotornot,display)
     %Planned additions include: guessing at multiple cloud bases, cloud
     %thickness, denotion of cloud base/clouds with lines/rectangles.
     %
+    %MARKED FOR REMOVAL 4/6/2018, SUPERSEDED BY findTheCloud
+    %
     %Version Date: 8/29/17
     %Last major revision: 6/21/17
     %Written by Daniel Hueholt

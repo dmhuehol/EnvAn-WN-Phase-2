@@ -1,3 +1,19 @@
+%%compositeDemo
+    %Demonstrates a composite wetbulb vs height plot. Legacy code from the
+    %AMS 2018 poster.
+    %
+    %Written by Daniel Hueholt
+    %North Carolina State University
+    %Undergraduate Research Assistant at Environment Analytics
+    %Version date: 4/21/2018
+    %Last major revision: 4/21/2018
+    %
+    %See also compositePlotter
+    %
+
+%This was coded as a desperation move, and literally has all of the lines
+%and points hard-coded in. To see how to actually make a composite plot,
+%look at the code for compositePlotter.
 
 height1 = wetSound(48).height(1:8); %all in cloud
 temp1 = double(wetSound(48).wetbulb(1:8))';
@@ -63,5 +79,5 @@ aa = ylabel('Height (km)');
 set(aa,'FontName','Helvetica'); set(aa,'FontSize',25)
 ax = gca;
 set(ax,'FontName','Helvetica'); set(ax,'FontSize',21)
-ab = xlabel('Wetbulb Temperature (C)')
+ab = xlabel('Wetbulb Temperature (C)');
 set(ab,'FontNAme','Helvetica'); set(ab,'FontSize',25)

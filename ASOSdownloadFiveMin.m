@@ -4,51 +4,64 @@
     %
     %General form: ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath)
     %Inputs:
-    %emailAddress: The user's complete email address--functions as a
-    %password, as required by the NCDC FTP server.
+    %emailAddress: The user's complete email address. This functions as a
+    %password, and is required by the NCDC FTP server.
     %station: Four character station ID, such as KHWV for Brookhaven Airport,
     %or KISP for Islip.
-    %year: four-digit year
-    %month: OPTIONAL two-digit month (if omitted, function will download an
-    %entire year of data).
+    %year: Four-digit year
+    %month: One or two-digit month. Use 'all' to download a full year.
+    %downloadedFilePath: designate path to download to. Use pwd to download
+    %to working directory. Type a 'folder name' to create a new folder named 'folder name'
+    %in the working directory and download to it.
     %
     %Outputs:
-    %None
+    %None in the workspace (obviously, new files will be created at the
+    %requested file path)
     %
-    %Version Date: 10/13/2017
-    %Last major revision: 9/15/2017
+    %Note: if function is failing for no apparent cause, it is likely an NCDC server problem.
+    %Wait some time and try again, or try a different email address.
+    %
+    %Version Date: 3/18/2018
+    %Last major revision: 3/18/2018
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
     
-function [] = ASOSdownloadFiveMin(downloadedFilePath,emailAddress,station,year,month,varargin)
-% Check for month presence
-if exist('month','var')==0 %This way, the spendy exist function only needs to be called once
-    monthPresence = 0;
-else
-    monthPresence = 1;
+function [] = ASOSdownloadFiveMin(emailAddress,station,year,month,downloadedFilePath)
+if nargin~=5 %Needs all inputs to work properly
+    msg = 'Improper number of inputs, check syntax!';
+    error(msg);
 end
-% Check for file path to place data files in
-if exist('downloadedFilePath','var')==0
-    downloadedFilePath = pwd; %Set the default file directory to the working directory
+
+% Check to see if whole year was requested
+if strcmp(month,'all')==1
+    allYear = 1;
+else
+    allYear = 0;
 end
 
 % For making paths, strings, and path strings
-slash = '/';
+slash = '/'; %#ok
 dash = '-';
 obsType = '6401';
 zeroChar = '0';
-space = ' ';
+space = ' '; %#ok
 Y = 'Y'; %#ok
+y = 'y'; %#ok
+yes = 'yes'; %#ok
+Yes = 'yes'; %#ok
 N = 'N'; %#ok
+n = 'n'; %#ok
+no = 'no'; %#ok
+No = 'no'; %#ok
 fileExtension = '.dat';
 
-% If month isn't entered, check with user to be sure that they want to download a year
-if monthPresence == 0
+% If year of data is requested, double-check with the user
+if allYear == 1
     wholeYearMessageFirst = 'Current input will download all data from ';
     yearString = num2str(year);
-    wholeYearMessageBegin = [wholeYearMessageFirst,space,yearString];
+    wholeYearMessageBegin = [wholeYearMessageFirst,yearString];
     wholeYearMessageEnd = '. Continue, Y/N?';
     wholeYearMessage = strcat(wholeYearMessageBegin,wholeYearMessageEnd);
     YN = input(wholeYearMessage);
@@ -57,12 +70,7 @@ if monthPresence == 0
     elseif strcmp(YN,'N')==1 || strcmp(YN,'n')==1 || strcmp(YN,'No')==1 || strcmp(YN,'no')==1
         return %In this case the user has entered 'N'
     end
-else
-    %do nothing
-end
-
-% Ensure two-digit month
-if monthPresence == 1 %If there is an input month
+else %If a month was entered
     monthString = num2str(month);
     if numel(monthString)==1 %Check the number of digits in month
         monthString = strcat(zeroChar,monthString); %Add a leading zero if month is one-digit
@@ -74,7 +82,7 @@ fiveMinPath = '/pub/data/asos-fivemin/'; %Path to five minute data on FTP server
 yearPrefix = strcat(obsType,dash); %ASOS data is stored by year in folders with the prefix 6401-. For example, 2015 data is stored in the folder 6401-2015.
 yearString = num2str(year); yearDirString = strcat(yearPrefix,yearString); %Creates the year directory string by concatenating the prefix and the input year
 yearPath = strcat(fiveMinPath,yearDirString); %This is the path for the input year
-if monthPresence==1
+if allYear==0
     obsFilename = [obsType zeroChar station yearString monthString fileExtension]; %If month is present, download the specific month file.
 else
     obsFilename = [obsType zeroChar station yearString '*' fileExtension]; %If month is omitted, download the entire year.

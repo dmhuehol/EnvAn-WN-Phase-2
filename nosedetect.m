@@ -1,9 +1,11 @@
 function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundStruct,first,last,freezeT,top)
 %%nosedetect
-    %Function which detects the presence of warmnoses within a given
+    %Function which detects the presence of layers above 0 degC within a given
     %soundings data structure and gathers data about their propertes;
-    %returns two output structures, one of which contains only soundings with warmnoses and
-    %one of which contains those with no warmnoses.
+    %returns two output structures, one of which contains only soundings with layers and
+    %one of which contains those with none of these layers.
+    %
+    %Name is a legacy from when these layers were called "warm noses."
     %
     %General form:
     %[presheightvector,geoheightvector,goodtemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundstruct,first,last,freezeT,top)

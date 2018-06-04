@@ -19,16 +19,21 @@ function [numdex] = findsnd(y,m,d,h,sndstructure,sndstructure2,sndstructure3)
     %contain as many indices as there are soundings, and will display NaN for
     %structures where the date is not present.
     %
-    %NOTE: If inputting a table, input with table2struct(input).
+    %NOTE: Sounding tables can also be used as input! Just be sure to input
+    %as table2struct(table) and be patient as runtime is longer this way.
     %
-    %Version Date: 9/1/17
-    %Last major revision: 5/31/17
+    %Version date: 4/20/2018
+    %Last major revision: 5/31/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
-
-dateFull = [y,m,d,h];
+try
+    dateFull = [y,m,d,h];
+catch ME;
+    msg = 'Improper input! Time input must include year, month, day and hour.'; %Usually the problem is that the time has been entered wrong, such as missing an hour input
+    error(msg);
+end
 
 switch nargin
     case 7 %All possible inputs
@@ -36,7 +41,7 @@ switch nargin
         %3 for loops to find the indices in all structures
         for k = 1:length(sndstructure)
             if isequal(sndstructure(k).valid_date_num,dateFull)==1 %Looking for the datenumber which matches the input datenumber
-                disp(k) %Where the if statement is true, the counter is the index corresponding to the correct soundings entry
+                disp(['Sounding number in first structure is ' num2str(k)]) %Where the if statement is true, the counter is the index corresponding to the correct soundings entry
                 numdex(1) = k; %Index in first structure is first entry in output array
                 break %Move to the next loop as soon as the index is found
             end
@@ -44,7 +49,7 @@ switch nargin
         for k2 = 1:length(sndstructure2)
             try %Just in case
                 if isequal(sndstructure2(k2).valid_date_num,dateFull)==1
-                    disp(k2)
+                    disp(['Sounding number in second structure is ' num2str(k2)])
                     numdex(2) = k2; %Index in second structure is second entry in output array
                     break
                 end
@@ -55,7 +60,7 @@ switch nargin
         for k3 = 1:length(sndstructure3)
             try
                 if isequal(sndstructure3(k3).valid_date_num,dateFull)==1
-                    disp(k3)
+                    disp(['Sounding number in third structure is ' num2str(k3)])
                     numdex(3) = k3; %Index in third structure is third entry in output array
                     break
                 end
@@ -68,7 +73,7 @@ switch nargin
         %2 for loops to find the indices in all structures
         for k = 1:length(sndstructure)
             if isequal(sndstructure(k).valid_date_num,dateFull)==1
-                disp(k)
+                disp(['Sounding number in first structure is ' num2str(k)])
                 numdex(1) = k; %Index in first structure is first entry in output array
                 break
             end
@@ -76,7 +81,7 @@ switch nargin
         for k2 = 1:length(sndstructure2)
             try
                 if isequal(sndstructure2(k2).valid_date_num,dateFull)==1
-                    disp(k2)
+                    disp(['Sounding number in second structure is ' num2str(k2)])
                     numdex(2) = k2; %Index in second structure is second entry in output array
                     break
                 end
@@ -85,26 +90,26 @@ switch nargin
             end
         end
     case 5
-        disp('One soundings structure was entered.')
         for k = 1:length(sndstructure)
             if isequal(sndstructure(k).valid_date_num,dateFull)==1
-                disp(k)
+                disp(['Sounding number is ' num2str(k)])
                 numdex = k; %Index is output
                 break
             end
         end
-    otherwise %Less than 5 entries implies that either a time entry was left off or there was no sounding data structure specified
-        msg = 'Improper number of inputs! Please check syntax and try again.'; %either way
+    otherwise %Less than 5 entries implies that either several time entries were left off or there was no sounding data structure specified
+        msg = 'Improper input! Please check syntax and try again.'; %either way
         error(msg) %it's very wrong
 end
 
-if ~exist('numdex','var') %if after switch/case there still is no numdex
-    disp('The input time was not found in the structure(s)!')
-    return
+if ~exist('numdex','var') %If after searching the structures there still is no numdex, then the input time was not found in the structure(s)
+    numdex = NaN;
+    msg = 'The input time was not found in the structure(s)!';
+    disp(msg)
 end
 
-numdex(numdex==0) = NaN; %any 0 entries should be NaN to be clearer that the index is not present in the respective structure
+numdex(numdex==0) = NaN; %Any 0 entries should be NaN to be clearer that the index is not present in the respective structure
 
-disp(dateFull) %display the datenumber to make it easy for the user to know what they entered
+disp(['Input time: ' num2str(dateFull)]) %Display the datenumber to make it easy for the user to know what they entered
 
 end
