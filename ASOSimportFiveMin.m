@@ -38,7 +38,7 @@
     %Links to useful ASOS documentation can be found in the
     %EnvAn-WN-Phase-2 repository readme on github user page @dmhuehol.
     %
-    %Version date: 4/26/2018
+    %Version date: 6/04/2018
     %Last major revision: 4/26/2018
     %Written by: Daniel Hueholt
     %Undergraduate Research Assistant at Environment Analytics
@@ -106,13 +106,16 @@ for count = length(ASOSstruct):-1:1
     if sscanf(ASOSstruct(count).Day,'%2f')==31 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for 31-day months
         if sscanf(ASOSstruct(count).Month,'%2f')==12 %If said month is December
             usefulStruct(count).Year = usefulStruct(count).Year+1; %Increment year as well
-            usefulStruct(count).Month = 1; %And the month is January
         else
             usefulStruct(count).Month = usefulStruct(count).Month+1; %Otherwise, just increase the month by 1
         end
     end
     if usefulStruct(count).Day==1 && count>288 %If the day is reported as one, but the count is greater than the first day
-        usefulStruct(count).Month = usefulStruct(count).Month+1; %It's actually getting into the coda of the report, which comes from the next month
+        if usefulStruct(count).Month ~= 12
+            usefulStruct(count).Month = usefulStruct(count).Month+1; %It's actually getting into the coda of the report, which comes from the next month
+        elseif usefulStruct(count).Month == 12 %Unless the month is December
+            usefulStruct(count).Month = 1; %in which case the month is January
+        end
     end
     usefulStruct(count).Hour = str2num(ASOSstruct(count).ZuluTime(3:4)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
     usefulStruct(count).Minute = str2num(ASOSstruct(count).ZuluTime(5:6)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust

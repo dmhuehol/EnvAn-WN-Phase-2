@@ -3,7 +3,7 @@ function [sndng] = IGRAimpf(input_file)
     %Function to import IGRA v1 files. Given a .dat file of
     %soundings data, returns a structure ('sndng') which contains the following
     %fields:
-    %valid_date_num - a MATLAB date serial number
+    %valid_date_num - a MATLAB date vector
     %year
     %month
     %day
@@ -32,7 +32,7 @@ function [sndng] = IGRAimpf(input_file)
     %
     %Function created by Daniel Hueholt
     %Based on a script originally written by Megan Amanatides circa 2013
-    %Version date: 4/21/2018
+    %Version date: 6/04/2018
     %Last major revision: 5/24/2017
     %
     %See also: IGRAimpfil
