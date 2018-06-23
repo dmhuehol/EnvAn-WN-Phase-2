@@ -1,61 +1,64 @@
-function [presHeightVector,geoHeightVector,goodWetTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = wetNosedetect(soundStruct,first,last,freezeT,top)
 %%nosedetect
-%Function which detects the presence of warmnoses within THE WETBULB FIELD of a given
-%soundings data structure and gathers data about their propertes;
-%returns two output structures, one of which contains only soundings with warmnoses and
-%one of which contains those with no warmnoses.
-%
-%General form:
-%[presheightvector,geoheightvector,goodtemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundstruct,first,last,freezeT,top)
-%
-%Outputs:
-%presheightvector: vector of pressure levels in hPa (useful mostly for
-%   use with other functions/scripts, such as noseplot)
-%geoheightvector: vector of geopotential height levels in km, same size as
-%   presheight vector
-%goodtemp: vector of temperatures, mostly for use for calls that need
-%   plotting, same size as presheightvector
-%warmnosesfinal: structure containing soundings data and warmnose data for
-%   only those soundings which contain warmnoses
-%nowarmnosesfinal: structure containing soundings data for only those
-%   soundings which do not contain warmnoses
-%freezingx: range for pressure
-%freezingxg:range for height
-%freezingy: for freezing line pressure
-%freezingyg: for freezing line height
-%freezing set of variables is output on behalf of noseplot
-%x: pressure level of warmnose
-%y: temperature of warmnose
-%gx: height of warmnose
-%gy: temperature of warmnose
-%
-%Inputs:
-%soundstruct: structure containing IGRA v1 soundings data
-%first: sounding number for beginning of loop, defaults to 1
-%last: sounding number for end of loop, defaults to length(soundstruct)
-%freezeT: value (in deg C) for freezing line--crossing this line designates
-%   the warmnose. Defaults to 0.5 deg C.
-%top: maximum height/pressure level to be examined, defaults to 200mb/15km
-%
-%KNOWN ISSUES: this function has a ton of outputs; several cases are not
-%represented properly; soundings with x>5 are automatically
-% assumed to be instrument error and the (very) few soundings with
-% actual x>5 profiles are removed unjustly. These problems will be rectified
-% soon, likely before the end of the September.
-%
-%KNOWN FLAWED CASES: cold ground and point nose outside of x = 5
-%
-%The flawed cases represent a high priority and will be the first bug
-%to be fixed after the next push. (8/24/17)
-%
-%Version Date: 11/12/17
-%Last major edit: 8/24/17
-%Written by: Daniel Hueholt
-%North Carolina State University
-%Undergraduate Research Assistant at Environment Analytics
-%
-%See also IGRAimpf, noseplot, prestogeo, fullIGRAimp
-%
+    %Function which detects the presence of warmnoses within THE WETBULB FIELD of a given
+    %soundings data structure and gathers data about their propertes;
+    %returns two output structures, one of which contains only soundings with warmnoses and
+    %one of which contains those with no warmnoses. Functions exactly as
+    %nosedetect, but for wetbulb temperature.
+    %
+    %General form:
+    %[presheightvector,geoheightvector,goodtemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundstruct,first,last,freezeT,top)
+    %
+    %Outputs:
+    %presheightvector: vector of pressure levels in hPa (useful mostly for
+    %   use with other functions/scripts, such as noseplot)
+    %geoheightvector: vector of geopotential height levels in km, same size as
+    %   presheight vector
+    %goodtemp: vector of temperatures, mostly for use for calls that need
+    %   plotting, same size as presheightvector
+    %warmnosesfinal: structure containing soundings data and warmnose data for
+    %   only those soundings which contain warmnoses
+    %nowarmnosesfinal: structure containing soundings data for only those
+    %   soundings which do not contain warmnoses
+    %freezingx: range for pressure
+    %freezingxg:range for height
+    %freezingy: for freezing line pressure
+    %freezingyg: for freezing line height
+    %freezing set of variables is output on behalf of noseplot
+    %x: pressure level of warmnose
+    %y: temperature of warmnose
+    %gx: height of warmnose
+    %gy: temperature of warmnose
+    %
+    %Inputs:
+    %soundstruct: structure containing IGRA v1 soundings data
+    %first: sounding number for beginning of loop, defaults to 1
+    %last: sounding number for end of loop, defaults to length(soundstruct)
+    %freezeT: value (in deg C) for freezing line--crossing this line designates
+    %   the warmnose. Defaults to 0.5 deg C.
+    %top: maximum height/pressure level to be examined, defaults to 200mb/15km
+    %
+    %KNOWN ISSUES: this function has a ton of outputs; several cases are not
+    %represented properly; soundings with x>5 are automatically
+    % assumed to be instrument error and the (very) few soundings with
+    % actual x>5 profiles are removed unjustly. These problems will be rectified
+    % so    on, likely before the end of the September.
+    %
+    %KNOWN FLAWED CASES: cold ground and point nose outside of x = 5
+    %
+    %This and nosedetect are the two functions I'm leaving in development
+    %limbo. May revisit these eventually but both would require a lot to
+    %fix and are of dubious use anyway.
+    %
+    %Version Date: 6/21/2018
+    %Last major edit: 8/24/2017
+    %Written by: Daniel Hueholt
+    %North Carolina State University
+    %Undergraduate Research Assistant at Environment Analytics
+    %
+    %See also IGRAimpf, noseplot, prestogeo, fullIGRAimp
+    %
+
+function [presHeightVector,geoHeightVector,goodWetTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = wetNosedetect(soundStruct,first,last,freezeT,top)
 
 % Set defaults
 if ~exist('freezeT','var')

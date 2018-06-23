@@ -26,6 +26,8 @@
     %wires, with beads representing the current precipitation type(s)
     %
     %Requires external functions tlabel, addaxis, and windbarb
+    %   Be sure to add the addaxis6 folder to the path before running
+    %   surfacePlotter.
     %
     %Future development: display precipitation intensity on abacus plot,
         %display wind character
@@ -33,7 +35,7 @@
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version date: 11/13/2017
+    %Version date: 6/07/2018
     %Last major revision: 11/13/2017
     %
     %tlabel written by Carlos Adrian Vargas Aguilera, last updated 9/2009,
@@ -88,7 +90,9 @@ surfaceSubset = ASOS(dataSpan(1):dataSpan(2)); %Extract the requested data from 
 dewpoint = [surfaceSubset.Dewpoint]; %Dewpoint data
 temperature = [surfaceSubset.Temperature]; %Temperature data
 humidity = [surfaceSubset.RelativeHumidity]; %Humidity
-pressure = [surfaceSubset.Altimeter]; %Pressure
+pressureInHg = [surfaceSubset.Altimeter]; %Pressure
+pressure = pressureInHg.*33.8639; %Convert pressure from the default inches of mercury to the more useful hPa
+
 TdT = [dewpoint;temperature]; %Concatenate dewpoint and temperature for plotting on same axis
 times = [surfaceSubset.Year; surfaceSubset.Month; surfaceSubset.Day; surfaceSubset.Hour; surfaceSubset.Minute; zeros(1,length(surfaceSubset))]; %YMDHM are real from data, S are generated at 0
 serialTimes = datenum(times(1,:),times(2,:),times(3,:),times(4,:),times(5,:),times(6,:)); %Make times into datenumbers
@@ -102,24 +106,25 @@ minPre = nanmin(pressure);
 maxPre = nanmax(pressure);
 
 figure; %Make new figure
-plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
+tempAndDew = plot(serialTimes,TdT); %Plot temperature and dewpoint in deg C
+set(tempAndDew,'LineWidth',2.3)
 ylim([minDegC-4 maxDegC+1]) %Set ylim according to max/min degree; the min limit is offset by -3 instead of -1 in order to make room for the wind barbs
 celsiusLabelHand = ylabel('deg C');
-set(celsiusLabelHand,'FontName','Helvetica'); set(celsiusLabelHand,'FontSize',20);
+set(celsiusLabelHand,'FontName','Lato Bold'); set(celsiusLabelHand,'FontSize',16);
 degCaxis = gca; %Grab axis in order to change color
 set(degCaxis,'YColor',[0 112 115]./255); %Teal - note that this is the same axis for temperature (blue) and dewpoint (green)
-set(degCaxis,'FontName','Helvetica'); set(degCaxis,'FontSize',18);
-addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r'); %Plot pressure in inHg
-pressureLabelHand = addaxislabel(2,'inHg');
-set(pressureLabelHand,'FontName','Helvetica'); set(pressureLabelHand,'FontSize',20);
-addaxis(serialTimes,humidity,[minHum-10 maxHum],'m'); %Plot humidity in %, leaving max at maxHum because it's 100
+set(degCaxis,'FontName','Lato Bold'); set(degCaxis,'FontSize',14);
+addaxis(serialTimes,pressure,[minPre-0.2 maxPre+0.2],'r','LineWidth',2.3); %Plot pressure in hPa
+pressureLabelHand = addaxislabel(2,'hPa');
+set(pressureLabelHand,'FontName','Lato Bold'); set(pressureLabelHand,'FontSize',16);
+addaxis(serialTimes,humidity,[minHum-10 maxHum],'m','LineWidth',2.3); %Plot humidity in %, leaving max at maxHum because it's 100
 humidityLabelHand = addaxislabel(3,'%');
-set(humidityLabelHand,'FontName','Helvetica'); set(humidityLabelHand,'FontSize',18);
+set(humidityLabelHand,'FontName','Lato Bold'); set(humidityLabelHand,'FontSize',14);
 legendHand = legend('Dewpoint','Temperature','Pressure','Humidity');
-set(legendHand,'FontName','Helvetica'); set(legendHand,'FontSize',18);
+set(legendHand,'FontName','Lato Bold'); set(legendHand,'FontSize',14);
 allAxes = findall(0,'type','axes'); %Find all axes
-set(allAxes(3),'FontName','Helvetica'); set(allAxes(3),'FontSize',18); %Change humidity axis font
-set(allAxes(4),'FontName','Helvetica'); set(allAxes(4),'FontSize',18); %Change pressure axis font
+set(allAxes(3),'FontName','Lato Bold'); set(allAxes(3),'FontSize',12); %Change humidity axis font
+set(allAxes(4),'FontName','Lato Bold'); set(allAxes(4),'FontSize',12); %Change pressure axis font
 
 %%Plot wind data
 %Note this is on the same plot as above data
@@ -127,7 +132,7 @@ windSpd = [surfaceSubset.WindSpeed]; %Wind speed data
 windDir = [surfaceSubset.WindDirection]; %Wind direction data
 windCharSpd = [surfaceSubset.WindCharacterSpeed]; %Wind character speed data - currently wind character is not displayed,
     %which is sort of acceptable in the short term because essentially all wind characters at Upton are gusts
-barbScale = 0.021; %Modifies the size of the wind barbs for both wind character and regular wind barbs
+barbScale = 0.028; %Modifies the size of the wind barbs for both wind character and regular wind barbs
 
 if length(serialTimes)>100 %When plotting over a long period of time, displaying all wind barbs takes very long and makes the figure confusing
     spacer = -5; %This sets the skip interval for the following loop when there are many entries
@@ -135,9 +140,9 @@ else
     spacer = -1; %When plotting over an interval of a few hours, display all winds
 end
 for windCount = length(serialTimes):spacer:1 %Loop backwards through winds
-    windbarb(serialTimes(windCount),minDegC-2.5,windSpd(windCount),windDir(windCount),barbScale,0.08,'r',1); %#justiceforbarb
+    windbarb(serialTimes(windCount),minDegC-2.5,windSpd(windCount),windDir(windCount),barbScale,0.09,'r',1); %#justiceforbarb
     if isnan(windCharSpd(windCount))~=1 %If there is a wind character entry
-        windbarb(serialTimes(windCount),minDegC-3.5,windCharSpd(windCount),windDir(windCount),barbScale,0.08,'g',1); %Make wind barb for the character as well
+        windbarb(serialTimes(windCount),minDegC-3.5,windCharSpd(windCount),windDir(windCount),barbScale,0.09,'g',1); %Make wind barb for the character as well
     end
     hold on %Otherwise only one barb will be plotted
 end
@@ -161,9 +166,9 @@ else
     %I agree that the above syntax is unwieldy but oh well
 end
 surfaceTitleHand = title(titleAndSubtitle);
-set(surfaceTitleHand,'FontName','Helvetica'); set(surfaceTitleHand,'FontSize',20)
+set(surfaceTitleHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',16)
 xlabelHand = xlabel('Hour');
-set(xlabelHand,'FontName','Helvetica'); set(surfaceTitleHand,'FontSize',20)
+set(xlabelHand,'FontName','Lato Bold'); set(surfaceTitleHand,'FontSize',16)
 hold off
 
 %% Plot weather codes
@@ -346,11 +351,11 @@ else
         end
         hold on
     end
-    plot([datenum(2015,2,9,12,00,00) datenum(2015,2,9,12,00,00)],[0 4],'Color','r','LineWidth',2)
+ %   plot([datenum(2015,2,9,12,00,00) datenum(2015,2,9,12,00,00)],[0 4],'Color','r','LineWidth',2) %Use this line to annotate a particular time with a vertical red line (such as a sounding time)
     ylim([0 yplacer+1]); %For easier comprehension, y limits are set +/- 1 larger than number of wires
     set(presentAxis,'YTick',1:yplacer); %Only make as many wires as there were precipitation types
     set(presentAxis,'YTickLabel',presentLabels); %Label the wires
-    set(presentAxis,'FontName','Helvetica'); set(presentAxis,'FontSize',25)
+    set(presentAxis,'FontName','Lato Bold'); set(presentAxis,'FontSize',20)
     xlabel('Time (hour)')
   
     %Make adaptive title including start and end times
@@ -364,11 +369,11 @@ else
         titleMsg = strcat(weatherCodeTitleString,spaceString,datestr(obsDate1),spaceString,toString,spaceString,datestr(obsDate2)); %Builds title message "Precip type data for mm/dd/yy HH:MM to mm/dd/yy HH:MM"
     end
     precipTitleHand = title(titleMsg);
-    set(precipTitleHand,'FontSize',32); set(precipTitleHand,'FontName','Helvetica')
+    set(precipTitleHand,'FontSize',20); set(precipTitleHand,'FontName','Lato Bold')
     tlabel('x','HH:MM','FixLow',10,'FixHigh',12) %Set axis to be the same as surface conditions plot
     xlim([serialTimes(1)-0.02 serialTimes(end)+0.02]); %Set bounds to be the same as surface conditions plot
     xlabelHand = xlabel('Hour');
-    set(xlabelHand,'FontName','Helvetica'); set(xlabelHand,'FontSize',25)
+    set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',18)
     hold off
 end
 

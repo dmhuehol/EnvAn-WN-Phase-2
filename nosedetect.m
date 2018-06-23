@@ -1,4 +1,3 @@
-function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundStruct,first,last,freezeT,top)
 %%nosedetect
     %Function which detects the presence of layers above 0 degC within a given
     %soundings data structure and gathers data about their propertes;
@@ -47,17 +46,20 @@ function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfi
     %
     %KNOWN FLAWED CASES: cold ground and point nose outside of x = 5
     %
-    %The flawed cases represent a high priority and will be the first bug
-    %to be fixed after the next push. (8/24/17)
+    %This and wetNosedetect are the two functions I'm leaving in development
+    %limbo. May revisit these eventually but both would require a lot to
+    %fix and are of dubious use anyway.
     %
-    %Version Date: 11/12/17
-    %Last major edit: 8/24/17
+    %Version Date: 6/21/2018
+    %Last major edit: 8/24/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
     %See also IGRAimpf, noseplot, prestogeo, fullIGRAimp
     %
+    
+function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundStruct,first,last,freezeT,top)
 
 % Set defaults
 if ~exist('freezeT','var')

@@ -80,21 +80,21 @@ for record = 1:count
     sndng(record).minor_level_type = sscanf((raw_data{record}(:,2)),'%1f');
     
     % Separate the pressure flag from the pressure
-    sndng(record).pressure = sscanf((raw_data{record}(:,3:8))','%6f');
+    sndng(record).pressure = str2num(raw_data{record}(:,3:8)); %#ok
     press_flag = raw_data{record}(:,9); %Leave as string for now
     
     % Separate the geopotential flag from the pressure
-    sndng(record).geopotential = str2num((raw_data{record}(:,10:14))); %#ok %Must be str2num; str2double and sscanf both format this improperly
+    sndng(record).geopotential = str2num(raw_data{record}(:,10:14)); %#ok %Must be str2num; str2double and sscanf both format this improperly
     geopot_flag = raw_data{record}(:,15); %Leave as string for now
     
     % Separate the temperature flag from the temperature
-    sndng(record).temp = sscanf((raw_data{record}(:,16:20))','%5f')/10; %Convert from tenths degree C to degree C
+    sndng(record).temp = str2num(raw_data{record}(:,16:20))/10; %#ok %Convert from tenths degree C to degree C
     temp_flag = raw_data{record}(:,21); %Leave as string for now
     
-    sndng(record).dew_point_dep = sscanf((raw_data{record}(:,22:26))','%5f')/10; %Convert from tenths degree C to degree C
+    sndng(record).dew_point_dep = str2num(raw_data{record}(:,22:26))/10; %#ok %Convert from tenths degree C to degree C
     
-    sndng(record).wind_dir = sscanf((raw_data{record}(:,27:31))','%5f')/10; %Convert from tenths angular degree to angular degree
-    sndng(record).wind_spd = sscanf((raw_data{record}(:,32:36))','%5f')/10; %Convert from tenths m/s to m/s
+    sndng(record).wind_dir = str2num(raw_data{record}(:,27:31)); %#ok %Convert from tenths angular degree to angular degree
+    sndng(record).wind_spd = str2num(raw_data{record}(:,32:36))/10; %#ok %Convert from tenths m/s to m/s
     
     % Change clearly invalid values to NaN
     sndng(record).wind_dir(sndng(record).wind_dir < -900) = NaN;

@@ -1,20 +1,19 @@
-function [sounding] = timefilter(sding,filter_settings)
 %%timefilter
     %Filters a sounding data structure by year and month. Given a soundings
     %data structure and a structure containing a span of years and an array
-    %of months, timefilter destroys all data within the soundings
-    %structure that lies outside the span of years, and destroys all data
-    %that corresponds to the months within the settings structure.
+    %of months, timefilter destroys all data that lies outside the span of
+    %years, and destroys all data that corresponds to the months within the
+    %filter_settings structure.
     %timefilter returns as output a structure identical to the original
     %structure, except that the requested data has been removed.
     %
-    %General form: [sounding] = timefilter(sding,filter_settings)
+    %General form: [sounding] = timefilter(sndng,filter_settings)
     %
     %Outputs:
-    %sounding: a soundings data structure filtered by years and months
+    %sndng: a soundings data structure filtered by years and months
     %
     %Inputs:
-    %sding: a sounding data structure as created by IGRAimpf
+    %sndng: a sounding data structure as created by IGRAimpf
     %filter_settings: a structure with two fields; one which is a 1x2 array
     %giving a SPAN OF YEARS which will be RETAINED, and one which is a 1xX
     %array giving the INDIVIDUAL MONTHS which will be REMOVED
@@ -23,8 +22,8 @@ function [sounding] = timefilter(sding,filter_settings)
     %filter_settings.year = [2002 2016] removes all data outside of 2002-2016 (inclusive)
     %filter_settings.month = [5,6,7,8,9] removes all data from May, June, July, August, and September
     %
-    % Version Date: 11/22/17
-    % Last major revision: 6/29/17
+    % Version Date: 6/15/2018
+    % Last major revision: 6/29/2017
     % Written by: Daniel Hueholt
     % North Carolina State University
     % Undergraduate Research Assistant at Environment Analytics
@@ -35,6 +34,7 @@ function [sounding] = timefilter(sding,filter_settings)
     %See also IGRAimpf, fullIGRAimp
     %
 
+function [sounding] = timefilter(sndng,filter_settings)
 %% Check for missing inputs
 fields = fieldnames(filter_settings);
 if ismember('month',fields)~=1 %If no month was entered
@@ -44,7 +44,7 @@ if ismember('year',fields)~=1 %If no year was entered
     filter_settings.year = [-9999 9999]; %this prevents any years from being removed
 end
     
-soundingt = struct2table(sding); %Change structure to table--it's easier to select large numbers of entries with tables than nested structures, because nested structures can't use : notation
+soundingt = struct2table(sndng); %Change structure to table--it's easier to select large numbers of entries with tables than nested structures, because nested structures can't use : notation
 
 %% Year Filter
 firstYear = filter_settings.year(1,1); %First year
@@ -70,7 +70,7 @@ for mcount = 1:length(filter_settings.month) %Check every entry that has been re
 end
 mnindex = vertcat(mindex{1:end}); %String all of the cells into a single column vector
 
-if isempty(mnindex) == 1 %If there's somehow no entries corresponding to the input month, report that to the user
+if isempty(mnindex) == 1 && filter_settings.month~=9999 %If there's somehow no entries corresponding to the input month, report that to the user
     disp('No entries were found for the input month.')
     disp('(Note that this could indicate something is wrong with either the input month or with the data itself.)')
 else

@@ -3,12 +3,12 @@
     %such as that created by IGRAimpf. Given a sounding structure and a level
     %type, levfilter will remove all data from the structure which corresponds
     %to said level.
-
+    %
     %General form: [fil] = levfilter(sounding,level_type)
-
+    %
     %Output:
     %fil: a structure lacking the data of level_type,
-
+    %
     %Inputs:
     %sounding: a structure of soundings data,
     %level_type: a number (0,1,2,3) corresponding to WMO standard level types.
@@ -19,7 +19,7 @@
     %Written by Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version Date: 4/21/2018
+    %Version Date: 6/13/2018
     %Last major revision: 6/13/2017
     %
     %See also IGRAimpf, fullIGRAimp

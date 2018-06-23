@@ -32,7 +32,10 @@ function [sfound,closerlook] = surfconfind(y,m,d,t,surconyear,makeiteasy,spread)
     %Use with soundplots and wnplot to gain a complete picture of the
     %surface conditions and temperature profile at a given time.
     %
-    %Version Date: 9/3/17
+    %This, like all Mesowest functions, has been largely made obsolete by
+    %ASOS and its associated code.
+    %
+    %Version Date: 6/14/2018
     %Last major revision: 6/1/17
     %Written by: Daniel Hueholt
     %North Carolina State University

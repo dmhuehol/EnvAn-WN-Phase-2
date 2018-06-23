@@ -1,15 +1,13 @@
-%%skewT
-    %Function to plot a skewT-logP diagram for a given set of pressure,
-    %temperature, and relative humidity data. This is a general skewT
-    %plotter designed to work for any set of thermodynamic data vectors.
-    %For easier plotting with an IGRA data structure, see skewtIGRA.
+%%skewtIGRA
+    %Function to plot a skewT-logP diagram for a given sounding from a
+    %soundings data structure. For a general skew-T plotter, use skewT.
     %
-    %General form: [] = skewT(pz,tz,rhz)
+    %General form: [] = skewtIGRA(snum,soundStruct)
     %
     %Inputs:
-    %pz: pressure data in Pa
-    %tz: temperature data in deg C
-    %rhz: relative humidity data in %
+    %snum: the index of the desired sounding (use findsnd to locate a
+    %sounding index for a particular date).
+    %soundStruct: a soundings data structure
     %
     %Note that the isotherms plotted are relative to, but NOT the same as the
     %labels on the x-axis. The x labels refer to the imaginary isotherms
@@ -21,18 +19,19 @@
     %Version date: 6/06/2018
     %Last major revision: 6/06/2018
     %
-    %See also skewtIGRA, TvZ, soundplots, findsnd, fullIGRAimp
+    %See also skewT, TvZ, soundplots, findsnd, fullIGRAimp
     %
     
-function []=skewT(pz,tz,rhz)
-pz = pz./100; %convert from Pa to hPa
-rhz = rhz./100; %Retrieve relative humidity and convert from % to decimal
+function [] = skewtIGRA(snum,soundStruct)
+pz = soundStruct(snum).pressure./100; %Retrieve pressure and convert from Pa to hPa
+tz = soundStruct(snum).temp; %Retrieve temperature
+rhz = soundStruct(snum).rhum./100; %Retrieve relative humidity and convert from % to decimal
 
 ez=6.112.*exp(17.67.*tz./(243.5+tz)); %calculate saturation vapor pressure
 qz=rhz.*0.622.*ez./(pz-ez); %calculate mixing ratio
 chi=log(pz.*qz./(6.112.*(0.622+qz)));
 tdz=243.5.*chi./(17.67-chi); %calculate dew
-%
+
 p=1050:-25:100; %Construct values for the pressure axis
 pplot=p';
 t0=-48:2:50; %Construct values for the temperature axis
@@ -53,6 +52,7 @@ temp=tem';
 theta=thet';
 thetae=thetaea';
 qs=sqrt(q)';
+figure;
 contour(t0,pplot,temp,16,'k'); %Adds isotherms and isobars
 hold on
 set(gca,'yscale','log','ydir','reverse') %pressure decreases with height
@@ -83,11 +83,9 @@ set(h2,'linewidth',2.3)
 hold off
 xlabel('Temperature (C)','FontName','Lato Bold')
 ylabel('Pressure (mb)','FontName','Lato Bold')
-
-%Title will need  to be hand made; a skeleton consistent with aesthetics of
-%the rest of the plot is below.
-% t = title('Skew-T Diagram');
-% set(t,'FontName','Lato Bold')
-% set(t,'FontSize',16)
+dateString = num2str(soundStruct(snum).valid_date_num); %Used in title
+t = title(['Sounding for ' dateString]);
+set(t,'FontName','Lato Bold')
+set(t,'FontSize',16)
 
 end

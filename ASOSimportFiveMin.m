@@ -29,7 +29,7 @@
     %using MATLAB, see ASOSdownloadFiveMin. To download an ASOS data file
     %by hand, go to:
     %   ftp://ftp.ncdc.noaa.gov/pub/data/asos-fivemin/
-    %(link active as of 4/6/2018)
+    %(link active as of 6/07/2018)
     %
     %When a regular expression is used, the raw expression formatted for
     %troubleshooting on regexr.com can be found commented out in the line
@@ -38,8 +38,8 @@
     %Links to useful ASOS documentation can be found in the
     %EnvAn-WN-Phase-2 repository readme on github user page @dmhuehol.
     %
-    %Version date: 6/04/2018
-    %Last major revision: 4/26/2018
+    %Version date: 6/11/2018
+    %Last major revision: 6/11/2018
     %Written by: Daniel Hueholt
     %Undergraduate Research Assistant at Environment Analytics
     %North Carolina State University
@@ -66,6 +66,7 @@ windExp = '(?<Variable>(VRB){0,1})(?<WindDirection>\d{2})(?<WindSpeed>\d{0,3})(?
 %(\d{3})(V)(\d{3})\s?
 variableWindExp = '(?<MinimumWindDirection>\d{3})(V)(?<MaximumWindDirection>\d{3})\s?'; %Expression for variable wind group
 errorCount = 0;
+missingCount = 0;
 errorThreshold = length(ASOSstruct)*0.08; %Unacceptable threshold for errors (8% of data); don't mess with this unless you have a REALLY good reason
 for count = length(ASOSstruct):-1:1 %Backwards so the entire structure is built in the first step and is then merely filled with data as the loop progresses (saves time)
     try %Prevents a small number of errors from choking the function
@@ -87,36 +88,39 @@ for count = length(ASOSstruct):-1:1 %Backwards so the entire structure is built 
         variableWind(count).MaximumWindDirection = ''; %blank
         if strcmp(wind(count).Variable,'M')==1 %If the data is missing
             %disp(count) %Uncomment this line to see where errors are occurring
-            errorCount = errorCount+1; %Increase the error count
-            if errorCount>errorThreshold %If the error count is greater than the maximum acceptable threshold
-                msg = 'Error count exceeded maximum allowable value! Check dataset for compatibility with function.';
-                error(msg); %then end the function and warn the user
-            else
-                %do nothing
-            end
+            missingCount = missingCount+1; %Increase the error count
         end
         continue %move on
     end
+end
+
+if missingCount>errorThreshold %If the error count is greater than the maximum acceptable threshold
+    percentError = missingCount/length(ASOSstruct)*100;
+    stringError = num2str(percentError);
+    disp(['WARNING: Wind data was not recorded for ' stringError '% of data entries!']); %warn the user
+else
+    %do nothing
 end
 
 for count = length(ASOSstruct):-1:1
     usefulStruct(count).Year = sscanf(ASOSstruct(count).Year,'%4f'); %sscanf is fastest way to convert from string to number
     usefulStruct(count).Month = sscanf(ASOSstruct(count).Month,'%f');
     usefulStruct(count).Day = sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f'); %We use Z time as the default time in usefulStruct to make it easier to compare ASOS data with other data sets
-    if sscanf(ASOSstruct(count).Day,'%2f')==31 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for 31-day months
-        if sscanf(ASOSstruct(count).Month,'%2f')==12 %If said month is December
-            usefulStruct(count).Year = usefulStruct(count).Year+1; %Increment year as well
-        else
-            usefulStruct(count).Month = usefulStruct(count).Month+1; %Otherwise, just increase the month by 1
+        if sscanf(ASOSstruct(count).Day,'%2f')==31 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for 31-day months
+            if sscanf(ASOSstruct(count).Month,'%2f')==12 %If said month is December
+                usefulStruct(count).Year = usefulStruct(count).Year+1; %Increment the year
+                usefulStruct(count).Month = 1; %and the month is January, not 13
+            else
+                usefulStruct(count).Month = usefulStruct(count).Month+1; %Otherwise, just increase the month by 1
+            end
+        %For all other last days, there are no year issues as December always has 31 days
+        elseif sscanf(ASOSstruct(count).Day,'%2f')==30 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for 30-day months
+            usefulStruct(count).Month = usefulStruct(count).Month+1;
+        elseif sscanf(ASOSstruct(count).Day,'%2f')==29 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for leap year Februaries
+            usefulStruct(count).Month = usefulStruct(count).Month+1;
+        elseif sscanf(ASOSstruct(count).Day,'%2f')==28 && sscanf(ASOSstruct(count).ZuluTime(1:2),'%2f')==1 %Fixes last day for normal Februaries
+            usefulStruct(count).Month = usefulStruct(count).Month+1;
         end
-    end
-    if usefulStruct(count).Day==1 && count>288 %If the day is reported as one, but the count is greater than the first day
-        if usefulStruct(count).Month ~= 12
-            usefulStruct(count).Month = usefulStruct(count).Month+1; %It's actually getting into the coda of the report, which comes from the next month
-        elseif usefulStruct(count).Month == 12 %Unless the month is December
-            usefulStruct(count).Month = 1; %in which case the month is January
-        end
-    end
     usefulStruct(count).Hour = str2num(ASOSstruct(count).ZuluTime(3:4)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
     usefulStruct(count).Minute = str2num(ASOSstruct(count).ZuluTime(5:6)); %#ok %str2double and sscanf both fail here, sometimes str2num is just more robust
     usefulStruct(count).VariableWind = wind(count).Variable;

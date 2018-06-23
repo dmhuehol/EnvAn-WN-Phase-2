@@ -3,7 +3,7 @@ function [sndng,filtered,soundsh,soundsWithDewRH,soundsWithHeight,goodfinal,warm
     %Function which, given a file of raw IGRA v1 soundings data, will read
     %the data into MATLAB, filter it according to year, filter it according
     %to level type, add dewpoint and temperature, filter by surface
-    %temperature, detect and analyze warmnoses, and filter by precipitation. 
+    %temperature, and detect and analyze warmnoses. 
     %At each step of the way, a new soundings structure is created and can
     %be output, making this ideal for further investigation using functions 
     %like soundplots.
@@ -26,13 +26,15 @@ function [sndng,filtered,soundsh,soundsWithDewRH,soundsWithHeight,goodfinal,warm
     %
     %Input:
     %input_file: file path of a *.dat IGRA v1 data file
-    %input_file_meso: file path of a Mesowest data table
     %
     %Eventually it is planned to have the various filters controlled at the
     %inputs, but for now it is necessary to change such settings within the
     %function.
     %
-    %KNOWN ISSUES: more accurate progress bar is needed, runtime is relatively slow. 
+    %KNOWN ISSUES: more accurate progress bar is needed, runtime is
+    %relatively slow.
+    %Planned: filter by precipitation, prompt user for inputs like in
+    %Spencer's MASC software
     %
     %Written by Daniel Hueholt
     %North Carolina State University
@@ -41,19 +43,19 @@ function [sndng,filtered,soundsh,soundsWithDewRH,soundsWithHeight,goodfinal,warm
     %Last major revision: 4/21/2018
     %
     %See also IGRAimpf, timefilter, levfilter, dewrelh, surfconfilter,
-    %nosedetect, precipfilter, wnumport
+    %nosedetect
     %
-
-% Prevent function from failing if Mesowest file isn't entered
-if ~exist('input_file_meso','var')==1
-    input_file_meso = [];
-end
 
 % Give a useful message, since the first step takes longer than the others
 disp('Import started!')
     
 % Read soundings data into MATLAB
-[sndng] = IGRAimpf(input_file); %This produces a structure of soundings data with minimal quality control.
+try
+    [sndng] = IGRAimpf(input_file); %This produces a structure of soundings data with minimal quality control.
+catch ME
+    msg = 'Failed to create raw soundings structure! Check data file for errors and try again.';
+    error(msg)
+end
 disp('Successfully created raw soundings structure! 1/5')
 
 % Filter soundings by time
@@ -84,5 +86,7 @@ disp('Quality control complete! 4/5')
 % Detect warm noses
 disp('Detecting warmnoses - please be patient!') %This is one of the longest portions of the function
 [~,~,~,warmnosesfinal,nowarmnosesfinal,~,~,~,~,~,~,~,~] = nosedetect(goodfinal,1,length(goodfinal),0,20000); %Function to detect layers above 0C
+
+disp('Import complete!')
 
 end

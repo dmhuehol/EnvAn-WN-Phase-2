@@ -6,17 +6,23 @@
 %General form: [] = compositePlotter(soundingStruct,snumToPlot,tempType)
 %
 %Inputs:
-%soundingStruct: A structure of soundings data. Obviously, it must already contain
-    %wetbulb temperature data in order to plot wetbulb temperature.
+%soundingStruct: A structure of soundings data. If the structure has not
+    %been processed for wetbulb temperature already, then it will
+    %automatically calculate wetbulb temperature for only the requested
+    %soundings.
 %snumToPlot: An array of (up to 12, by default) sounding numbers. Use
     %findsnd to get sounding numbers.
 %tempType: String input designating what kind of temperature to plot.
     %Use 'wetbulb' to plot wetbulb, 'temp' to plot air temperature, or 'both' to
     %plot both.
 %
+%Outputs:
+%compositeSubset: An extract of the soundings structure containing the requested times,
+    %with wetbulb temperature added.
 %
-%Version date: 4/14/2018
-%Last major revision: 4/14/2018
+%
+%Version date: 6/20/2018
+%Last major revision: 6/19/2018
 %Written by: Daniel Hueholt
 %North Carolina State University
 %Undergraduate Research Assistant at Environment Analytics
@@ -25,7 +31,7 @@
 %
 
 
-function [] = compositePlotter(soundingStruct,soundingsToPlot,tempType)
+function [compositeSubset] = compositePlotter(soundingStruct,soundingsToPlot,tempType)
 
 if ~exist('tempType','var')==1 %If temperature type is left unspecified
     tempType = 'both'; %then plot both wetbulb temperature and air temperature
@@ -47,7 +53,8 @@ end
 
 %Colors are used to denote time; different soundings are plotted in
 %different colors. Twelve distinct colors are used by default.
-colorsToPlot = [255,168,163; 255,0,0; 255,140,0; 255,225,0; 0,255,0; 4,234,255; 53,123,166; 0,0,255; 183,1,255; 181,146,255; 98,1,133; 0,0,0]./255;
+%colorsToPlot = [255,168,163; 255,0,0; 255,140,0; 255,225,0; 0,255,0; 4,234,255; 53,123,166; 0,0,255; 183,1,255; 181,146,255; 98,1,133; 0,0,0]./255;
+colorsToPlot = [255,0,0; 255,140,0; 255,225,0; 0,255,0; 4,234,255; 53,123,166; 0,0,255; 183,1,255; 181,146,255; 98,1,133; 0,0,0]./255;
 %Salmon, red, orange, yellow, green, teal, light blue, dark blue, lavender, purple, dark purple, black
 
 if length(soundingsToPlot)>length(colorsToPlot) %If there are more sounding numbers than colors to plot
@@ -60,6 +67,12 @@ colorCount = 1; %Counter to track color usage
 cloudThreshold = 80; %Relative humidity threshold to determine cloud presence/absence
 
 compositeSubset = soundingStruct(soundingsToPlot); %Subset of requested soundings
+
+if isfield(compositeSubset,'wetbulb')==0 %If the overall structure hasn't already been processed for wetbulb temperature
+    disp('Calculating wetbulb temperature, please wait.') %This can take some time, so reassure the user
+    [compositeSubset] = addWetbulb(compositeSubset); %Add wetbulb to just the requested subset
+end
+
 
 %For generating the legend later
 dates = double([[compositeSubset.year]',[compositeSubset.month]',[compositeSubset.day]',[compositeSubset.hour]',zeros(length(compositeSubset),1),zeros(length(compositeSubset),1)]); %Need to be converted to doubles
@@ -198,7 +211,8 @@ switch tempType %Depending on input, plot wetbulb temperature vs height, air tem
         set(t,'FontName','Lato Bold')
 end
 
-xlim([-5 18]) %Changes the limits on the degrees Celsius axis. This often needs to be changed to enhance visibility, as no single span will work well across all months and locations.
+%xlim([-5 18]) %Changes the limits on the degrees Celsius axis. This often needs to be changed to enhance visibility, as no single span will work well across all months and locations.
+xlim([-18 14])
 ylim([0 4]) %Changes the limits on the height axis. 0 to 4km or 0 to 5km are standard.
 
 switch tempType %Build the legend

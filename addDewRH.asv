@@ -1,23 +1,22 @@
 %%addDewRH
-    %Low-stress way to add dewpoint and/or relative humidity data to a
+    %Low-stress way to add dewpoint and relative humidity data to a
     %soundings structure. For IGRA processing, best if run after level 3
     %data has been filtered out.
     %
-    %General form: [dew] = addDewRH(sounding,type)
+    %General form: [dew] = addDewRH(sounding)
     %
-    %Output:
+    %Output
     %dew: sounding structure with dewpoint and relative humidity fields,
     %otherwise identical to the input structure
     %
-    %Inputs:
+    %Input
     %sounding: processed soundings data structure, as from IGRAimpf+levfilter
-    %type: specify whether to add dewpoint ('dew'), relative humidity ('RH'), or both ('both').
     %
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
-    %Version date: 6/22/2018
-    %Last major revision: 6/22/2018
+    %Version date: 4/21/2018
+    %Last major revision: 3/12/2018
     %
     %See also IGRAimpf, levfilter
     %
@@ -27,17 +26,19 @@ function [dew] = addDewRH(sounding,type)
 dew = sounding;
 
 switch type
-    case 'both' %Add both dewpoint and relative humidity 
+    case 'both'
         for scnt = 1:length(sounding)
             [dew(scnt).dewpt,dew(scnt).rhum] = dewrelh(sounding(scnt).temp,sounding(scnt).dew_point_dep); %dewrelh calculates dewpoint and relative humidity from dewpoint depression and temperature
+            %Calculation will return NaN if temperature and/or dewpoint depression
+            %are NaNs.
         end
-    case 'RH' %Add only relative humidity
+    case 'RH'
         for scnt = 1:length(sounding)
             [~,dew(scnt).rhum] = dewrelh(sounding(scnt).temp,sounding(scnt).dew_point_dep); %dewrelh calculates dewpoint and relative humidity from dewpoint depression and temperature
         end
-    case 'dew' %Add only dewpoint
+    case 'dew'
         for scnt = 1:length(sounding)
             [dew(scnt).dewpt,~] = dewrelh(sounding(scnt).temp,sounding(scnt).dew_point_dep); %dewrelh calculates dewpoint and relative humidity from dewpoint depression and temperature
         end
-%Calculation will return NaN if temperature and/or dewpoint depression are NaNs.
+
 end

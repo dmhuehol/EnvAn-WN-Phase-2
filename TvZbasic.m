@@ -1,8 +1,9 @@
-%%TvZ
-    %Function to create a temperature vs height plot for a sounding given
-    %an input date and a data structure.
+%%TvZbasic
+    %Function to create a temperature vs height plot for a sounding, given
+    %an input date and a data structure, with basic plot settings to make
+    %customization for making printable figures easy.
     %
-    %General form: [foundit] = TvZ(y,m,d,t,sounding,kmTop)
+    %General form: [foundit] = TvZbasic(y,m,d,t,sounding,kmTop)
     %
     %Output:
     %foundit: the index of the sounding corresponding to the time
@@ -12,23 +13,27 @@
     %m: two digit month
     %d: one or two digit day
     %t: one or two digit time
-    %sounding: a structure of soundings data
-    %kmTop: OPTIONAL the maximum height in km to be plotted, defaults to 13 km.
+    %sounding: a structure of soundings data, as created by fullIGRAimp, etc
+    %kmTop: OPTIONAL INPUT to specify maximum height to be plotted,
+        %defaults to 5km
     %
-    %Version Date: 6/16/2018
-    %Last major revision: 6/16/2018
+    %This is the same as TvZ, with some plot settings changed.
+    %
+    %Version Date: 6/21/2018
+    %Last major revision: 6/20/2018
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
-    %See also soundplots, TTwvZ, addHeight
+    %See also fullIGRAimp, soundplots
     %
 
-function [foundit] = TvZ(y,m,d,t,sounding,kmTop)
+function [foundit] = TvZbasic(y,m,d,t,sounding,kmTop)
+
 % Checks relating to the kmTop input
-if exist('kmTop','var')==0 %Default height is 13 km
-    kmTop = 13;
-    disp('Maximum height value defaulted to 13 km.')
+if exist('kmTop','var')==0 %Default height is 5 km
+    kmTop = 5;
+    disp('Maximum height value defaulted to 5 km.')
 end
 if kmTop>13
     disp('Maximum allowed km is 13!')
@@ -66,7 +71,6 @@ if isfield(sounding,'height')==0 %If height isn't already a field of the soundin
     [sounding] = addHeight(sounding);
 end
 
-
 kmCutoff = logical(sounding(foundit).height <= kmTop+1); %Find indices of readings where the height is less than or equal to the input maximum height, plus one to prevent the plot from cutting off in an ugly way
 useGeo = sounding(foundit).height(kmCutoff==1);
 useTemp = sounding(foundit).temp(kmCutoff==1);
@@ -82,26 +86,18 @@ freezingx = [0 16];
 freezingy = ones(1,length(freezingx)).*0;
 
 % Plotting
-figure;
-plot(useTemp,useGeo,'Color','b','LineWidth',2.4); %TvZ
+f = figure;
+TvZ = plot(useTemp,useGeo); %TvZ
+set(TvZ,'Color','b')
+set(TvZ,'LineWidth',3)
 hold on
-plot(freezingy,freezingx,'Color','r','LineWidth',2) %Freezing line
+freezingLine = plot(freezingy,freezingx); %Freezing line
+set(freezingLine,'Color','r')
+set(freezingLine,'LineWidth',2.5)
 
-% Plot settings
-dateString = datestr(datenum(sounding(foundit).valid_date_num(1),sounding(foundit).valid_date_num(2),sounding(foundit).valid_date_num(3),sounding(foundit).valid_date_num(4),0,0),'mmm dd, yyyy HH UTC'); %For title
-titleHand = title(['Sounding for ' dateString]);
-set(titleHand,'FontName','Lato Bold'); set(titleHand,'FontSize',14);
-xlabelHand = xlabel('Temperature in C');
-set(xlabelHand,'FontName','Lato Bold'); set(xlabelHand,'FontSize',14);
-ylabelHand = ylabel('Height in km');
-set(ylabelHand,'FontName','Lato Bold'); set(ylabelHand,'FontSize',14);
-axe = gca;
-set(axe,'FontName','Lato'); set(axe,'FontSize',12);
-set(axe,'YTick',[0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 6 7 8 9 10 11 12 13])
-set(axe,'XTick',[-45 -40 -35 -30 -25 -22 -20 -18 -16 -14 -12 -10 -8 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 8 10 12 14 16 18 20 22 25 30 35 40])
-xlim([min(useTemp)-1 max(useTemp)+1])
-ylim([0 kmTop])
-set(axe,'box','off')
+xlabel('Temperature in C')
+ylabel('Height in km')
+ylim([0 kmTop]);
 hold off
 
 end

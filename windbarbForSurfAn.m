@@ -1,31 +1,38 @@
-%%windbarb
-    %
-    % Draw wind barb given wind speed and direction on current plot.
-    % The size of the barb is scaled by the diagonal length of the plot.
-    % Assumes wind speeds are in KNOTS
-    %
-    % windbarb(x,y,spd,dir,scale,width,color,barb)
-    %
-    % x: horizontal coordinate
-    % y: vertical coordinate
-    % spd: wind speed in KNOTS
-    % dir: wind direction from in degrees
-    % scale: scale factor for barb
-    % width: width of lines for barb
-    % color: color of barb
-    % barb: logical for plotting barbs
-    %
-    % Written by: Laura Tomkins
-    % Research Assistant at Environment Analytics
-    % Last updated May 2017
-    %
+%%windbarbForSurfAn
+%
+% Draw wind barb given wind speed and direction on current plot.
+% The size of the barb is scaled by the diagonal length of the plot.
+% Assumes wind speeds are in KNOTS
+%
+% This is exactly the same as windbarb except some documentation has been
+% added, two lines have been uncommented, and the name has been changed.
+%
+% windbarbForSurfAn(x,y,spd,dir,scale,width,color,barb)
+%
+% x: horizontal coordinate
+% y: vertical coordinate
+% spd: wind speed in KNOTS
+% dir: wind direction from in degrees
+% scale: scale factor for barb
+% width: width of lines for barb
+% color: color of barb
+% barb: logical for plotting barbs
+%
+% Written by: Laura Tomkins
+% Research Assistant at Environment Analytics
+% Last updated May 2017
+% Edited by: Daniel Hueholt
+% Undergraduate Research Assistant at Environment Analytics
+%
+% See also windbarb, surfAnalysisDemo
+%
 
-function windbarb(x,y,spd,dir,scale,width,color,barb)
+function windbarbForSurfAn(x,y,spd,dir,scale,width,color,barb)
 
 xm = get(gca,'XLim');
 ym = get(gca,'YLim');
 
-as = pbaspect; %pbaspect is plot box aspect ratio; helps to scale the barbs
+as = pbaspect;
 axpos = get(gca,'position');
 ppos=get(gcf,'paperposition');
 
@@ -295,8 +302,8 @@ if (barb)
         line([x1 x2],[y1 y2],'linewidth',width,'color',color)
     elseif spd >= 5
         line([x3 (x4+x3)/2],[y3 (y4+y3)/2],'linewidth',width,'color',color)
-        %line([x1 (x2+x1)/2],[y1 (y2+y1)/2],'linewidth',width,'color',color)
+        line([x1 (x2+x1)/2],[y1 (y2+y1)/2],'linewidth',width,'color',color) %Uncommented
     else
-        %line([x1 (x2+3*x1)/4],[y1 (y2+3*y1)/4],'linewidth',width,'color',color)
+        line([x1 (x2+3*x1)/4],[y1 (y2+3*y1)/4],'linewidth',width,'color',color) %Uncommented
     end
 end

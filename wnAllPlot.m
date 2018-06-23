@@ -50,6 +50,8 @@ function [lowerboundsg,upperboundsg] = wnAllPlot(sounding,year,groundedplot,quic
     %is now a low-priority and will not be maintained for the foreseeable
     %future.
     %
+    %Marked for removal 6/21/2018
+    %
     %Version Date: 8/24/17
     %Last major revision: 6/20/17
     %Written by Daniel Hueholt
