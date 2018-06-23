@@ -22,11 +22,11 @@ datetick
 set(barH(1),'EdgeColor','none','FaceColor','w');
 
 %% Patch Technique
-%Strength: Draws the shape given specified coordinates, so it can handle with
+%Strength: Draws the shape given specified coordinates, so it can handle
 %multiple nose scenarios.
 %Weakness: more difficult to use with varying x.
 %Written by: Daniel Hueholt
-%Version Date: 9/1/17
+%Version Date: 6/5/2018
 
 figure;
 theColorOrange = [255,154,0]./255;

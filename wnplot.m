@@ -14,11 +14,11 @@ function [] = wnplot(y,m,d,h,sounding)
     %h: hour (always 00 or 12 for IGRA v1 data)
     %sounding: a soundings data structure--must have already been processed for warmnoses
     %
-    %Generates a single altitude plot for all warmnoses
+    %Generates a single plot for all warmnoses
     %
     %
-    %Version Date: 8/24/17
-    %Last Major Revision: 7/5/17
+    %Version Date: 6/21/2018
+    %Last Major Revision: 7/5/2017
     %Written by : Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -68,7 +68,7 @@ upperBound1 = lowerBound1+depth1;
 upperBound2 = lowerBound2+depth2;
 upperBound3 = lowerBound3+depth3;
 
-% If enabled, the following block can add estimated cloud base to the warm nose plot
+%%If enabled, the following block can add estimated cloud base to the warm nose plot
 % [LCL] = cloudbaseplot(sounding,numdex,0,0); %locate cloud base (if possible)
 % try
 %     if isnan(LCL(2))~=1 %if the cloudbase exists
@@ -96,7 +96,7 @@ theColorDustyBlue = [0, 0.447, 0.741]; %#ok
 transparency = 0.8;
 noseWidth = 16; %Controls the size of the bar
 
-figure(284); %Use a probably-unused figure handle
+figure; %Use a probably-unused figure handle
 
 xAllNoses = [dateNumber dateNumber]; %x is the same for all noses
 %Nose 1
@@ -133,4 +133,6 @@ title(titleMsg);
 set(gca,'xTickLabel','')
 set(gca,'xTick',[])
 xlabel(datestr(dateNumber))
+ylim([0 5])
+
 end

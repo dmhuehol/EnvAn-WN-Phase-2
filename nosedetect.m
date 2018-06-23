@@ -1,9 +1,10 @@
-function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundStruct,first,last,freezeT,top)
 %%nosedetect
-    %Function which detects the presence of warmnoses within a given
+    %Function which detects the presence of layers above 0 degC within a given
     %soundings data structure and gathers data about their propertes;
-    %returns two output structures, one of which contains only soundings with warmnoses and
-    %one of which contains those with no warmnoses.
+    %returns two output structures, one of which contains only soundings with layers and
+    %one of which contains those with none of these layers.
+    %
+    %Name is a legacy from when these layers were called "warm noses."
     %
     %General form:
     %[presheightvector,geoheightvector,goodtemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundstruct,first,last,freezeT,top)
@@ -45,17 +46,20 @@ function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfi
     %
     %KNOWN FLAWED CASES: cold ground and point nose outside of x = 5
     %
-    %The flawed cases represent a high priority and will be the first bug
-    %to be fixed after the next push. (8/24/17)
+    %This and wetNosedetect are the two functions I'm leaving in development
+    %limbo. May revisit these eventually but both would require a lot to
+    %fix and are of dubious use anyway.
     %
-    %Version Date: 8/24/17
-    %Last major edit: 8/24/17
+    %Version Date: 6/21/2018
+    %Last major edit: 8/24/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
     %
     %See also IGRAimpf, noseplot, prestogeo, fullIGRAimp
     %
+    
+function [presHeightVector,geoHeightVector,goodTemp,warmnosesfinal,nowarmnosesfinal,freezingx,freezingxg,freezingy,freezingyg,x,y,gx,gy] = nosedetect(soundStruct,first,last,freezeT,top)
 
 % Set defaults
 if ~exist('freezeT','var')
@@ -197,7 +201,7 @@ for k = first:last
             soundStruct(k).warmnose.upperg(2) = gx(3);
             soundStruct(k).warmnose.depth1 = soundStruct(k).warmnose.lowerbound1 - soundStruct(k).warmnose.upperbound1; %PRESSURE depth of grounded warmnose is lower minus upper
             soundStruct(k).warmnose.gdepth1 = soundStruct(k).warmnose.upperboundg1 - soundStruct(k).warmnose.lowerboundg1; %HEIGHT depth of grounded warmnose is upper minus lower
-            soundStruct(k).warmnose.depth2 = soundStruct(k).warmnose.lowerbound2 - soundStruct(k).warmnose.upperbound2; %PRESSURE depth of warmnose aloft is lower minus upper
+            soundStruct(k).warmnose.depth2 = abs(soundStruct(k).warmnose.lowerbound2 - soundStruct(k).warmnose.upperbound2); %PRESSURE depth of warmnose aloft is lower minus upper
             soundStruct(k).warmnose.gdepth2 = soundStruct(k).warmnose.upperboundg2 - soundStruct(k).warmnose.lowerboundg2; %HEIGHT depth of warmnose aloft is upper minus lower
         elseif length(x) == 4
             soundStruct(k).warmnose.x = x; %PRESSURE x value from polyxpoly

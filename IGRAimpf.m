@@ -3,7 +3,7 @@ function [sndng] = IGRAimpf(input_file)
     %Function to import IGRA v1 files. Given a .dat file of
     %soundings data, returns a structure ('sndng') which contains the following
     %fields:
-    %valid_date_num - a MATLAB date serial number
+    %valid_date_num - a MATLAB date vector
     %year
     %month
     %day
@@ -12,8 +12,8 @@ function [sndng] = IGRAimpf(input_file)
     %minor_level_type (1 = surface, 2 = tropopause, 3 = other)
     %pressure (Pascals)
     %geopotential (meters)
-    %temp (air temperature, C)
-    %dew_point_dep (dewpoint depression, C)
+    %temp (air temperature, deg C)
+    %dew_point_dep (dewpoint depression, deg C)
     %wind_dir (wind direction, angular degrees)
     %wind_spd (wind speed, meters/second)
     %u_comp (zonal component of wind, meters/second)
@@ -22,13 +22,18 @@ function [sndng] = IGRAimpf(input_file)
     %pressure flag (same meaning as geopotential flag)
     %temp_flag (same meaning as geopotential flag)
     %
-    %General form of function call: [sndng] = IGRAimpf(input_file)
-    %where input_file is a string containing the file path of the dat file
+    %General form: [sndng] = IGRAimpf(input_file)
+    %
+    %Outputs:
+    %sndng: Soundings structure containing fields as described above.
+    %
+    %Input:
+    %input_file: File path of a IGRA v1 data file.
     %
     %Function created by Daniel Hueholt
-    %Based on a script originally written by Megan Amanatides
-    %Version date: 9/1/2017
-    %Last major revision: 5/24/17
+    %Based on a script originally written by Megan Amanatides circa 2013
+    %Version date: 6/04/2018
+    %Last major revision: 5/24/2017
     %
     %See also: IGRAimpfil
     %
@@ -58,8 +63,9 @@ end
 header(header == 9999) = NaN; %IGRA uses 9999 instead of NaN
 
 %% Separate data
+sndng = struct([]); %Preallocation cuts down on runtime very slightly
 for record = 1:count
-    record_date = [header(record,2) header(record,3) header(record,4), header(record,5)]; %comprehensive date for each sounding
+    record_date = [header(record,2) header(record,3) header(record,4), header(record,5)]; %year, month, date, UTC hour
                
     sndng(record).valid_date_num = datenum(record_date); %Convert date to serial number
     
@@ -74,21 +80,21 @@ for record = 1:count
     sndng(record).minor_level_type = sscanf((raw_data{record}(:,2)),'%1f');
     
     % Separate the pressure flag from the pressure
-    sndng(record).pressure = sscanf((raw_data{record}(:,3:8))','%6f');
-    press_flag = raw_data{record}(:,9); %leave as string for now
+    sndng(record).pressure = str2num(raw_data{record}(:,3:8)); %#ok
+    press_flag = raw_data{record}(:,9); %Leave as string for now
     
     % Separate the geopotential flag from the pressure
-    sndng(record).geopotential = str2num((raw_data{record}(:,10:14))); %has to be str2num; for no apparent reason, sscanf won't format this properly
-    geopot_flag = raw_data{record}(:,15); %leave as string for now
+    sndng(record).geopotential = str2num(raw_data{record}(:,10:14)); %#ok %Must be str2num; str2double and sscanf both format this improperly
+    geopot_flag = raw_data{record}(:,15); %Leave as string for now
     
     % Separate the temperature flag from the temperature
-    sndng(record).temp = sscanf((raw_data{record}(:,16:20))','%5f')/10; %convert from tenths degree C to degree C
-    temp_flag = raw_data{record}(:,21); %leave as string for now
+    sndng(record).temp = str2num(raw_data{record}(:,16:20))/10; %#ok %Convert from tenths degree C to degree C
+    temp_flag = raw_data{record}(:,21); %Leave as string for now
     
-    sndng(record).dew_point_dep = sscanf((raw_data{record}(:,22:26))','%5f')/10; %Convert from tenths degree C to degree C
+    sndng(record).dew_point_dep = str2num(raw_data{record}(:,22:26))/10; %#ok %Convert from tenths degree C to degree C
     
-    sndng(record).wind_dir = sscanf((raw_data{record}(:,27:31))','%5f')/10; %Convert from tenths angular degree to angular degree
-    sndng(record).wind_spd = sscanf((raw_data{record}(:,32:36))','%5f')/10; %Convert from tenths m/s to m/s
+    sndng(record).wind_dir = str2num(raw_data{record}(:,27:31)); %#ok %Convert from tenths angular degree to angular degree
+    sndng(record).wind_spd = str2num(raw_data{record}(:,32:36))/10; %#ok %Convert from tenths m/s to m/s
     
     % Change clearly invalid values to NaN
     sndng(record).wind_dir(sndng(record).wind_dir < -900) = NaN;
@@ -113,8 +119,8 @@ for record = 1:count
     % Change any clearly invalid values to NaN
     sndng(record).pressure(sndng(record).pressure < 0) = NaN; %Negative pressure is not allowed
     sndng(record).geopotential(sndng(record).geopotential < 0) = NaN; %Negative height is not allowed
-    sndng(record).temp(sndng(record).temp < -1000) = NaN; %Temperature below -1000 C is not allowed
-    sndng(record).dew_point_dep(sndng(record).dew_point_dep < -1000) = NaN; %Dewpoint depression below -1000 C is not allowed
+    sndng(record).temp(sndng(record).temp < -999) = NaN; %Temperature below -999 C is not allowed; also captures missing data values
+    sndng(record).dew_point_dep(sndng(record).dew_point_dep < -999) = NaN; %Dewpoint depression below -999 C is not allowed; also captures missing data values
     
 end
     

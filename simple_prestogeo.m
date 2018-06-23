@@ -18,8 +18,8 @@ function [geoheight] = simple_prestogeo(p1,pz,t1,tz)
     %t1: temperature in deg C (conversion to K is built-in) at the t1 level
     %tz: temperature in deg C (conversion to K is built-in) at the tz level
     %
-    %Version Date: 9/1/17
-    %Last major revision: 5/31/17
+    %Version Date: 6/5/2018
+    %Last major revision: 5/31/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
@@ -30,4 +30,5 @@ function [geoheight] = simple_prestogeo(p1,pz,t1,tz)
 R = 287.75; %J/(K*kg) ideal gas constant
 grav = 9.81; %m/s^2 acceleration of gravity
 geoheight = (R/grav*(((t1+273.15)+(tz+273.15))/2).*log(p1./pz))/1000; %Equation comes from Durre and Yin (2008) http://journals.ametsoc.org/doi/pdf/10.1175/2008BAMS2603.1
+
 end

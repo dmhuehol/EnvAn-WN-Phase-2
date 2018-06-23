@@ -35,7 +35,7 @@ function [presheightvector,geoheightvector] = prestogeo(pressure,temperature,rep
     %   replacefirst, soundstructure, soundingnumber, and talk can be left off of any calls to prestogeo without 
     %   impairing the function at all. The only inputs which are essential are pressure and temperature.
     %
-    %Version Date: 9/1/17
+    %Version Date: 6/5/2018
     %Last major revision: 5/31/17
     %Written by: Daniel Hueholt
     %North Carolina State University
@@ -59,7 +59,7 @@ try %Keeps the function from causing hiccups when used in a long loop scenario, 
     geoheightvector = geoheightvector'; %Make row vector into a column vector
     
     % All of the following has to do with the more convoluted uses of input variables
-    %and can be ignored if all you are looking for is a geopotential height calculator
+    % and can be ignored if all you are looking for is a geopotential height calculator
     switch nargin %Different cases occur with different number of input variables, easier than if/elseif
         case 6 %If all inputs are present
             if replacefirst == 1 %If first calculated value is to be replaced with measured value (calculated value is always zero, so the measurement is more accurate)

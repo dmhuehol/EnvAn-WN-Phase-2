@@ -1,0 +1,37 @@
+function [statStruct] = finalForm(soundStruct)
+statStruct = struct([]);
+for count = 1:length(soundStruct)
+    statStruct(count).valid_date_num = soundStruct(count).valid_date_num;
+    warmPoints = soundStruct(count).temp>=0;
+    statStruct(count).warmHeights = soundStruct(count).height(warmPoints);
+    statStruct(count).warmTemps = soundStruct(count).temp(warmPoints);
+    try
+        statStruct(count).warmWetbulbs = double(soundStruct(count).wetbulb(warmPoints));
+        statStruct(count).warmWetbulbs = statStruct(count).warmWetbulbs';
+    catch ME;
+        disp(count)
+        disp('Failed at warm wetbulb!')    
+    end
+    cloudPoints = soundStruct(count).rhum>80;
+    statStruct(count).cloudHeights = soundStruct(count).height(cloudPoints);
+    statStruct(count).cloudTemps = soundStruct(count).temp(cloudPoints);
+    try
+        statStruct(count).cloudWetbulbs = double(soundStruct(count).wetbulb(cloudPoints));
+        statStruct(count).cloudWetbulbs = statStruct(count).cloudWetbulbs';
+    catch ME;
+        disp(count)
+        disp('Failed at cloud wetbulb!')
+    end
+    wp = find(warmPoints==1);
+    cp = find(cloudPoints==1);
+    warmcloudPoints = intersect(wp,cp);
+    statStruct(count).warmcloudHeights = soundStruct(count).height(warmcloudPoints);
+    statStruct(count).warmcloudTemps = soundStruct(count).temp
+    try 
+        statStruct(count).warmcloudWetbulbs = intersect(statStruct(count).warmWetbulbs,statStruct(count).cloudWetbulbs);
+    catch ME;
+        disp(count)
+        disp('Failed at warm cloud wetbulb!')
+    end
+end
+end

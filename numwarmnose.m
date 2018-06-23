@@ -1,7 +1,7 @@
-%% numwarmnose
-    %Script to divide up a warm nose sounding dataset by the number of warm
-    %noses present in the sounding. (Due to some minor flaws in how nosedetect
-    %treats warm noses, this is very good but imperfect; fixing these
+%%numwarmnose
+    %Script to divide up a sounding dataset by the number of layers above 0 degC
+    %present in the sounding. (Due to some flaws in how nosedetect
+    %treats these, this is very good but imperfect; fixing these
     %unusual cases is a high priority goal.)
     %numwarmnose has been left as a script because many of the variables are 
     %useful for analysis, and an inconvenient number of outputs would need 
@@ -15,8 +15,8 @@
     %
     %To create an appropriate soundings data structure, see fullIGRAimp.
     %
-    %Version Date: 8/18/17
-    %Last major revision: 8/17/17
+    %Version date: 4/21/2018
+    %Last major revision: 8/17/2017
     %Written by: Daniel Hueholt
     %North Carolina State University
     %Undergraduate Research Assistant at Environment Analytics
