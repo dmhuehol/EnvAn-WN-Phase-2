@@ -1,8 +1,6 @@
 %%soundplots 
     %Function to chart soundings for a specific date, given a
     %sounding data structure such as that created by IGRAimpf.
-    %Prefers if levfilter has been run (best to just run fullIGRAimp and use 
-    %with goodfinal or warmnosesfinal).
     %
     %General form: [foundit] = soundplots(y,m,d,t,sounding)
     %
